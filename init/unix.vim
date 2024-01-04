@@ -129,6 +129,7 @@ endif
 augroup AscUnixGroup
 	au!
 	au FileType * call s:language_setup()
+	au ColorScheme * call s:patch_colors(expand('<amatch>'))
 	au User VimScope call vimmake#toggle_quickfix(6, 1)
 	au BufNewFile,BufRead *.as setlocal filetype=actionscript
 	au BufNewFile,BufRead *.pro setlocal filetype=prolog
@@ -160,6 +161,19 @@ function! s:language_setup()
 	if filereadable(dict)
 		exec "setlocal dict+=" . fnameescape(dict)
 	endif
+endfunc
+
+
+" patch color scheme
+function! s:patch_colors(name)
+	let names = ['__init__.vim', a:name .. '.vim', '__final__.vim']
+	let basedir = asclib#path#runtime('site/colors')
+	for name in names
+		let t = basedir .. '/' .. name
+		if filereadable(t)
+			exec 'source' fnameescape(t)
+		endif
+	endfor
 endfunc
 
 

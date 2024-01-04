@@ -15,11 +15,11 @@ let s:array = [')', '!', '@', '#', '$', '%', '^', '&', '*', '(']
 for i in range(10)
 	let x = (i == 0)? 10 : i
 	let c = s:array[i]
-	exec "noremap <silent><M-".i."> :tabn ".x."<cr>"
-	exec "inoremap <silent><M-".i."> <ESC>:tabn ".x."<cr>"
+	exec "noremap <silent><M-".i."> ".x."gt"
+	exec "inoremap <silent><M-".i."> <ESC>".x."gt"
 	if get(g:, 'vim_no_meta_shift_num', 0) == 0
-		exec "noremap <silent><M-".c."> :tabn ".x."<cr>"
-		exec "inoremap <silent><M-".c."> <ESC>:tabn ".x."<cr>"
+		exec "noremap <silent><M-".c."> ".x."gt"
+		exec "inoremap <silent><M-".c."> <ESC>".x."gt"
 	endif
 endfor
 
