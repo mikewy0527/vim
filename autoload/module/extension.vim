@@ -11,13 +11,22 @@
 "----------------------------------------------------------------------
 " display help
 "----------------------------------------------------------------------
-function! module#extension#help(name)
+function! module#extension#help(name, ...)
 	let path = asclib#path#runtime('site/doc/' . a:name . '.txt')
 	if !filereadable(path)
 		call asclib#common#errmsg('E149: Sorry, no help for ' . a:name)
 	else
 		if asclib#utils#display(path, 'auto') == 0
 			call asclib#utils#make_info_buf()
+			if a:0 > 0
+				if a:1 > 0
+					exec printf(':%d', a:1)
+				endif
+			endif
+			if a:0 > 1
+				let ft = a:2
+				exec printf('setlocal ft=%s', ft)
+			endif
 			noremap <buffer>c :close<cr>
 			noremap <buffer>q :close<cr>
 			noremap <buffer><bs> :close<cr>
