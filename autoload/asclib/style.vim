@@ -12,9 +12,10 @@
 " remove style
 "----------------------------------------------------------------------
 function! asclib#style#remove_style(what)
-	let need = ['underline', 'undercurl', 'reverse', 'inverse', 'italic', 'standout', 'bold']
-	let hid = 1
+	let need = ['underline', 'undercurl', 'reverse', 'inverse', 'italic']
+	call extend(need, ['standout', 'bold'])
 	call filter(need, 'v:val != a:what')
+	let hid = 1
 	while 1
 		let hln = synIDattr(hid, 'name')
 		if !hlexists(hln) | break | endif

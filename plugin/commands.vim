@@ -505,20 +505,8 @@ endfunc
 "----------------------------------------------------------------------
 " Remove Italics: https://gist.github.com/mattn/3f43125df1020fada9b6
 "----------------------------------------------------------------------
-command! -nargs=0 DisableItalic call s:DisableItalic()
-function! s:DisableItalic()
-	let his = ''
-	redir => his
-	silent hi
-	redir END
-	let his = substitute(his, '\n\s\+', ' ', 'g')
-	for line in split(his, "\n")
-		if line !~ ' links to ' && line !~ ' cleared$'
-			let t = substitute(line, ' xxx ', ' ', '')
-			exe 'hi' substitute(t, 'italic', 'none', 'g')
-		endif
-	endfor
-endfunc
+command! -nargs=0 DisableItalic call asclib#style#remove_style('italic')
+
 
 
 
