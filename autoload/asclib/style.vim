@@ -7,6 +7,10 @@
 "
 "======================================================================
 
+
+"----------------------------------------------------------------------
+" remove style
+"----------------------------------------------------------------------
 function! asclib#style#remove_style(what)
 	let need = ['underline', 'undercurl', 'reverse', 'inverse', 'italic', 'standout', 'bold']
 	let hid = 1
@@ -31,5 +35,24 @@ function! asclib#style#remove_style(what)
 		let hid += 1
 	endwhile
 endfunc
+
+
+"----------------------------------------------------------------------
+" disable italic
+"----------------------------------------------------------------------
+function! asclib#style#disable_italic()
+	let his = ''
+	redir => his
+	silent hi
+	redir END
+	let his = substitute(his, '\n\s\+', ' ', 'g')
+	for line in split(his, "\n")
+		if line !~ ' links to ' && line !~ ' cleared$'
+			let t = substitute(line, ' xxx ', ' ', '')
+			exe 'hi' substitute(t, 'italic', 'none', 'g')
+		endif
+	endfor
+endfunc
+
 
 
