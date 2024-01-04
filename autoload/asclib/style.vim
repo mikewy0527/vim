@@ -57,3 +57,11 @@ endfunc
 
 
 
+"----------------------------------------------------------------------
+" remove bgcolor
+"----------------------------------------------------------------------
+function! asclib#style#remove_bgcolor(group)
+	exe printf('hi %s ctermbg=NONE guibg=NONE', a:group)
+endfunc
+
+
