@@ -523,7 +523,7 @@ endif
 "----------------------------------------------------------------------
 " neovim system clipboard
 "----------------------------------------------------------------------
-if has('nvim') && (has('win32') || has('win64'))
+if (has('win32') || has('win64')) && (has('nvim') || (!has('gui_running')))
 	nnoremap <s-insert> "*P
 	vnoremap <s-insert> "-d"*P
 	inoremap <s-insert> <c-r><c-o>*
