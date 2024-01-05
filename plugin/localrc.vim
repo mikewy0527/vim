@@ -182,7 +182,7 @@ function! s:load_script(script, sandbox) abort
 		let done = 1
 	catch
 		let msg = v:throwpoint
-		let p1 = stridx(msg, 'source_rc[')
+		let p1 = stridx(msg, '_load_script[')
 		if p1 > 0
 			let p2 = stridx(msg, ']..', p1)
 			if p2 > 0
