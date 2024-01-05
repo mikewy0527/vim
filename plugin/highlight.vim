@@ -26,11 +26,13 @@ else
 endif
 
 
-" tune line numbers
-highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE 
-	\ gui=NONE guifg=#585858 guibg=NONE
+if 0
+	" tune line numbers
+	highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE 
+				\ gui=NONE guifg=#585858 guibg=NONE
 
-hi! SignColumn guibg=NONE ctermbg=NONE
+	hi! SignColumn guibg=NONE ctermbg=NONE
+endif
 
 if get(g:, 'quickui_color_pmenu', 0) == 0
 	if get(g:, 'quickui_color_theme', '') != 'vim'
