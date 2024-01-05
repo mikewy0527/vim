@@ -11,4 +11,5 @@
 call asclib#style#remove_bgcolor('SpecialKey')
 
 " unsilent echom "suckme"
+" abcde
 
