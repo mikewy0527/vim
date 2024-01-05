@@ -8,7 +8,7 @@
 "======================================================================
 
 
-call asclib#style#remove_bgcolor('SpecialKey')
+call cpatch#remove_background('SpecialKey')
 
 " unsilent echom "suckme"
 " abcde

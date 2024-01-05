@@ -6,3 +6,4 @@ call cpatch#remove_background('SignColumn')
 
 hi! SpecialKey term=bold ctermfg=238 guifg=#444444
 
+
