@@ -6,6 +6,8 @@
 " Created by skywind on 2024/01/05
 " Last Modified: 2024/01/05 14:48:57
 "
+" Homepage: https://github.com/skywind3000/vim-color-patch
+"
 " USAGE:
 " 
 " This script will load colorscheme patch when current color changed
