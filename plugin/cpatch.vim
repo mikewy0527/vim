@@ -1,7 +1,7 @@
 " vim: set ts=4 sw=4 tw=78 noet :"
 "======================================================================
 "
-" cpatch.vim - colorscheme patch
+" cpatch.vim - load colorscheme patch automatically
 "
 " Created by skywind on 2024/01/05
 " Last Modified: 2024/01/05 14:48:57
@@ -44,7 +44,7 @@ let g:cpatch_bang = get(g:, 'cpatch_bang', 0)
 "----------------------------------------------------------------------
 " load script
 "----------------------------------------------------------------------
-function! s:load_script(name, force)
+function! s:load_patch(name, force)
 	let names = ['__init__.vim', a:name .. '.vim']
 	let paths = []
 	let s:previous_color = get(s:, 'previous_color', '')
@@ -67,7 +67,7 @@ function! s:load_script(name, force)
 				exec printf('runtime%s %s', bang, fnameescape(rtpname))
 			catch
 				let msg = v:throwpoint
-				let p1 = stridx(msg, '_load_script[')
+				let p1 = stridx(msg, '_load_patch[')
 				if p1 > 0
 					let p2 = stridx(msg, ']..', p1)
 					if p2 > 0
@@ -97,7 +97,7 @@ function! s:load_script(name, force)
 						exec 'source ' .. fnameescape(t)
 					catch
 						let msg = v:throwpoint
-						let p1 = stridx(msg, '_load_script[')
+						let p1 = stridx(msg, '_load_patch[')
 						if p1 > 0
 							let p2 = stridx(msg, ']..', p1)
 							if p2 > 0
@@ -122,7 +122,7 @@ endfunc
 " load script
 "----------------------------------------------------------------------
 let g:colors_name = get(g:, 'colors_name', '')
-call s:load_script(g:colors_name, 0)
+call s:load_patch(g:colors_name, 0)
 
 
 "----------------------------------------------------------------------
@@ -130,8 +130,8 @@ call s:load_script(g:colors_name, 0)
 "----------------------------------------------------------------------
 augroup CPatchEventGroup
 	au!
-	au VimEnter * call s:load_script(g:colors_name, 0)
-	au ColorScheme * call s:load_script(expand('<amatch>'), 1)
+	au VimEnter * call s:load_patch(g:colors_name, 0)
+	au ColorScheme * call s:load_patch(expand('<amatch>'), 1)
 augroup END
 
 

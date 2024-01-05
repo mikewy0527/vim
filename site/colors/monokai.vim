@@ -9,7 +9,6 @@
 
 
 call asclib#style#remove_bgcolor('SpecialKey')
-" hi clear
 
-unsilent echom "suckme"
+" unsilent echom "suckme"
 
