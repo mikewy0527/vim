@@ -32,7 +32,7 @@
 "----------------------------------------------------------------------
 
 " color patch path: script will be searched here
-let g:cpatch_path = get(g:, 'cpatch_path', '')
+let g:cpatch_path = get(g:, 'cpatch_path', '~/.vim/cpatch')
 
 " color patch subdirectory in every runtime path
 let g:cpatch_name = get(g:, 'cpatch_name', '')
