@@ -207,6 +207,22 @@ function! s:CPatchEdit(mods, name) abort
 	else
 		exec mods . ' split ' . name
 	endif
+	if newfile
+		let content = []
+		let n = fnamemodify(name, ':t:r')
+		let u = 'https://github.com/skywind3000/vim-color-patch'
+		if name =~ '\.vim$'
+			let content += [printf('" edit patch for %s', n)]
+			let content += ['" ' .. u]
+		elseif name =~ '\.lua$'
+			let content += [printf('-- edit patch for %s', n)]
+			let content += ['-- ' .. u]
+		endif
+		if len(content) > 0 && line('$') == 1
+			call append(0, content)
+			exec 'set nomodified'
+		endif
+	endif
 	return 0
 endfunc
 
@@ -218,7 +234,11 @@ function! s:complete(ArgLead, CmdLine, CursorPos)
 	let candidate = []
 	let result = []
 	let items = {}
-	let part = glob(fnamemodify(g:cpatch_edit, ':p') .. '/*', 1)
+	let home = fnamemodify(g:cpatch_edit, ':p')
+	if home !~ '\v[\/\\]$'
+		let home = home .. '/'
+	endif
+	let part = glob(home .. '*', 1)
 	for n in split(part, "\n")
 		if n =~ '\.vim$'
 			let t = fnamemodify(n, ':t:r')
