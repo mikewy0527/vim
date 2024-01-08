@@ -142,12 +142,11 @@ call quickui#menu#install("&C/C++", [
 
 call quickui#menu#install('&Tools', [
 			\ ['Compare &History', 'call svnhelp#compare_ask_file()', ''],
-			\ ['Compa&re Buffer', 'call svnhelp#compare_ask_buffer()', ''],
+			\ ['&Compare Buffer', 'call svnhelp#compare_ask_buffer()', ''],
 			\ ['--',''],
 			\ ['List &Buffer', 'call quickui#tools#list_buffer("FileSwitch tabe")', ],
 			\ ['Display &Messages', 'call quickui#tools#display_messages()', ],
 			\ ['--',''],
-			\ ['&Color Patch', 'CPatchEdit'],
 			\ ["&DelimitMate %{get(b:, 'delimitMate_enabled', 0)? 'Disable':'Enable'}", 'DelimitMateSwitch'],
 			\ ['&Open URL', 'OpenURL', 'open current URL in browser'],
 			\ ['Read &URL', 'call menu#ReadUrl()', 'load content from url into current buffer'],
