@@ -12,6 +12,25 @@ endfunc
 " 
 "----------------------------------------------------------------------
 function! module#colors#generate_256()
+	let hid = 1
+	let output = []
+	while 1
+		let hln = synIDattr(hid, 'name')
+		if !hlexists(hln) 
+			break
+		endif
+		let link = synIDtrans(hid)
+		if hid == link
 
+		else
+			let linkname = synIDattr(link, 'name')
+			echo printf("hi link %s %s", hln, linkname)
+		endif
+		" let output += [hln]
+		" echo hln
+		let hid += 1
+	endwhile
+	echo hid
 endfunc
 
+call module#colors#generate_256()
