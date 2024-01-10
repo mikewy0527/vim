@@ -91,6 +91,8 @@
 - Terminal
 - Title
 - Todo
+- ToolbarButton
+- ToolbarLine
 - Type
 - Typedef
 - Underlined
