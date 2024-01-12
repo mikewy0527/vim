@@ -51,9 +51,9 @@ function! module#colors#dump_highlight(hid, gui2term) abort
 	if cterm != ''
 		let part += ['cterm=' .. cterm]
 	endif
-	let guifg = synIDattr(hid, 'fg', 'gui')
-	let guibg = synIDattr(hid, 'bg', 'gui')
-	let guisp = synIDattr(hid, 'sp', 'gui')
+	let guifg = synIDattr(hid, 'fg#', 'gui')
+	let guibg = synIDattr(hid, 'bg#', 'gui')
+	let guisp = synIDattr(hid, 'sp#', 'gui')
 	let ctermfg = synIDattr(hid, 'fg', 'cterm')
 	let ctermbg = synIDattr(hid, 'bg', 'cterm')
 	if a:gui2term
