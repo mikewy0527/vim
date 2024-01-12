@@ -1,5 +1,30 @@
 
 "----------------------------------------------------------------------
+" 
+"----------------------------------------------------------------------
+let s:default_fg = 'NONE'
+let s:default_bg = 'NONE'
+
+
+"----------------------------------------------------------------------
+" gui_to_term
+"----------------------------------------------------------------------
+function! s:gui_to_cterm(color) abort
+	let cc = a:color
+	if cc == ''
+		return 'NONE'
+	elseif cc == 'NONE'
+		return 'NONE'
+	elseif cc == 'fg'
+		return s:default_fg
+	elseif cc == 'bg'
+		return s:default_bg
+	endif
+	return quickui#palette#name2index(cc)
+endfunc
+
+
+"----------------------------------------------------------------------
 " reset comment
 "----------------------------------------------------------------------
 function! module#colors#reset_comment()
@@ -61,18 +86,10 @@ function! module#colors#dump_highlight(hid, gui2term) abort
 		let ctermbg = ''
 	endif
 	if ctermfg == ''
-		if guifg != ''
-			let ctermfg = quickui#palette#name2index(guifg)
-		else
-			let ctermfg = 'NONE'
-		endif
+		let ctermfg = s:gui_to_cterm(guifg)
 	endif
 	if ctermbg == ''
-		if guibg != ''
-			let ctermbg = quickui#palette#name2index(guibg)
-		else
-			let ctermbg = 'NONE'
-		endif
+		let ctermbg = s:gui_to_cterm(guibg)
 	endif
 	let guifg = (guifg == '')? 'NONE' : guifg
 	let guibg = (guibg == '')? 'NONE' : guibg
@@ -98,6 +115,15 @@ endfunc
 function! module#colors#list_highlight(gui2term)
 	let hid = 1
 	let output = []
+	let s:default_bg = 'NONE'
+	let s:default_fg = 'NONE'
+	if hlexists('Normal')
+		let xid = hlID('Normal')
+		let bg = synIDattr(xid, 'bg#', 'gui')
+		let fg = synIDattr(xid, 'fg#', 'gui')
+		let s:default_fg = quickui#palette#name2index(fg)
+		let s:default_bg = quickui#palette#name2index(bg)
+	endif
 	while 1
 		let hln = synIDattr(hid, 'name')
 		if !hlexists(hln) 
@@ -108,6 +134,19 @@ function! module#colors#list_highlight(gui2term)
 		let hid += 1
 	endwhile
 	return output
+endfunc
+
+
+
+"----------------------------------------------------------------------
+" convert_gui_color
+"----------------------------------------------------------------------
+function! module#colors#convert_gui_color()
+	let script = module#colors#list_highlight(1)
+	exec 'hi clear'
+	for n in script
+		exec n
+	endfor
 endfunc
 
 

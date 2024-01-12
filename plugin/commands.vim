@@ -509,4 +509,9 @@ command! -nargs=0 DisableItalic call asclib#style#remove_style('italic')
 
 
 
+"----------------------------------------------------------------------
+" use gui colors
+"----------------------------------------------------------------------
+command! -nargs=0 ConvertGUIColor call module#colors#convert_gui_color()
+
 
