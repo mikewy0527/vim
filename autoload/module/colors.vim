@@ -11,7 +11,7 @@ endfunc
 "----------------------------------------------------------------------
 " 
 "----------------------------------------------------------------------
-function! module#colors#generate_256()
+function! module#colors#gui2term()
 	let hid = 1
 	let output = []
 	while 1
@@ -33,4 +33,6 @@ function! module#colors#generate_256()
 	echo hid
 endfunc
 
-call module#colors#generate_256()
+call module#colors#gui2term()
+
+

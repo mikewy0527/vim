@@ -10,6 +10,7 @@
 #======================================================================
 from __future__ import print_function, unicode_literals
 import sys
+import math
 import os
 
 
@@ -116,13 +117,128 @@ def bestfit256(color):
 
 
 #----------------------------------------------------------------------
+# match256: approximate match
+#----------------------------------------------------------------------
+def match256(color):
+    def grey_number(x):
+        if x < 14: return 0
+        n = (x - 8) // 10
+        m = (x - 8) % 10
+        return (m >= 5) and (n + 1) or n
+    def grey_level(n):
+        if n == 0:
+            return 0
+        return 8 + (n * 10)
+    def grey_color(n):
+        if n == 0: return 16
+        elif n == 25:
+            return 231
+        return 231 + n
+    def rgb_number(x):
+        if x < 75:
+            return 0
+        n = (x - 55) // 40
+        m = (x - 55) % 40
+        if m < 20:
+            return n
+        return n + 1
+    def rgb_level(n):
+        if n == 0:
+            return 0
+        return 55 + (n * 40)
+    def rgb_color(x, y, z):
+        return 16 + x * 36 + y * 6 + z
+    def match_color(r, g, b):
+        gx = grey_number(r)
+        gy = grey_number(g)
+        gz = grey_number(b)
+        x = rgb_number(r)
+        y = rgb_number(g)
+        z = rgb_number(b)
+        if gx == gy and gy == gz:
+            dgr = grey_level(gx) - r
+            dgg = grey_level(gy) - g
+            dgb = grey_level(gz) - b
+            dgrey = dgr * dgr + dgg * dgg + dgb * dgb
+            dr = rgb_level(gx) - r
+            dg = rgb_level(gy) - g
+            db = rgb_level(gz) - b
+            drgb = dr * dr + dg * dg + db * db
+            if dgrey < drgb:
+                return grey_color(gx)
+            else:
+                return rgb_color(x, y, z)
+        return rgb_color(x, y, z)
+    r = (color >> 16) & 0xff
+    g = (color >>  8) & 0xff
+    b = (color >>  0) & 0xff
+    return match_color(r, g, b)
+
+
+#----------------------------------------------------------------------
+# color error 
+#----------------------------------------------------------------------
+def color_error(c1, c2):
+    r1 = (c1 >> 16) & 0xff
+    g1 = (c1 >>  8) & 0xff
+    b1 = (c1 >>  0) & 0xff
+    r2 = (c2 >> 16) & 0xff
+    g2 = (c2 >>  8) & 0xff
+    b2 = (c2 >>  0) & 0xff
+    dx = (r1 - r2) * 30
+    dy = (g1 - g2) * 59
+    dz = (b1 - b2) * 11
+    return dx * dx + dy * dy + dz * dz
+
+
+#----------------------------------------------------------------------
+# round 
+#----------------------------------------------------------------------
+def color_distance(c1, c2):
+    dd = color_error(c1, c2)
+    dist = math.isqrt(dd)
+    return dist // 100
+
+
+#----------------------------------------------------------------------
+# test1
+#----------------------------------------------------------------------
+
+#----------------------------------------------------------------------
 # testing suit
 #----------------------------------------------------------------------
 if __name__ == '__main__':
     def test1():
-        
+        print(bestfit256(0x112233))
+        print(match256(0x112233))
         return 0
-    test1()
+    def test2():
+        for index in range(256):
+            c1 = PALETTE[index]
+            m1 = bestfit256(c1)
+            m1 = match256(c1)
+            # print(m1)
+            c2 = PALETTE[m1]
+            print(index, m1, color_distance(c1, c2))
+        return 0
+    def test3():
+        dists = {}
+        for cc in range(1 << 15):
+            r = ((cc >> 10) & 31) << 3
+            g = ((cc >> 5) & 31) << 3
+            b = ((cc >> 0) & 31) << 3
+            m1 = bestfit256((r << 16) | (g << 8) | b)
+            m2 = match256((r << 16) | (g << 8) | b)
+            c1 = PALETTE[m1]
+            c2 = PALETTE[m2]
+            error = color_distance(c1, c2)
+            dists[error] = dists.get(error, 0) + 1
+        keys = list(dists.keys())
+        keys.sort()
+        for key in keys:
+            print(key, dists[key])
+        return 0
+    test3()
 
 
 
