@@ -127,6 +127,15 @@ function! s:load_patch(name, force)
 			endif
 		endfor
 	endfor
+	if exists('g:cpatch_post')
+		if type(g:cpatch_post) == type('')
+			exec g:cpatch_post
+		elseif type(g:cpatch_post) == type([])
+			for script in g:cpatch_post
+				exec script
+			endfor
+		endif
+	endif
 	return 0
 endfunc
 
