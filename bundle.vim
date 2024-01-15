@@ -538,7 +538,7 @@ if has_key(s:enabled, 'colors')
 	Plug 'cocopon/iceberg.vim'
 	Plug 'mcchrish/zenbones.nvim'
 	Plug 'rafi/awesome-vim-colorschemes'
-	Plug 'flazz/vim-colorschemes'
+	Plug 'skywind3000/vim-colorschemes'
 	Plug 'jaredgorski/SpaceCamp'
 	Plug 'mswift42/vim-themes'
 	IncScript site/bundle/colors.vim
