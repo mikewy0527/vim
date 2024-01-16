@@ -44,10 +44,10 @@ hi Search            cterm=NONE         ctermfg=NONE    ctermbg=254
 hi SignColumn        cterm=NONE         ctermfg=251     ctermbg=NONE
 hi Special           cterm=NONE         ctermfg=18      ctermbg=NONE
 hi SpecialKey        cterm=NONE         ctermfg=251     ctermbg=NONE
-hi SpellBad          cterm=undercurl    ctermfg=NONE    ctermbg=224     termguicolors=NONE 
-hi SpellCap          cterm=undercurl    ctermfg=NONE    ctermbg=NONE    termguicolors=NONE 
-hi SpellLocal        cterm=undercurl    ctermfg=NONE    ctermbg=194     termguicolors=NONE 
-hi SpellRare         cterm=undercurl    ctermfg=NONE    ctermbg=254     termguicolors=NONE 
+hi SpellBad          cterm=undercurl    ctermfg=NONE    ctermbg=224     
+hi SpellCap          cterm=undercurl    ctermfg=NONE    ctermbg=NONE    
+hi SpellLocal        cterm=undercurl    ctermfg=NONE    ctermbg=194     
+hi SpellRare         cterm=undercurl    ctermfg=NONE    ctermbg=254     
 hi Statement         cterm=NONE         ctermfg=18      ctermbg=NONE
 hi StatusLine        cterm=NONE         ctermfg=235     ctermbg=254
 hi StatusLineNC      cterm=NONE         ctermfg=247     ctermbg=254
@@ -67,4 +67,4 @@ hi WarningMsg        cterm=NONE         ctermfg=NONE    ctermbg=224
 hi WildMenu          cterm=NONE         ctermfg=NONE    ctermbg=252
 hi lCursor           cterm=NONE         ctermfg=NONE    ctermbg=NONE
 hi Identifier        cterm=NONE         ctermfg=NONE    ctermbg=NONE
-hi PreProc           cterm=NONE         ctermfg=NONE    ctermbg=  
+hi PreProc           cterm=NONE         ctermfg=NONE    ctermbg=NONE

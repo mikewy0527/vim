@@ -18,7 +18,7 @@ if exists("syntax_on")
   syntax reset
 endif
 
-let colors_name = "paradox"
+let g:colors_name = "paradox"
 
 " Function: s:GetValue(var, ...) {{{2
 "    Looks up the value of a variable in this order (by default):
