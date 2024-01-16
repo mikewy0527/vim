@@ -8,7 +8,8 @@
 "======================================================================
 
 
-call cpatch#remove_background('SpecialKey')
+" remove background
+hi SpecialKey guibg=NONE ctermbg=NONE
 
 " unsilent echom "suckme"
 " abcde
