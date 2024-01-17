@@ -12,7 +12,7 @@
 " 
 " This script will load colorscheme patch when current color changed
 " 
-"   let g:cpatch_path = '~/.vim/cpatch'
+"   let g:cpatch_path = '~/.vim/color/patch'
 "
 " After setting "g:cpatch_path", if you change the current color:
 "   
@@ -20,10 +20,10 @@
 "
 " This script will try to load the following scripts in order:
 "
-"   1) "~/.vim/cpatch/__init__.vim"
-"   2) "~/.vim/cpatch/__init__.lua"
-"   3) "~/.vim/cpatch/{NAME}.vim"
-"   4) "~/.vim/cpatch/{NAME}.lua"
+"   1) "~/.vim/color/patch/__init__.vim"
+"   2) "~/.vim/color/patch/__init__.lua"
+"   3) "~/.vim/color/patch/{NAME}.vim"
+"   4) "~/.vim/color/patch/{NAME}.lua"
 "
 " The first script "__init__.vim" in the "g:cpatch_path" folder will 
 " be loaded for every colorscheme
@@ -36,7 +36,7 @@
 "----------------------------------------------------------------------
 
 " color patch path: script will be searched here
-let g:cpatch_path = get(g:, 'cpatch_path', '~/.vim/cpatch')
+let g:cpatch_path = get(g:, 'cpatch_path', '~/.vim/color/patch')
 
 " color patch subdirectory in every runtime path
 let g:cpatch_name = get(g:, 'cpatch_name', '')
