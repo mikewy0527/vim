@@ -20,6 +20,7 @@ let g:Lf_PopupPreviewPosition='bottom'
 let g:Lf_PreviewInPopup = 0
 let g:Lf_QuickSelect = 1
 let g:Lf_QuickSelectAction = 't'
+let g:Lf_GtagsAutoUpdate = 0
 
 noremap <m-g> :Leaderf --nowrap tasks<cr>
 inoremap <m-g> <esc>:Leaderf --nowrap tasks<cr>
