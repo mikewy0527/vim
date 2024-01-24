@@ -116,6 +116,22 @@ let g:navigator.o = {
 			\ 'w' : [':VimwikiTabIndex', 'open-wiki'],
 			\ }
 
+
+"----------------------------------------------------------------------
+" linux
+"----------------------------------------------------------------------
+if has('win32') || has('win64')
+	let g:navigator.l = {
+				\ 'name': '+linux-wsl',
+				\ 'b': [':AsyncTask wsl-project-build', 'wsl-project-build'],
+				\ 'i': [':AsyncTask wsl-project-init', 'wsl-project-init'],
+				\ 'r': [':AsyncTask wsl-project-run', 'wsl-project-run'],
+				\ 't': [':AsyncTask wsl-project-test', 'wsl-project-test'],
+				\ 'g': [':AsyncTask wsl-file-build', 'wsl-file-build'],
+				\ 'f': [':AsyncTask wsl-file-run', 'wsl-file-run'],
+				\ }
+elseif 1
+endif
 	
 	
 "----------------------------------------------------------------------
