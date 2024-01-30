@@ -3,7 +3,7 @@
 #  vim: set ts=4 sw=4 tw=0 et :
 #======================================================================
 #
-# emake.py - emake version 3.6.19
+# emake.py - emake version 3.6.20
 #
 # history of this file:
 # 2009.08.20   skywind   create this file
@@ -51,8 +51,8 @@ else:
 #----------------------------------------------------------------------
 # version info
 #----------------------------------------------------------------------
-EMAKE_VERSION = '3.6.19'
-EMAKE_DATE = 'Dec.10 2023'
+EMAKE_VERSION = '3.6.20'
+EMAKE_DATE = 'Jan.30 2024'
 
 
 #----------------------------------------------------------------------
@@ -2408,6 +2408,7 @@ class iparser (object):
             if self._process(self.makefile, lineno, text) != 0:
                 retval = -1
                 break
+        self._process_int()
         os.chdir(savedir)
         self.push_src(self.makefile, '')
         return retval
@@ -2429,6 +2430,7 @@ class iparser (object):
                 retval = -1
                 break
             lineno += 1
+        self._process_int()
         os.chdir(savedir)
         return retval
     
@@ -2450,6 +2452,19 @@ class iparser (object):
                         mainfile, lineno)
                 hr = 1
         return hr
+
+    # 处理 --int=xxx
+    def _process_int (self):
+        if self.int != '':
+            return 0
+        if 'int' not in CFG:
+            return 0
+        t = CFG['int'].strip()
+        if not t:
+            return 0
+        text = 'int: ' + CFG['int']
+        self._process('<inline>', 0, text)
+        return 0
 
     # 处理源文件
     def _process_src (self, textline, fname = '', lineno = -1):
@@ -2542,7 +2557,7 @@ class iparser (object):
             return 0
         if command in ('int', 'intermediate'):
             body = body.strip('\r\n\t ')
-            if body in ('<auto>', '$(auto)', '!', '?', '*'):
+            if body in ('<auto>', '$(auto)', '!', '?', '*', '+'):
                 dirname = self.config.target
                 if self.profile:
                     dirname += '-' + self.profile
@@ -3559,6 +3574,9 @@ def main(argv = None):
 
     if 'print' in options:
         printmode = int_safe(options['print'], 3)
+
+    if 'int' in options:
+        CFG['int'] = options['int']
 
     printenv = os.environ.get('EMAKE_PRINT', '')
 
