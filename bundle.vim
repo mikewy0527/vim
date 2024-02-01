@@ -541,6 +541,9 @@ if has_key(s:enabled, 'colors')
 	Plug 'skywind3000/vim-colorschemes'
 	Plug 'jaredgorski/SpaceCamp'
 	Plug 'mswift42/vim-themes'
+	if !has('nvim')
+		Plug 'skywind3000/colors-from-neovim.vim'
+	endif
 	IncScript site/bundle/colors.vim
 endif
 
