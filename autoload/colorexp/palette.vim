@@ -278,7 +278,7 @@ let g:colorexp#palette#colors = [
 "----------------------------------------------------------------------
 let g:colorexp#palette#rgb = []
 let g:colorexp#palette#name = {}
-let g:colorexp#palette#number = get(g:, 'colorexp_color_num', 256)
+let g:colorexp#palette#number = get(g:, 'color_palette_number', 256)
 
 let s:palette = []
 let s:matched = {}

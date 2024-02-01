@@ -101,13 +101,9 @@ endfunc
 
 
 "----------------------------------------------------------------------
-" convert to term
+" 
 "----------------------------------------------------------------------
-function! colorexp#colors#list_highlight(gui2term)
-	let hid = 1
-	let output = []
-	let s:default_bg = 'NONE'
-	let s:default_fg = 'NONE'
+function! colorexp#colors#update_normal()
 	if hlexists('Normal')
 		let xid = hlID('Normal')
 		let bg = synIDattr(xid, 'bg#', 'gui')
@@ -115,6 +111,18 @@ function! colorexp#colors#list_highlight(gui2term)
 		let s:default_fg = colorexp#palette#name2index(fg)
 		let s:default_bg = colorexp#palette#name2index(bg)
 	endif
+endfunc
+
+
+"----------------------------------------------------------------------
+" convert to term
+"----------------------------------------------------------------------
+function! colorexp#colors#list_highlight(gui2term)
+	let hid = 1
+	let output = []
+	let s:default_bg = 'NONE'
+	let s:default_fg = 'NONE'
+	call colorexp#colors#update_normal()
 	while 1
 		let hln = synIDattr(hid, 'name')
 		if !hlexists(hln) 
