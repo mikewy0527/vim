@@ -12,6 +12,7 @@ return {
 		{'EdenEast/nightfox.nvim', lazy = true},
 		{'olivercederborg/poimandres.nvim', lazy = true},
 		{'ribru17/bamboo.nvim', lazy = true},
+		{'rose-pine/neovim', lazy = true},
 
 		"sainnhe/sonokai",
 		'sainnhe/everforest',
