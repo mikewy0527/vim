@@ -1,6 +1,6 @@
 "======================================================================
 "
-" basic.vim - 
+" names.vim - 
 "
 " Created by skywind on 2024/01/31
 " Last Modified: 2024/01/31 16:11:21
@@ -39,7 +39,7 @@ let s:native_names = [
 "----------------------------------------------------------------------
 " extend_link
 "----------------------------------------------------------------------
-function! colorexp#basic#extend_link(list) abort
+function! colorexp#names#extend_link(list) abort
 	let list = deepcopy(a:list)
 	let dict = {}
 	for name in list
@@ -77,7 +77,7 @@ endfunc
 "----------------------------------------------------------------------
 " collect required names
 "----------------------------------------------------------------------
-function! colorexp#basic#collect() abort
+function! colorexp#names#collect() abort
 	let output = []
 	if get(g:, 'color_export_all', 0)
 		let hid = 1
@@ -98,7 +98,7 @@ function! colorexp#basic#collect() abort
 				let extra = split(g:color_export_extra, ',')
 			endif
 		endif
-		let output = colorexp#basic#extend_link(s:native_names + extra)
+		let output = colorexp#names#extend_link(s:native_names + extra)
 	endif
 	return output
 endfunc
@@ -107,20 +107,20 @@ endfunc
 "----------------------------------------------------------------------
 " 
 "----------------------------------------------------------------------
-function! colorexp#basic#test1() abort
+function! colorexp#names#test1() abort
 	let list = ['CursorLine', 'CursorLineSign', 'CursorLineFold', 'QuickFixLine']
-	let newlist = colorexp#basic#extend_link(list)
+	let newlist = colorexp#names#extend_link(list)
 	for name in newlist
 		echo name
 	endfor
 endfunc
 
-function! colorexp#basic#test2()
+function! colorexp#names#test2()
 	let list1 = s:native_names
-	let list2 = colorexp#basic#extend_link(list1)
+	let list2 = colorexp#names#extend_link(list1)
 	echo printf("%d %d", len(list1), len(list2))
 endfunc
 
-" call colorexp#basic#test1()
+" call colorexp#names#test1()
 
 
