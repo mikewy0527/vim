@@ -1,7 +1,7 @@
 set background=dark
 hi clear
 
-let g:colors_name = "borland"
+let g:colors_name = "borland256"
 
 hi Added gui=NONE term=NONE cterm=NONE guifg=LimeGreen guibg=NONE ctermfg=77 ctermbg=NONE
 hi link Boolean NormalTransparent
