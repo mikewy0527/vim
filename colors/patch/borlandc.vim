@@ -12,3 +12,9 @@ hi StatusLineNC ctermbg=Gray guibg=Gray
 hi VertSplit ctermbg=Gray guibg=Gray
 hi TabLineFill ctermbg=Gray guibg=Gray
 
+hi! Number ctermfg=6 guifg=#008080
+hi! Keyword ctermfg=15 guifg=White
+hi! Statement ctermfg=15 guifg=White
+hi! Identifier ctermfg=Yellow guifg=Yellow
+
+
