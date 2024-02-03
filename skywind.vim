@@ -68,10 +68,14 @@ endif
 
 
 "----------------------------------------------------------------------
-" settings
+" term compatible
 "----------------------------------------------------------------------
-" fixed: vim will enter replace mode in wsl with cmd window
-if asclib#platform#has_wsl()
+if asclib#platform#has('win')
+	if has('nvim') == 0 && has('gui_running') == 0
+		exec 'set t_ut='
+	endif
+elseif asclib#platform#has_wsl()
+	" fixed: vim will enter replace mode in wsl with cmd window
 	exec 'set t_u7='
 endif
 
@@ -98,11 +102,12 @@ endif
 
 call asclib#setting#update(s:settings)
 
+
+"----------------------------------------------------------------------
+" system
+"----------------------------------------------------------------------
 if has('win32') || has('win64') || has('win16') || has('win95')
 	call asclib#setting#update(s:settings_win)
-	if has('gui_running')
-
-	endif
 endif
 
 
