@@ -72,6 +72,7 @@ endif
 "----------------------------------------------------------------------
 if asclib#platform#has('win')
 	if has('nvim') == 0 && has('gui_running') == 0
+		" fix: https://github.com/vim/vim/issues/13956
 		exec 'set t_ut='
 	endif
 elseif asclib#platform#has_wsl()
