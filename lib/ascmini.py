@@ -6,7 +6,7 @@
 # ascmini.py - mini library
 #
 # Created by skywind on 2017/03/24
-# Version: 9, Last Modified: 2023/05/01 21:04
+# Version: 10, Last Modified: 2024/02/10 10:47
 #
 #======================================================================
 from __future__ import print_function, unicode_literals
@@ -57,7 +57,7 @@ def execute(args, shell = False, capture = False):
             text = ''.join([ replace.get(ch, ch) for ch in n ])
             parameters.append(text)
         else:
-            if (' ' in n) or ('\t' in n) or ('"' in n): 
+            if (' ' in n) or ('\t' in n) or ('"' in n):   # noqa
                 parameters.append('"%s"'%(n.replace('"', ' ')))
             else:
                 parameters.append(n)
@@ -106,7 +106,7 @@ def call(args, input_data = None, combine = False):
             text = ''.join([ replace.get(ch, ch) for ch in n ])
             parameters.append(text)
         else:
-            if (' ' in n) or ('\t' in n) or ('"' in n): 
+            if (' ' in n) or ('\t' in n) or ('"' in n):   # noqa
                 parameters.append('"%s"'%(n.replace('"', ' ')))
             else:
                 parameters.append(n)
@@ -165,7 +165,7 @@ def redirect(args, reader, combine = True):
             text = ''.join([ replace.get(ch, ch) for ch in n ])
             parameters.append(text)
         else:
-            if (' ' in n) or ('\t' in n) or ('"' in n): 
+            if (' ' in n) or ('\t' in n) or ('"' in n):     # noqa
                 parameters.append('"%s"'%(n.replace('"', ' ')))
             else:
                 parameters.append(n)
@@ -488,7 +488,7 @@ class PosixKit (object):
             return None
         for line in text.split('\n'):
             line = line.strip('\r\n\t ')
-            if not line:
+            if not line:   # noqa
                 continue
             elif line[:1] in ('#', ';'):
                 continue
@@ -560,11 +560,15 @@ def save_config(path, obj):
 #----------------------------------------------------------------------
 # http_request
 #----------------------------------------------------------------------
-def http_request(url, timeout = 10, data = None, post = False, head = None):
+def http_request(url, data = None, post = False, header = None, opts = None):
     headers = []
     import urllib
     import ssl
     status = -1
+    if not opts:
+        opts = {}
+    timeout = opts.get('timeout', 10)
+    proxy = opts.get('proxy', None)
     if sys.version_info[0] >= 3:
         import urllib.parse
         import urllib.request
@@ -583,11 +587,17 @@ def http_request(url, timeout = 10, data = None, post = False, head = None):
             if not isinstance(data, bytes):
                 data = data.encode('utf-8', 'ignore')
             req = urllib.request.Request(url, data)
-        if head:
-            for k, v in head.items():
+        if header:
+            for k, v in header.items():
                 req.add_header(k, v)
+        handlers = []
+        if proxy:
+            p = {'http': proxy, 'https': proxy}
+            proxy_handler = urllib.request.ProxyHandler(p)
+            handlers.append(proxy_handler)
         try:
-            res = urllib.request.urlopen(req, timeout = timeout)
+            opener = urllib.request.build_opener(*handlers)
+            res = opener.open(req, timeout = timeout)
             headers = res.getheaders()
         except urllib.error.HTTPError as e:
             return e.code, str(e.message), None
@@ -596,9 +606,10 @@ def http_request(url, timeout = 10, data = None, post = False, head = None):
         except socket.timeout:
             return -2, 'timeout', None
         except ssl.SSLError:
-            return -2, 'timeout', None
+            return -2, 'SSLError', None
         content = res.read()
         status = res.getcode()
+        res.close()
     else:
         import urllib2
         if data is not None:
@@ -622,8 +633,8 @@ def http_request(url, timeout = 10, data = None, post = False, head = None):
                 req = urllib2.Request(url + mark + data)
         else:
             req = urllib2.Request(url, data is not None and data or '')
-        if head:
-            for k, v in head.items():
+        if header:
+            for k, v in header.items():
                 req.add_header(k, v)
         try:
             res = urllib2.urlopen(req, timeout = timeout)
@@ -645,7 +656,7 @@ def http_request(url, timeout = 10, data = None, post = False, head = None):
         except socket.timeout:
             return -2, 'timeout', None
         except ssl.SSLError:
-            return -2, 'timeout', None
+            return -2, 'SSLError', None
     return status, content, headers
 
 
@@ -653,11 +664,12 @@ def http_request(url, timeout = 10, data = None, post = False, head = None):
 # request with retry
 #----------------------------------------------------------------------
 def request_safe(url, timeout = 10, retry = 3, verbose = True, delay = 1):
+    opts = {'timeout': timeout}
     for i in range(retry):
         if verbose:
             print('%s: %s'%(i == 0 and 'request' or 'retry', url))
         time.sleep(delay)
-        code, content, _ = http_request(url, timeout)
+        code, content, _ = http_request(url, opts = opts)
         if code == 200:
             return content
     return None
@@ -666,12 +678,20 @@ def request_safe(url, timeout = 10, retry = 3, verbose = True, delay = 1):
 #----------------------------------------------------------------------
 # request json rpc
 #----------------------------------------------------------------------
-def json_rpc_post(url, message, timeout = 10):
+def json_rpc_post(url, message, timeout = 10, proxy = None, header = None):
     import json
     data = json.dumps(message)
-    header = [('Content-Type', 'text/plain; charset=utf-8')]
-    code, content, _ = http_request(url, timeout, data, True, header)
+    headers = [('Content-Type', 'application/json')]
+    opts = {'timeout': timeout}
+    if proxy:
+        opts['proxy'] = proxy
+    if header:
+        for key in header:
+            headers[key] = header[key]
+    code, content, _ = http_request(url, data, True, headers, opts)
     if code == 200:
+        if not isinstance(content, str):
+            content = content.decode('utf-8', errors = 'ignore')
         content = json.loads(content)
     return code, content
 

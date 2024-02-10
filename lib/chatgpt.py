@@ -35,7 +35,7 @@ def chatgpt_request(messages, apikey, opts):
     opener = urllib.request.build_opener(*handlers)
     req = urllib.request.Request(url, data = json.dumps(d).encode('utf-8'))
     req.add_header("Content-Type", "application/json")
-    req.add_header("Accept", "text/event-stream")
+    # req.add_header("Accept", "text/event-stream")
     req.add_header("Authorization", "Bearer %s"%apikey)
     response = opener.open(req, timeout = timeout)
     bio = io.BytesIO()
@@ -55,7 +55,7 @@ def chatgpt_request(messages, apikey, opts):
 #----------------------------------------------------------------------
 # 
 #----------------------------------------------------------------------
-def http_request(url, data = None, header = {}, proxy = None, timeout = 15):
+def http_request(url, data = None, header = None, proxy = None, timeout = 15):
     import urllib
     import urllib.request
     import json
