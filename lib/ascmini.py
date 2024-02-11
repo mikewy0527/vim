@@ -6,7 +6,7 @@
 # ascmini.py - mini library
 #
 # Created by skywind on 2017/03/24
-# Version: 11, Last Modified: 2024/02/11 10:30
+# Version: 12, Last Modified: 2024/02/11 10:58
 #
 #======================================================================
 from __future__ import print_function, unicode_literals
@@ -570,9 +570,7 @@ def http_request(url, data = None, post = False, header = None, opts = None):
     timeout = opts.get('timeout', 10)
     proxy = opts.get('proxy', None)
     if sys.version_info[0] >= 3:
-        import urllib.parse
-        import urllib.request
-        import urllib.error
+        import urllib.parse, urllib.request, urllib.error
         if data is not None:
             if isinstance(data, dict):
                 data = urllib.parse.urlencode(data)
@@ -585,7 +583,7 @@ def http_request(url, data = None, post = False, header = None, opts = None):
         else:
             data = data is not None and data or ''
             if not isinstance(data, bytes):
-                data = data.encode('utf-8', 'ignore')
+                data = data.encode('utf-8', 'ignore')   # noqa
             req = urllib.request.Request(url, data)
         if header:
             for k, v in header.items():

@@ -14,7 +14,7 @@ import os
 
 
 #----------------------------------------------------------------------
-# 
+# request chatgpt
 #----------------------------------------------------------------------
 def chatgpt_request(messages, apikey, opts):
     import urllib, urllib.request, json
@@ -64,6 +64,60 @@ def http_request(url, data = None, header = None, proxy = None, timeout = 15):
 
 
 #----------------------------------------------------------------------
+# load ini
+#----------------------------------------------------------------------
+def load_ini(filename, encoding = None):
+    if '~' in filename:
+        filename = os.path.expanduser(filename)
+    content = open(filename, 'r', encoding = encoding).read()
+    config = {}
+    for line in content.split('\n'):
+        line = line.strip('\r\n\t ')
+        if not line:   # noqa
+            continue
+        elif line[:1] in ('#', ';'):
+            continue
+        elif line.startswith('['):
+            if line.endswith(']'):
+                sect = line[1:-1].strip('\r\n\t ')
+                if sect not in config:
+                    config[sect] = {}
+        else:
+            pos = line.find('=')
+            if pos >= 0:
+                key = line[:pos].rstrip('\r\n\t ')
+                val = line[pos + 1:].lstrip('\r\n\t ')
+                if sect not in config:
+                    config[sect] = {}
+                config[sect][key] = val
+    return config
+
+
+#----------------------------------------------------------------------
+# lazy request
+#----------------------------------------------------------------------
+LAZY_OPTION = None
+LAZY_CONFIG = '~/.config/openai/chatgpt.ini'
+
+def chatgpt_lazy(messages):
+    global LAZY_OPTION
+    if LAZY_OPTION is None:
+        LAZY_OPTION = load_ini(LAZY_CONFIG)
+        if 'default' not in LAZY_OPTION:
+            LAZY_OPTION['default'] = {}
+    option = LAZY_OPTION['default']
+    apikey = option.get('apikey', '').strip('\r\n\t ')
+    proxy = option.get('proxy', '').strip('\r\n\t ')
+    if not apikey:
+        raise KeyError('apikey is not provided')
+    opts = {}
+    if proxy:
+        opts['proxy'] = proxy
+    return chatgpt_request(messages, apikey, opts)
+
+
+
+#----------------------------------------------------------------------
 # testing suit
 #----------------------------------------------------------------------
 if __name__ == '__main__':
@@ -74,7 +128,7 @@ if __name__ == '__main__':
     def test1():
         p = 'socks5h://127.0.0.1:1080'
         u = 'https://www.google.com'
-        t = http_request(u, proxy = None)
+        t = http_request(u, proxy = p)
         print(t)
         return 0
     def test2():
@@ -86,5 +140,13 @@ if __name__ == '__main__':
         t = chatgpt_request(messages, apikey, opts)
         print(t)
         return 0
-    test2()
+    def test3():
+        messages = []
+        query = 'hello'
+        messages.append({"role": "user", "content": query})
+        t = chatgpt_lazy(messages)
+        print(t)
+        return 0
+    test3()
+
 
