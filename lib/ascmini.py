@@ -6,7 +6,7 @@
 # ascmini.py - mini library
 #
 # Created by skywind on 2017/03/24
-# Version: 12, Last Modified: 2024/02/11 10:58
+# Version: 13, Last Modified: 2024/02/11 16:28
 #
 #======================================================================
 from __future__ import print_function, unicode_literals
@@ -57,7 +57,8 @@ def execute(args, shell = False, capture = False):
             text = ''.join([ replace.get(ch, ch) for ch in n ])
             parameters.append(text)
         else:
-            if (' ' in n) or ('\t' in n) or ('"' in n):   # noqa
+            # pylint: disable-next=else-if-used
+            if (' ' in n) or ('\t' in n) or ('"' in n): 
                 parameters.append('"%s"'%(n.replace('"', ' ')))
             else:
                 parameters.append(n)
@@ -106,6 +107,7 @@ def call(args, input_data = None, combine = False):
             text = ''.join([ replace.get(ch, ch) for ch in n ])
             parameters.append(text)
         else:
+            # pylint: disable-next=else-if-used
             if (' ' in n) or ('\t' in n) or ('"' in n):   # noqa
                 parameters.append('"%s"'%(n.replace('"', ' ')))
             else:
@@ -165,6 +167,7 @@ def redirect(args, reader, combine = True):
             text = ''.join([ replace.get(ch, ch) for ch in n ])
             parameters.append(text)
         else:
+            # pylint: disable-next=else-if-used
             if (' ' in n) or ('\t' in n) or ('"' in n):     # noqa
                 parameters.append('"%s"'%(n.replace('"', ' ')))
             else:
@@ -399,17 +402,19 @@ class PosixKit (object):
         import fnmatch
         matched = []
         root = os.path.normpath(os.path.abspath(root))
-        names = None
+        names = None   # noqa
         if not recursive:
             for fn in os.listdir(root):
                 path = os.path.join(root, fn)
                 if (mode & 3) == 0:
                     matched.append(path)
                 else:
+                    # pylint: disable-next=else-if-used
                     if os.path.isdir(path):
                         if (mode & 1) == 0:
                             matched.append(path)
                     else:
+                        # pylint: disable-next=else-if-used
                         if (mode & 2) == 0:
                             matched.append(path)
         else:
@@ -488,6 +493,7 @@ class PosixKit (object):
             return None
         for line in text.split('\n'):
             line = line.strip('\r\n\t ')
+            # pylint: disable-next=no-else-continue
             if not line:   # noqa
                 continue
             elif line[:1] in ('#', ';'):
@@ -583,6 +589,7 @@ def http_request(url, data = None, post = False, header = None, opts = None):
         else:
             data = data is not None and data or ''
             if not isinstance(data, bytes):
+                # pylint: disable=redefined-variable-type
                 data = data.encode('utf-8', 'ignore')   # noqa
             req = urllib.request.Request(url, data)
         if header:
@@ -744,6 +751,7 @@ def parse_conf_text(text, default = None):
         return default
     elif isinstance(default, float):
         try:
+            # pylint: disable-next=redefined-variable-type
             value = float(text)
             return value
         except:
@@ -805,7 +813,7 @@ class ConfigReader (object):
         else:
             codec = sys.getdefaultencoding()
             text = None
-            for name in [codec, 'gbk', 'utf-8']:
+            for name in (codec, 'gbk', 'utf-8'):
                 try:
                     text = content.decode(name)
                     break
@@ -861,7 +869,7 @@ def csv_load (filename, encoding = None):
     else:
         codec = sys.getdefaultencoding()
         text = None
-        for name in [codec, 'utf-8', 'gbk', 'ascii', 'latin1']:
+        for name in (codec, 'utf-8', 'gbk', 'ascii', 'latin1'):
             try:
                 text = content.decode(name)
                 break
@@ -1049,7 +1057,8 @@ class WebKit (object):
             import urllib
             if plus:
                 return urllib.quote_plus(text)
-            return urlparse.quote(text)
+            # pylint: disable-next=undefined-variable
+            return urlparse.quote(text)  # noqa
         import urllib.parse
         if plus:
             return urllib.parse.quote_plus(text)
@@ -1144,6 +1153,7 @@ class LazyRequests (object):
             if data is not None:
                 argv['params'] = data
         else:
+            # pylint: disable-next=else-if-used
             if data is not None:
                 argv['data'] = data
         try:
@@ -1303,6 +1313,7 @@ class ShellUtils (object):
             if i % 16 == 0: content += '%08X  '%i
             content += '%02X'%ascii
             content += ((i & 15) == 7) and '-' or ' '
+            # pylint: disable-next=chained-comparison
             if (ascii >= 0x20) and (ascii < 0x7f): charset += chr(ascii)
             else: charset += '.'
             if (i % 16 == 15): 
@@ -1435,8 +1446,8 @@ class OutputHandler (object):
             self.content = self.content[pos + 1:]
         self.lock.release()
         return True
-    def writelines(self, l):
-        map(self.write, l)
+    def writelines(self, lines):
+        map(self.write, lines)
 
 
 #----------------------------------------------------------------------
