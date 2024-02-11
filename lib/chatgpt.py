@@ -17,10 +17,7 @@ import os
 # 
 #----------------------------------------------------------------------
 def chatgpt_request(messages, apikey, opts):
-    import urllib
-    import urllib.request
-    import json
-    import io
+    import urllib, urllib.request, json
     url = opts.get('url', "https://api.openai.com/v1/chat/completions")
     proxy = opts.get('proxy', None)
     timeout = opts.get('timeout', 20000)
@@ -35,19 +32,11 @@ def chatgpt_request(messages, apikey, opts):
     opener = urllib.request.build_opener(*handlers)
     req = urllib.request.Request(url, data = json.dumps(d).encode('utf-8'))
     req.add_header("Content-Type", "application/json")
-    # req.add_header("Accept", "text/event-stream")
     req.add_header("Authorization", "Bearer %s"%apikey)
+    # req.add_header("Accept", "text/event-stream")
     response = opener.open(req, timeout = timeout)
-    bio = io.BytesIO()
-    eof = False
-    while not eof:
-        r = response.read(4096)
-        if not r:
-            eof = True
-            break
-        bio.write(r)
+    data = response.read()
     response.close()
-    data = bio.getvalue()
     text = data.decode('utf-8', errors = 'ignore')
     return json.loads(text)
 

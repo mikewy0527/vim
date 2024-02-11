@@ -6,7 +6,7 @@
 # ascmini.py - mini library
 #
 # Created by skywind on 2017/03/24
-# Version: 10, Last Modified: 2024/02/10 10:47
+# Version: 11, Last Modified: 2024/02/11 10:30
 #
 #======================================================================
 from __future__ import print_function, unicode_literals
@@ -1752,6 +1752,34 @@ def fzf_execute(input, args = None, fzf = None):
     if code != 0:
         return None
     return output
+
+
+#----------------------------------------------------------------------
+# chatgpt request
+#----------------------------------------------------------------------
+def chatgpt_request(messages, apikey, opts):
+    import urllib, urllib.request, json
+    url = opts.get('url', "https://api.openai.com/v1/chat/completions")
+    proxy = opts.get('proxy', None)
+    timeout = opts.get('timeout', 20000)
+    d = {'messages': messages}
+    d['model'] = opts.get('model', 'gpt-3.5-turbo')
+    d['stream'] = opts.get('stream', False)
+    handlers = []
+    if proxy:
+        p = {'http': proxy, 'https': proxy}
+        proxy_handler = urllib.request.ProxyHandler(p)
+        handlers.append(proxy_handler)
+    opener = urllib.request.build_opener(*handlers)
+    req = urllib.request.Request(url, data = json.dumps(d).encode('utf-8'))
+    req.add_header("Content-Type", "application/json")
+    req.add_header("Authorization", "Bearer %s"%apikey)
+    # req.add_header("Accept", "text/event-stream")
+    response = opener.open(req, timeout = timeout)
+    data = response.read()
+    response.close()
+    text = data.decode('utf-8', errors = 'ignore')
+    return json.loads(text)
 
 
 #----------------------------------------------------------------------
