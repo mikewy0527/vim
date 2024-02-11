@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 #======================================================================
 #
-# chatgpt.py - 
+# gptcommit.py - 
 #
-# Created by skywind on 2024/02/08
-# Last Modified: 2024/02/08 21:41:55
+# Created by skywind on 2024/02/11
+# Last Modified: 2024/02/11 21:57:31
 #
 #======================================================================
 import sys
 import time
 import os
-import json
 
 
 #----------------------------------------------------------------------
@@ -40,28 +39,6 @@ def chatgpt_request(messages, apikey, opts):
     response.close()
     text = data.decode('utf-8', errors = 'ignore')
     return json.loads(text)
-
-
-#----------------------------------------------------------------------
-# 
-#----------------------------------------------------------------------
-def http_request(url, data = None, header = None, proxy = None, timeout = 15):
-    import urllib
-    import urllib.request
-    import json
-    import io
-    handlers = []
-    if proxy:
-        p = {'http': proxy, 'https': proxy}
-        proxy_handler = urllib.request.ProxyHandler(p)
-        handlers.append(proxy_handler)
-    opener = urllib.request.build_opener(*handlers)
-    req = urllib.request.Request(url, data = data)
-    if header:
-        for key in header:
-            req.add_header(key, header[key])
-    response = opener.open(req, timeout = timeout)
-    return response.read()
 
 
 #----------------------------------------------------------------------
@@ -99,7 +76,7 @@ def load_ini(filename, encoding = None):
 # lazy request
 #----------------------------------------------------------------------
 LAZY_OPTION = None
-LAZY_CONFIG = '~/.config/openai/chatgpt.ini'
+LAZY_CONFIG = '~/.config/gptcommit.ini'
 
 def chatgpt_lazy(messages):
     global LAZY_OPTION
@@ -120,43 +97,18 @@ def chatgpt_lazy(messages):
     return chatgpt_request(messages, apikey, opts)
 
 
-
 #----------------------------------------------------------------------
 # testing suit
 #----------------------------------------------------------------------
 if __name__ == '__main__':
-    proxy = 'socks5h://127.0.0.1:1080'
-    keyfile = '~/.config/openai/apikey.txt'
-    apikey = open(os.path.expanduser(keyfile), 'r').read().strip('\r\n\t ')
-    print(repr(apikey))
     def test1():
-        p = 'socks5h://127.0.0.1:1080'
-        u = 'https://www.google.com'
-        t = http_request(u, proxy = p)
-        print(t)
-        return 0
-    def test2():
-        opts = {}
-        opts['proxy'] = proxy
-        query = 'hello'
-        messages = []
-        messages.append({"role": "user", "content": query})
-        t = chatgpt_request(messages, apikey, opts)
-        print(t)
-        return 0
-    def test3():
-        messages = []
-        query = 'hello'
-        messages.append({"role": "user", "content": query})
-        t = chatgpt_lazy(messages)
-        print(t)
-        return 0
-    def test4():
+        import json
         msgs = json.load(open('d:/temp/diff.log'))
         print(msgs)
         t = chatgpt_lazy(msgs)
         print(t)
         return 0
-    test4()
+    test1()
+
 
 
