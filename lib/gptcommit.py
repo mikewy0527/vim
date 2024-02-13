@@ -5,7 +5,7 @@
 # gptcommit.py - 
 #
 # Created by skywind on 2024/02/11
-# Last Modified: 2024/02/11 21:57:31
+# Last Modified: 2024/02/13 11:07
 #
 #======================================================================
 import sys
@@ -184,18 +184,49 @@ def TextLimit(text, maxline):
     return '\n'.join(partial)
 
 
+#----------------------------------------------------------------------
+# make messages
+#----------------------------------------------------------------------
+def MakeMessages(text, OPTIONS):
+    msgs = []
+    prompt = 'Generate git commit message, for my changes'
+    msgs.append({'role': 'system', 'content': prompt})
+    text = TextLimit(text, OPTIONS.get('maxline', 120))
+    msgs.append({'role': 'user', 'content': text})
+    return msgs
+
+
+#----------------------------------------------------------------------
+# help
+#----------------------------------------------------------------------
+def help():
+    exe = os.path.split(os.path.abspath(sys.executable))[1]
+    exe = os.path.splitext(exe)[0]
+    script = os.path.split(sys.argv[0])[1]
+    print('usage: %s %s <options> [path]'%(exe, script))
+    print('available options:')
+    print('  --key=xxx       required, your openai apikey')
+    print('  --model=xxx     optional, can be gpt-3.5-turbo or something')
+    print('  --maxline=num   optional, max diff lines to feed ChatGPT')
+    print('  --staged        optional, if present will use staged diff')
+    print('  --proxy=xxx     optional, proxy support')
+    print()
+    return 0
+
 
 #----------------------------------------------------------------------
 # main
 #----------------------------------------------------------------------
-OPTIONS = {}
-
 def main(argv):
+    OPTIONS = {}
     if argv is None:
         argv = sys.argv[1:]
     options, args = getopt(argv)
+    if ('h' in options) or ('help' in options):
+        help()
+        return 0
     if 'key' not in options:
-        print('--key=xxx is required')
+        print('--key=XXX is required, use -h for help.')
         return 1
     OPTIONS['key'] = options['key']
     if 'proxy' in options:
@@ -216,7 +247,8 @@ def main(argv):
     else:
         OPTIONS['path'] = os.getcwd()
     content = GitDiff(OPTIONS['path'], OPTIONS['staged'])
-    difftext = TextLimit(content, OPTIONS['maxline'])
+    msgs = MakeMessages(content, OPTIONS)
+    print(msgs)
     return 0
 
 
@@ -224,6 +256,7 @@ def main(argv):
 # testing suit
 #----------------------------------------------------------------------
 if __name__ == '__main__':
+    keyfile = '~/.config/openai/apikey.txt'
     def test1():
         import json
         msgs = json.load(open('d:/temp/diff.log'))
@@ -236,7 +269,15 @@ if __name__ == '__main__':
         print(text)
         print(CallGit('status'))
         return 0
-    test2()
+    def test3():
+        apikey = open(os.path.expanduser(keyfile), 'r').read().strip('\r\n\t ')
+        # print(apikey)
+        args = []
+        args = ['--key=' + apikey]
+        args = ['-h']
+        main(args)
+        return 0
+    test3()
 
 
 
