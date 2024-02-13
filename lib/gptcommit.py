@@ -208,7 +208,7 @@ def help():
     print('  --key=xxx       required, your openai apikey')
     print('  --staged        optional, if present will use staged diff')
     print('  --proxy=xxx     optional, proxy support')
-    print('  --maxline=num   optional, max diff lines to feed ChatGPT')
+    print('  --maxline=num   optional, max diff lines to feed ChatGPT, default ot 180')
     print('  --model=xxx     optional, can be gpt-3.5-turbo or something')
     print()
     return 0
@@ -226,16 +226,20 @@ def main(argv):
         help()
         return 0
     if 'key' not in options:
-        print('--key=XXX is required, use -h for help.')
-        return 1
-    OPTIONS['key'] = options['key']
+        envkey = os.environ.get('GPT_COMMIT_KEY', '')
+        if not envkey:
+            print('--key=XXX is required, use -h for help.')
+            return 1
+        OPTIONS['key'] = envkey
+    else:
+        OPTIONS['key'] = options['key']
     if 'proxy' in options:
         OPTIONS['proxy'] = options['proxy']
     if 'model' in options:
         model = options['model']
         if model:
             OPTIONS['model'] = model
-    OPTIONS['maxline'] = 160
+    OPTIONS['maxline'] = 180
     if 'maxline' in options:
         OPTIONS['maxline'] = int(options['maxline'])
     OPTIONS['staged'] = ('staged' in options)
