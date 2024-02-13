@@ -203,13 +203,13 @@ def help():
     exe = os.path.split(os.path.abspath(sys.executable))[1]
     exe = os.path.splitext(exe)[0]
     script = os.path.split(sys.argv[0])[1]
-    print('usage: %s %s <options> [path]'%(exe, script))
+    print('usage: %s %s <options> repo_path'%(exe, script))
     print('available options:')
     print('  --key=xxx       required, your openai apikey')
-    print('  --model=xxx     optional, can be gpt-3.5-turbo or something')
-    print('  --maxline=num   optional, max diff lines to feed ChatGPT')
     print('  --staged        optional, if present will use staged diff')
     print('  --proxy=xxx     optional, proxy support')
+    print('  --maxline=num   optional, max diff lines to feed ChatGPT')
+    print('  --model=xxx     optional, can be gpt-3.5-turbo or something')
     print()
     return 0
 
