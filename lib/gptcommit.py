@@ -161,12 +161,62 @@ def getopt(argv):
 
 
 #----------------------------------------------------------------------
+# get git diff
+#----------------------------------------------------------------------
+def GitDiff(path, staged = False):
+    previous = os.getcwd()
+    if path:
+        os.chdir(path)
+    if staged:
+        text = CallGit('diff', '--staged')
+    else:
+        text = CallGit('diff')
+    os.chdir(previous)
+    return text
+
+
+#----------------------------------------------------------------------
+# get head lines
+#----------------------------------------------------------------------
+def TextLimit(text, maxline):
+    content = [line for line in text.split('\n')]
+    partial = content[:maxline]
+    return '\n'.join(partial)
+
+
+
+#----------------------------------------------------------------------
 # main
 #----------------------------------------------------------------------
+OPTIONS = {}
+
 def main(argv):
     if argv is None:
         argv = sys.argv[1:]
     options, args = getopt(argv)
+    if 'key' not in options:
+        print('--key=xxx is required')
+        return 1
+    OPTIONS['key'] = options['key']
+    if 'proxy' in options:
+        OPTIONS['proxy'] = options['proxy']
+    if 'model' in options:
+        model = options['model']
+        if model:
+            OPTIONS['model'] = model
+    OPTIONS['maxline'] = 160
+    if 'maxline' in options:
+        OPTIONS['maxline'] = int(options['maxline'])
+    OPTIONS['staged'] = ('staged' in options)
+    if args:
+        OPTIONS['path'] = os.path.abspath(args[0])
+        if not os.path.exists(args[0]):
+            print('path is invalid: %s'%args[0])
+            return 2
+    else:
+        OPTIONS['path'] = os.getcwd()
+    content = GitDiff(OPTIONS['path'], OPTIONS['staged'])
+    difftext = TextLimit(content, OPTIONS['maxline'])
     return 0
 
 
