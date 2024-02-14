@@ -201,6 +201,8 @@ def MakeMessages(text, OPTIONS):
     lang = OPTIONS.get('lang', '')
     if lang:
         prompt += ' (in %s)'%lang
+    if 'prompt' in OPTIONS:
+        prompt = OPTIONS['prompt']
     msgs.append({'role': 'system', 'content': prompt})
     text = TextLimit(text, OPTIONS.get('maxline', DEFAULT_MAX_LINE))
     msgs.append({'role': 'user', 'content': text})
@@ -327,6 +329,10 @@ def main(argv = None):
         OPTIONS['lang'] = options['language']
     OPTIONS['staged'] = ('staged' in options)
     OPTIONS['concise'] = ('concise' in options)
+    if 'prompt' in options:
+        prompt = options['prompt']
+        if prompt:
+            OPTIONS['prompt'] = prompt
     if args:
         OPTIONS['path'] = os.path.abspath(args[0])
         if not os.path.exists(args[0]):

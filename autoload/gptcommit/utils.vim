@@ -178,7 +178,7 @@ endfunc
 "----------------------------------------------------------------------
 " run gptcommit.py 
 "----------------------------------------------------------------------
-function! gptcommit#utils#run(args) abort
+function! gptcommit#utils#request(args) abort
 	let python = gptcommit#utils#find_python()
 	if python == ''
 		call gptcommit#utils#errmsg('ERROR: python3 executable file missing')
