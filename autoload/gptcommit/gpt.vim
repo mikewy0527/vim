@@ -67,9 +67,10 @@ endfunc
 
 
 "----------------------------------------------------------------------
-" 
+" :GptCommit command
 "----------------------------------------------------------------------
-function! gptcommit#gpt#cmd(path)
+function! gptcommit#gpt#cmd(bang, path)
 
 endfunc
+
 
