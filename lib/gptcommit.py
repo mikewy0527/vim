@@ -11,6 +11,7 @@
 import sys
 import time
 import os
+import json
 
 
 #----------------------------------------------------------------------
@@ -110,26 +111,7 @@ def CallGit(*args):
 #----------------------------------------------------------------------
 # lazy request
 #----------------------------------------------------------------------
-LAZY_OPTION = None
-LAZY_CONFIG = '~/.config/gptcommit.ini'
-
-def chatgpt_lazy(messages):
-    global LAZY_OPTION
-    if LAZY_OPTION is None:
-        LAZY_OPTION = load_ini(LAZY_CONFIG)
-        if 'default' not in LAZY_OPTION:
-            LAZY_OPTION['default'] = {}
-    option = LAZY_OPTION['default']
-    apikey = option.get('apikey', '').strip('\r\n\t ')
-    proxy = option.get('proxy', '').strip('\r\n\t ')
-    if not apikey:
-        raise KeyError('apikey is not provided')
-    opts = {}
-    if proxy:
-        opts['proxy'] = proxy
-    if 'model' in option:
-        opts['model'] = option['model']
-    return chatgpt_request(messages, apikey, opts)
+DEFAULT_MAX_LINE = 120
 
 
 #----------------------------------------------------------------------
@@ -176,6 +158,30 @@ def GitDiff(path, staged = False):
 
 
 #----------------------------------------------------------------------
+# Find Root
+#----------------------------------------------------------------------
+def FindRoot(path, markers = None, fallback = False):
+    if markers is None:
+        markers = ('.git', '.svn', '.hg', '.project', '.root')
+    if path is None:
+        path = os.getcwd()
+    path = os.path.abspath(path)
+    base = path
+    while True:
+        parent = os.path.normpath(os.path.join(base, '..'))
+        for marker in markers:
+            test = os.path.join(base, marker)
+            if os.path.exists(test):
+                return base
+        if os.path.normcase(parent) == os.path.normcase(base):
+            break
+        base = parent
+    if fallback:
+        return path
+    return None
+
+
+#----------------------------------------------------------------------
 # get head lines
 #----------------------------------------------------------------------
 def TextLimit(text, maxline):
@@ -190,10 +196,53 @@ def TextLimit(text, maxline):
 def MakeMessages(text, OPTIONS):
     msgs = []
     prompt = 'Generate git commit message, for my changes'
+    if OPTIONS['concise']:
+        prompt = 'Generate concise git commit message, for my changes'
+    lang = OPTIONS.get('lang', '')
+    if lang:
+        prompt += ' (in %s)'%lang
     msgs.append({'role': 'system', 'content': prompt})
-    text = TextLimit(text, OPTIONS.get('maxline', 120))
+    text = TextLimit(text, OPTIONS.get('maxline', DEFAULT_MAX_LINE))
     msgs.append({'role': 'user', 'content': text})
     return msgs
+
+
+#----------------------------------------------------------------------
+# check a path is inside a repository, returns repo root
+#----------------------------------------------------------------------
+def CheckRepo(path):
+    return FindRoot(path, ('.git',), False)
+
+
+#----------------------------------------------------------------------
+# extract return info
+#----------------------------------------------------------------------
+def ExtractInfo(obj):
+    if not isinstance(obj, dict):
+        print('invalid response: %s'%obj)
+        return 1
+    if 'choices' not in obj:
+        print('invalid response: %s'%obj)
+        return 2
+    choices = obj['choices']
+    if not isinstance(choices, list):
+        print('invalid response: %s'%obj)
+        return 3
+    if len(choices) == 0:
+        print('invalid response: %s'%obj)
+        return 4
+    first = choices[0]
+    if 'message' not in first:
+        print('invalid response: %s'%obj)
+        return 5
+    message = first['message']
+    if not isinstance(message, dict):
+        print('invlaid message: %s'%message)
+        return 6
+    if 'content' not in message:
+        print('invlaid message: %s'%message)
+        return 7
+    return message['content']
 
 
 #----------------------------------------------------------------------
@@ -208,8 +257,11 @@ def help():
     print('  --key=xxx       required, your openai apikey')
     print('  --staged        optional, if present will use staged diff')
     print('  --proxy=xxx     optional, proxy support')
-    print('  --maxline=num   optional, max diff lines to feed ChatGPT, default ot 180')
+    n = DEFAULT_MAX_LINE
+    print('  --maxline=num   optional, max diff lines to feed ChatGPT, default ot %d'%n)
     print('  --model=xxx     optional, can be gpt-3.5-turbo or something')
+    print('  --lang=xxx      optional, output language')
+    print('  --concise       optional, generate concise message if present')
     print()
     return 0
 
@@ -217,12 +269,15 @@ def help():
 #----------------------------------------------------------------------
 # main
 #----------------------------------------------------------------------
-def main(argv):
+def main(argv = None):
     OPTIONS = {}
     if argv is None:
         argv = sys.argv[1:]
     options, args = getopt(argv)
     if ('h' in options) or ('help' in options):
+        help()
+        return 0
+    if len(args) == 0:
         help()
         return 0
     if 'key' not in options:
@@ -233,16 +288,22 @@ def main(argv):
         OPTIONS['key'] = envkey
     else:
         OPTIONS['key'] = options['key']
+    # print(options)
     if 'proxy' in options:
         OPTIONS['proxy'] = options['proxy']
     if 'model' in options:
         model = options['model']
         if model:
             OPTIONS['model'] = model
-    OPTIONS['maxline'] = 180
+    OPTIONS['maxline'] = DEFAULT_MAX_LINE
     if 'maxline' in options:
         OPTIONS['maxline'] = int(options['maxline'])
+    if 'lang' in options:
+        OPTIONS['lang'] = options['lang']
+    elif 'language' in options:
+        OPTIONS['lang'] = options['language']
     OPTIONS['staged'] = ('staged' in options)
+    OPTIONS['concise'] = ('concise' in options)
     if args:
         OPTIONS['path'] = os.path.abspath(args[0])
         if not os.path.exists(args[0]):
@@ -250,9 +311,25 @@ def main(argv):
             return 2
     else:
         OPTIONS['path'] = os.getcwd()
+    path = OPTIONS['path']
+    root = CheckRepo(path)
+    if not root:
+        print('Not a repository: %s'%path)
+        return 3
     content = GitDiff(OPTIONS['path'], OPTIONS['staged'])
     msgs = MakeMessages(content, OPTIONS)
-    print(msgs)
+    # print(msgs)
+    opts = {}
+    opts['model'] = OPTIONS.get('model', 'gpt-3.5-turbo')
+    # opts['timeout'] = 60000
+    if 'proxy' in OPTIONS:
+        opts['proxy'] = OPTIONS['proxy']
+    obj = chatgpt_request(msgs, OPTIONS['key'], opts)
+    msg = ExtractInfo(obj)
+    if not isinstance(msg, str):
+        sys.exit(msg)
+        return msg
+    print(msg)
     return 0
 
 
@@ -265,8 +342,6 @@ if __name__ == '__main__':
         import json
         msgs = json.load(open('d:/temp/diff.log'))
         print(msgs)
-        t = chatgpt_lazy(msgs)
-        print(t)
         return 0
     def test2():
         text = execute(['dir', 'd:\\temp'])
@@ -274,14 +349,28 @@ if __name__ == '__main__':
         print(CallGit('status'))
         return 0
     def test3():
+        print(CheckRepo('c:/share'))
+        print(CheckRepo('c:/share/vim'))
+        print(CheckRepo('c:/share/vim/lib'))
+        return 0
+    def test4():
         apikey = open(os.path.expanduser(keyfile), 'r').read().strip('\r\n\t ')
         # print(apikey)
+        proxy = '--proxy=socks5h://127.0.0.1:1080'
         args = []
-        args = ['--key=' + apikey]
-        args = ['-h']
+        args = ['--key=' + apikey, proxy, 'c:/share/vim/lib']
+        # args = ['--key=' + apikey, 'c:/share/plugin']
+        # args = ['-h']
         main(args)
         return 0
-    test3()
+    def test5():
+        obj = json.load(open('d:/temp/response.json'))
+        import pprint
+        pprint.pprint(obj)
+        print(ExtractInfo(obj))
+        return 0
+    # test4()
+    main()
 
 
 
