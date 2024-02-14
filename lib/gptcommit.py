@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 #======================================================================
 #
@@ -246,6 +246,28 @@ def ExtractInfo(obj):
 
 
 #----------------------------------------------------------------------
+# EXAMPLE
+#----------------------------------------------------------------------
+EXAMPLE_RETURN = {
+    'choices': [{
+         'finish_reason': 'stop',
+         'index': 0,
+         'logprobs': None,
+         'message': {'content': 'Refactored gptcommit.py code and added a '
+                     'new function CheckRepo() to check if a '
+                     'path is inside a repository',
+                     'role': 'assistant'}}],
+    'created': 1707882946,
+    'id': 'chatcmpl-8s0f4jUWzPyzvZ2Er9CBzNiPgLGMh',
+    'model': 'gpt-3.5-turbo-0613',
+    'object': 'chat.completion',
+    'system_fingerprint': None,
+    'usage': {'completion_tokens': 25,
+           'prompt_tokens': 1042,
+           'total_tokens': 1067}}
+
+
+#----------------------------------------------------------------------
 # help
 #----------------------------------------------------------------------
 def help():
@@ -255,11 +277,11 @@ def help():
     print('usage: %s %s <options> repo_path'%(exe, script))
     print('available options:')
     print('  --key=xxx       required, your openai apikey')
-    print('  --staged        optional, if present will use staged diff')
+    print('  --staged        optional, use staged diff if present')
     print('  --proxy=xxx     optional, proxy support')
     n = DEFAULT_MAX_LINE
     print('  --maxline=num   optional, max diff lines to feed ChatGPT, default ot %d'%n)
-    print('  --model=xxx     optional, can be gpt-3.5-turbo or something')
+    print('  --model=xxx     optional, can be gpt-3.5-turbo (default) or something')
     print('  --lang=xxx      optional, output language')
     print('  --concise       optional, generate concise message if present')
     print()
@@ -324,7 +346,10 @@ def main(argv = None):
     # opts['timeout'] = 60000
     if 'proxy' in OPTIONS:
         opts['proxy'] = OPTIONS['proxy']
-    obj = chatgpt_request(msgs, OPTIONS['key'], opts)
+    if 'fake' not in options:
+        obj = chatgpt_request(msgs, OPTIONS['key'], opts)
+    else:
+        obj = EXAMPLE_RETURN
     msg = ExtractInfo(obj)
     if not isinstance(msg, str):
         sys.exit(msg)
