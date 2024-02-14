@@ -5,7 +5,7 @@
 # gptcommit.py - 
 #
 # Created by skywind on 2024/02/11
-# Last Modified: 2024/02/13 11:07
+# Last Modified: 2024/02/14 14:40
 #
 #======================================================================
 import sys
@@ -284,6 +284,7 @@ def help():
     print('  --model=xxx     optional, can be gpt-3.5-turbo (default) or something')
     print('  --lang=xxx      optional, output language')
     print('  --concise       optional, generate concise message if present')
+    print('  --utf8          optional, output utf-8 encoded text if present')
     print()
     return 0
 
@@ -354,7 +355,11 @@ def main(argv = None):
     if not isinstance(msg, str):
         sys.exit(msg)
         return msg
-    print(msg)
+    if 'utf8' in options:
+        fp = open(sys.stdout.fileno(), mode = 'wb')
+        fp.write(msg.encode('utf-8', 'ignore'))
+    else:
+        print(msg)
     return 0
 
 
