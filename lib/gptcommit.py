@@ -111,7 +111,7 @@ def CallGit(*args):
 #----------------------------------------------------------------------
 # lazy request
 #----------------------------------------------------------------------
-DEFAULT_MAX_LINE = 120
+DEFAULT_MAX_LINE = 160
 
 
 #----------------------------------------------------------------------
@@ -200,11 +200,13 @@ def MakeMessages(text, OPTIONS):
         prompt = 'Generate concise git commit message, for my changes'
     lang = OPTIONS.get('lang', '')
     if lang:
+        lang = lang[:1].upper() + lang[1:].lower()
         prompt += ' (in %s)'%lang
     if 'prompt' in OPTIONS:
         prompt = OPTIONS['prompt']
     msgs.append({'role': 'system', 'content': prompt})
     text = TextLimit(text, OPTIONS.get('maxline', DEFAULT_MAX_LINE))
+    text = text.rstrip('\r\n\t ')
     msgs.append({'role': 'user', 'content': text})
     return msgs
 
@@ -347,12 +349,18 @@ def main(argv = None):
         return 3
     content = GitDiff(OPTIONS['path'], OPTIONS['staged'])
     msgs = MakeMessages(content, OPTIONS)
+    if msgs[1]['content'] == '':
+        print('No changes')
+        return 4
     # print(msgs)
     opts = {}
     opts['model'] = OPTIONS.get('model', 'gpt-3.5-turbo')
     # opts['timeout'] = 60000
     if 'proxy' in OPTIONS:
-        opts['proxy'] = OPTIONS['proxy']
+        proxy = OPTIONS['proxy']
+        if proxy.startswith('socks5://'):
+            proxy = 'socks5h://' + proxy[9:]
+        opts['proxy'] = proxy
     if 'fake' not in options:
         obj = chatgpt_request(msgs, OPTIONS['key'], opts)
     else:

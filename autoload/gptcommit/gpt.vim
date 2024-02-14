@@ -23,7 +23,11 @@ function! gptcommit#gpt#generate(path) abort
 	let args = []
 	let apikey = get(g:, 'gpt_commit_key', '')
 	if apikey == ''
-		call s:errmsg('ERROR: g:gpt_commit_key is undefined')
+		call s:errmsg('g:gpt_commit_key is undefined')
+		return ''
+	endif
+	if !isdirectory(a:path)
+		call s:errmsg('invalid path: ' .. a:path)
 		return ''
 	endif
 	let args += ['--key=' .. apikey]
@@ -53,6 +57,19 @@ function! gptcommit#gpt#generate(path) abort
 	if prompt != ''
 		let args += ['--prompt=' .. prompt]
 	endif
+	if get(g:, 'gpt_commit_fake', 0)
+		let args += ['--fake']
+	endif
+	let args += [a:path]
+	" echo args
+	return gptcommit#utils#request(args)
 endfunc
 
+
+"----------------------------------------------------------------------
+" 
+"----------------------------------------------------------------------
+function! gptcommit#gpt#cmd(path)
+
+endfunc
 

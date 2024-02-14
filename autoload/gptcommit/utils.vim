@@ -181,12 +181,12 @@ endfunc
 function! gptcommit#utils#request(args) abort
 	let python = gptcommit#utils#find_python()
 	if python == ''
-		call gptcommit#utils#errmsg('ERROR: python3 executable file missing')
+		call gptcommit#utils#errmsg('python3 executable file missing')
 		return ''
 	endif
 	let script = gptcommit#utils#find_script()
 	if script == ''
-		call gptcommit#utils#errmsg('ERROR: gptcommit.py script missing')
+		call gptcommit#utils#errmsg('gptcommit.py script missing')
 		return ''
 	endif
 	let cmd = printf('%s %s', shellescape(python), shellescape(script))
