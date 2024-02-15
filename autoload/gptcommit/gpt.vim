@@ -70,7 +70,11 @@ endfunc
 " :GptCommit command
 "----------------------------------------------------------------------
 function! gptcommit#gpt#cmd(bang, path)
-
+	let path = a:path
+	if path == ''
+		let path = gptcommit#utils#current_path()
+	endif
 endfunc
+
 
 
