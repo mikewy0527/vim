@@ -72,7 +72,9 @@ function! asclib#path#abspath(path)
 			let f = ''
 		elseif &bt != ''
 			let is_directory = 0
-			if f =~ '[\/\\]$'
+			if f =~ '\v^fugitive\:[\\\/][\\\/][\\\/]'
+				return asclib#path#abspath(f)
+			elseif f =~ '[\/\\]$'
 				if f =~ '^[\/\\]' || f =~ '^.:[\/\\]'
 					let is_directory = isdirectory(f)
 				endif
@@ -81,6 +83,13 @@ function! asclib#path#abspath(path)
 		endif
 	elseif f =~ '^\~[\/\\]'
 		let f = expand(f)
+	elseif f =~ '\v^fugitive\:[\\\/][\\\/][\\\/]'
+		let path = strpart(f, s:windows? 12 : 11)
+		let pos = stridx(path, '.git')
+		if pos >= 0
+			let path = strpart(path, 0, pos)
+		endif
+		let f = fnamemodify(path, ':h')
 	endif
 	let f = fnamemodify(f, ':p')
 	if s:windows
@@ -361,12 +370,6 @@ endfunc
 "----------------------------------------------------------------------
 function! s:guess_root(filename, markers)
 	let fullname = asclib#path#abspath(a:filename)
-	if fullname =~ '^fugitive:/'
-		if exists('b:git_dir')
-			return fnamemodify(b:git_dir, ':h')
-		endif
-		return '' " skip any fugitive buffers early
-	endif
 	let pivot = fullname
 	if !isdirectory(pivot)
 		let pivot = fnamemodify(pivot, ':h')
