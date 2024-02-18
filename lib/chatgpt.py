@@ -122,6 +122,30 @@ def chatgpt_lazy(messages):
 
 
 #----------------------------------------------------------------------
+# request ollama
+#----------------------------------------------------------------------
+def request_ollama(messages, url, model, opts):
+    import urllib, urllib.request, json
+    proxy = opts.get('proxy', None)
+    timeout = opts.get('timeout', 20000)
+    d = {'model': model, 'messages': messages}
+    d['stream'] = False
+    handlers = []
+    if proxy:
+        p = {'http': proxy, 'https': proxy}
+        proxy_handler = urllib.request.ProxyHandler(p)
+        handlers.append(proxy_handler)
+    opener = urllib.request.build_opener(*handlers)
+    req = urllib.request.Request(url, data = json.dumps(d).encode('utf-8'))
+    req.add_header("Content-Type", "application/json")
+    response = opener.open(req, timeout = timeout)
+    data = response.read()
+    response.close()
+    text = data.decode('utf-8', errors = 'ignore')
+    return json.loads(text)
+
+
+#----------------------------------------------------------------------
 # testing suit
 #----------------------------------------------------------------------
 if __name__ == '__main__':
@@ -157,6 +181,13 @@ if __name__ == '__main__':
         t = chatgpt_lazy(msgs)
         print(t)
         return 0
-    test4()
+    def test5():
+        msgs = [{'role': 'user', 'content': 'why is the sky blue (less verbose, more concise)'}]
+        url = 'http://127.0.0.1:11434/api/chat'
+        objs = request_ollama(msgs, url, 'llama2', {})
+        import pprint
+        pprint.pprint(objs)
+        return 0
+    test5()
 
 
