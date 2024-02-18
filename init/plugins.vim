@@ -298,8 +298,8 @@ let g:eunuch_no_maps = 1
 "----------------------------------------------------------------------
 " cpatch
 "----------------------------------------------------------------------
-let g:cpatch_path = s:home .. '/colors/patch'
-let g:cpatch_edit = s:home .. '/colors/patch'
+let g:cpatch_path = s:home . '/colors/patch'
+let g:cpatch_edit = s:home . '/colors/patch'
 let g:cpatch_disable_lua = has('nvim')? 0 : 1
 
 
