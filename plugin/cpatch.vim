@@ -107,11 +107,11 @@ function! s:load_patch(name, force)
 				endif
 				let p = tr(p, '\', '/')
 				for extname in ['.vim', '.lua']
-					let t = p .. name .. extname
+					let t = p . name . extname
 					if extname == '.vim'
-						let cmd = 'source ' .. fnameescape(t)
+						let cmd = 'source ' . fnameescape(t)
 					else
-						let cmd = 'luafile ' .. fnameescape(t)
+						let cmd = 'luafile ' . fnameescape(t)
 						if g:cpatch_disable_lua
 							continue
 						endif
