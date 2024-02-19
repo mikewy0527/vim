@@ -380,6 +380,8 @@ class PosixKit (object):
             except: content = None
             return content
         try:
+            if '~' in filename:
+                filename = os.path.expanduser(filename)
             fp = open(filename, mode)
             content = fp.read()
             fp.close()

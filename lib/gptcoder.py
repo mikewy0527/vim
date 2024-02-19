@@ -20,7 +20,7 @@ class configure (object):
 
     def __init__ (self, ininame):
         if ininame is None:
-            ininame = os.path.expanduser('~/.config/gptcoder.ini')
+            ininame = '~/.config/gptcoder.ini'
         self.config = self.load_ini(self.ininame)
         if not self.config:
             self.config = {}
@@ -89,7 +89,6 @@ class configure (object):
                 return None
         try:
             if '~' in filename:
-                import os
                 filename = os.path.expanduser(filename)
             fp = open(filename, mode)
             content = fp.read()
@@ -131,8 +130,63 @@ class configure (object):
                     config[sect][key] = val
         return config
 
+    def _chatgpt_request (self, messages, apikey, opts):
+        import urllib, urllib.request, json
+        url = opts.get('url', "https://api.openai.com/v1/chat/completions")
+        proxy = opts.get('proxy', None)
+        timeout = opts.get('timeout', 20000)
+        d = {'messages': messages}
+        d['model'] = opts.get('model', 'gpt-3.5-turbo')
+        d['stream'] = opts.get('stream', False)
+        handlers = []
+        if proxy:
+            p = {'http': proxy, 'https': proxy}
+            proxy_handler = urllib.request.ProxyHandler(p)
+            handlers.append(proxy_handler)
+        opener = urllib.request.build_opener(*handlers)
+        req = urllib.request.Request(url, data = json.dumps(d).encode('utf-8'))
+        req.add_header("Content-Type", "application/json")
+        req.add_header("Authorization", "Bearer %s"%apikey)
+        # req.add_header("Accept", "text/event-stream")
+        response = opener.open(req, timeout = timeout)
+        data = response.read()
+        response.close()
+        text = data.decode('utf-8', errors = 'ignore')
+        return json.loads(text)
+
+    def _ollama_request (self, messages, url, model, opts):
+        import urllib, urllib.request, json
+        proxy = opts.get('proxy', None)
+        timeout = opts.get('timeout', 20000)
+        d = {'model': model, 'messages': messages}
+        d['stream'] = False
+        handlers = []
+        if proxy:
+            p = {'http': proxy, 'https': proxy}
+            proxy_handler = urllib.request.ProxyHandler(p)
+            handlers.append(proxy_handler)
+        opener = urllib.request.build_opener(*handlers)
+        req = urllib.request.Request(url, data = json.dumps(d).encode('utf-8'))
+        req.add_header("Content-Type", "application/json")
+        response = opener.open(req, timeout = timeout)
+        data = response.read()
+        response.close()
+        text = data.decode('utf-8', errors = 'ignore')
+        return json.loads(text)
+
 
 #----------------------------------------------------------------------
 # 
 #----------------------------------------------------------------------
+
+
+
+#----------------------------------------------------------------------
+# testing suit
+#----------------------------------------------------------------------
+if __name__ == '__main__':
+    def test1():
+        
+        return 0
+    test1()
 
