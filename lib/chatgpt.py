@@ -124,7 +124,7 @@ def chatgpt_lazy(messages):
 #----------------------------------------------------------------------
 # request ollama
 #----------------------------------------------------------------------
-def request_ollama(messages, url, model, opts):
+def ollama_request(messages, url, model, opts):
     import urllib, urllib.request, json
     proxy = opts.get('proxy', None)
     timeout = opts.get('timeout', 20000)
@@ -184,7 +184,7 @@ if __name__ == '__main__':
     def test5():
         msgs = [{'role': 'user', 'content': 'why is the sky blue (less verbose, more concise)'}]
         url = 'http://127.0.0.1:11434/api/chat'
-        objs = request_ollama(msgs, url, 'llama2', {})
+        objs = ollama_request(msgs, url, 'llama2', {})
         import pprint
         pprint.pprint(objs)
         return 0
