@@ -219,15 +219,21 @@ def TextLimit(text, maxline):
 #----------------------------------------------------------------------
 def MakeMessages(text, OPTIONS):
     msgs = []
+    engine = OPTIONS.get('engine', 'chatgpt')
     prompt = 'Generate git commit message, for my changes'
     if OPTIONS['concise']:
         prompt = 'Generate concise git commit message, for my changes'
+    if engine == 'ollama':
+        model = OPTIONS.get('ollama_model', 'llama2')
+        if model.startswith('llama2'):
+            prompt = prompt + ' (less verbose)'
     lang = OPTIONS.get('lang', '')
     if lang:
         lang = lang[:1].upper() + lang[1:].lower()
         prompt += ' (in %s)'%lang
     if 'prompt' in OPTIONS:
         prompt = OPTIONS['prompt']
+    # print('prompt', prompt)
     msgs.append({'role': 'system', 'content': prompt})
     text = TextLimit(text, OPTIONS.get('maxline', DEFAULT_MAX_LINE))
     text = text.rstrip('\r\n\t ')
