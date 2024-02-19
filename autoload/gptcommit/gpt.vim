@@ -3,7 +3,7 @@
 " gpt.vim - 
 "
 " Created by skywind on 2024/02/14
-" Last Modified: 2024/02/14 14:59:32
+" Last Modified: 2024/02/19 14:35
 "
 "======================================================================
 
@@ -131,7 +131,6 @@ function! gptcommit#gpt#cmd(bang, path)
 	redraw
 	let text = gptcommit#gpt#generate(path)
 	if text == ''
-		echo ""
 		redraw
 		return 4
 	endif
