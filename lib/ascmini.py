@@ -377,7 +377,7 @@ class PosixKit (object):
     def load_file_content (self, filename, mode = 'r'):
         if hasattr(filename, 'read'):
             try: content = filename.read()
-            except: pass
+            except: content = None
             return content
         try:
             fp = open(filename, mode)
@@ -396,6 +396,54 @@ class PosixKit (object):
         except:
             return False
         return True
+
+    # auto detect encoding and decode into a string
+    def string_auto_decode (self, payload, encoding = None):
+        content = None
+        if payload is None:
+            return None
+        if hasattr(payload, 'read'):
+            try: content = payload.read()
+            except: pass
+        else:
+            content = payload
+        if sys.version_info[0] >= 3:
+            if isinstance(content, str):
+                return content
+        else:
+            # pylint: disable-next=else-if-used
+            if isinstance(content, unicode):   # noqa
+                return content
+        if content is None:
+            return None
+        if not isinstance(payload, bytes):
+            return str(payload)
+        if content[:3] == b'\xef\xbb\xbf':
+            return content[3:].decode('utf-8', 'ignore')
+        elif encoding is not None:
+            return content.decode(encoding, 'ignore')
+        guess = [sys.getdefaultencoding(), 'utf-8']
+        if sys.stdout and sys.stdout.encoding:
+            guess.append(sys.stdout.encoding)
+        try:
+            import locale
+            guess.append(locale.getpreferredencoding())
+        except:
+            pass
+        visit = {}
+        text = None
+        for name in guess + ['gbk', 'ascii', 'latin1']:
+            if name in visit:
+                continue
+            visit[name] = 1
+            try:
+                text = content.decode(name)
+                break
+            except:
+                pass
+        if text is None:
+            text = content.decode('utf-8', 'ignore')
+        return text
 
     # find file recursive
     def find_files (self, root, pattern = '*', recursive = True, mode = 0):
