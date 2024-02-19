@@ -352,7 +352,7 @@ def main(argv = None):
         OPTIONS['engine'] = options['engine']
     engine = OPTIONS['engine']
     if engine == 'chatgpt':
-        if not options.get('engine', ''):
+        if not options.get('key', ''):
             envkey = os.environ.get('GPT_COMMIT_KEY', '')
             if not envkey:
                 print('--key=XXX is required, use -h for help.')
