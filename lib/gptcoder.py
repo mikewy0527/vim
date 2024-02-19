@@ -11,6 +11,7 @@
 import sys
 import time
 import os
+import json
 
 
 #----------------------------------------------------------------------
@@ -18,15 +19,17 @@ import os
 #----------------------------------------------------------------------
 class configure (object):
 
-    def __init__ (self, ininame):
+    def __init__ (self, ininame = None):
         if ininame is None:
             ininame = '~/.config/gptcoder.ini'
-        self.config = self.load_ini(self.ininame)
+        self.config = self.load_ini(ininame)
         if not self.config:
             self.config = {}
         if 'default' not in self.config:
             self.config['default'] = {}
-        self.engine = self.config['default'].get('engine', '')
+        self.engine = self.config['default'].get('engine', '').lower()
+        if self.engine == '':
+            self.engine = 'chatgpt'
         self._initialize()
 
     # initialize
@@ -131,7 +134,7 @@ class configure (object):
         return config
 
     def _chatgpt_request (self, messages, apikey, opts):
-        import urllib, urllib.request, json
+        import urllib, urllib.request
         url = opts.get('url', "https://api.openai.com/v1/chat/completions")
         proxy = opts.get('proxy', None)
         timeout = opts.get('timeout', 20000)
@@ -154,8 +157,10 @@ class configure (object):
         text = data.decode('utf-8', errors = 'ignore')
         return json.loads(text)
 
-    def _ollama_request (self, messages, url, model, opts):
-        import urllib, urllib.request, json
+    def _ollama_request (self, messages, model, opts):
+        import urllib, urllib.request
+        url = opts.get('url', 'http://127.0.0.1:11434/api/chat')
+        # print('url', url)
         proxy = opts.get('proxy', None)
         timeout = opts.get('timeout', 20000)
         d = {'model': model, 'messages': messages}
@@ -174,6 +179,49 @@ class configure (object):
         text = data.decode('utf-8', errors = 'ignore')
         return json.loads(text)
 
+    def _get_proxy (self, section):
+        if section not in self.config:
+            return None
+        proxy = self.config[section].get('proxy', '')
+        if proxy:
+            proxy = proxy.strip()
+            if proxy.startswith('socks5://'):
+                proxy = 'socks5h://' + proxy[9:]
+        return proxy and proxy or None
+
+    def fatal (self, *args):
+        sys.stderr.write('ERROR: ' + ' '.join(args))
+        sys.stderr.flush()
+        sys.exit(1)
+        return 0
+
+    def request (self, messages):
+        opts = {}
+        if self.engine in ('', 'chatgpt'):
+            config = self.config.get('chatgpt', {})
+            if 'url' in config:
+                opts['url'] = config['url'].strip()
+            proxy = self._get_proxy('chatgpt')
+            if proxy:
+                opts['proxy'] = proxy
+            apikey = config.get('apikey', '').strip()
+            if not apikey:
+                self.fatal('require open apikey')
+            obj = self._chatgpt_request(messages, apikey, opts)
+            return obj['choices'][0]['message']['content']
+        elif self.engine == 'ollama':
+            config = self.config.get('ollama', {})
+            model = config.get('model', 'llama2')
+            proxy = self._get_proxy(self.engine)
+            if proxy:
+                opts['proxy'] = proxy
+            url = config.get('url', '')
+            if url:
+                opts['url'] = url.strip()
+            obj = self._ollama_request(messages, model, opts)
+            return obj['message']['content']
+        return None
+
 
 #----------------------------------------------------------------------
 # 
@@ -186,7 +234,16 @@ class configure (object):
 #----------------------------------------------------------------------
 if __name__ == '__main__':
     def test1():
-        
+        cfg = configure()
+        import pprint
+        pprint.pprint(cfg.config)
         return 0
-    test1()
+    def test2():
+        cfg = configure()
+        # cfg.engine = 'chatgpt'
+        msgs = [{'role': 'system', 'content': 'hello'}]
+        obj = cfg.request(msgs)
+        print(obj)
+    test2()
+
 
