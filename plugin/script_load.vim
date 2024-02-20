@@ -111,7 +111,25 @@ endfunc
 " detect current root
 "----------------------------------------------------------------------
 function! s:root_locator()
-	return ''
+	let root = ''
+	if exists('g:asyncrun_rooter')
+		if type(g:asyncrun_rooter) == type('')
+			let root = call(g:asyncrun_rooter, [])
+		elseif type(g:asyncrun_rooter) == type({})
+			let test = keys(g:asyncrun_rooter)
+			call sort(test)
+			for name in test
+				let root = call(g:asyncrun_rooter, [])
+				if root != ''
+					return root
+				endif
+			endfor
+		endif
+		if root != ''
+			return root
+		endif
+	endif
+	return asyncrun#locator#detect()
 endfunc
 
 

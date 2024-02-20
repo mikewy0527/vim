@@ -12,11 +12,7 @@
 " root locator
 "----------------------------------------------------------------------
 function! asyncrun#locator#detect()
-	echom 'fuck'
 	return ''
 endfunc
 
-function! s:f()
-endfunc
 
-" echo string(function('s:f'))
