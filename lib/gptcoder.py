@@ -22,7 +22,10 @@ class configure (object):
     def __init__ (self, ininame = None):
         if ininame is None:
             ininame = '~/.config/gptcoder.ini'
-        self.config = self.load_ini(ininame)
+        if isinstance(ininame, dict):
+            self.config = self._deep_copy(ininame)
+        else:
+            self.config = self.load_ini(ininame)
         if not self.config:
             self.config = {}
         if 'default' not in self.config:
@@ -35,6 +38,16 @@ class configure (object):
     # initialize
     def _initialize (self):
         return 0
+
+    # copy config
+    def _deep_copy (self, d):
+        obj = {}
+        for key in d:
+            obj[key] = {}
+            src = d[key]
+            for k in src:
+                obj[key][k] = src[k]
+        return obj
 
     # auto detect encoding and decode into a string
     def string_auto_decode (self, payload, encoding = None):
@@ -244,6 +257,21 @@ if __name__ == '__main__':
         msgs = [{'role': 'system', 'content': 'hello'}]
         obj = cfg.request(msgs)
         print(obj)
-    test2()
+        return 0
+    def test3():
+        cfg = configure()
+        # cfg.engine = 'chatgpt'
+        msgs = []
+        prompt = 'you will convert what I input after "::" into uppercase characters, until I say "zaij"'
+        msgs.append({'role': 'system', 'content': prompt})
+        while 1:
+            text = input('$ ')
+            msgs.append({'role': 'user', 'content': text})
+            text = cfg.request(msgs)
+            msgs.append({'role': 'assistant', 'content': text})
+            print(text)
+            print('')
+        return 0
+    test3()
 
 
