@@ -301,6 +301,58 @@ class CodeAssistant (object):
     def set_engine (self, engine):
         self.config.engine = engine
 
+    # pass args[0] as prompt
+    def shell (self, options, args):
+        input_text = ''
+        if not sys.stdin.isatty():
+            try:
+                input_text = sys.stdin.read()
+            except:
+                pass
+        msgs = []
+        if len(args) > 0:
+            prompt = args[0].strip('\r\n\t ')
+            if prompt:
+                msgs.append({'role': 'system', 'content': prompt})
+        input_text = input_text.strip('\r\n\t ')
+        if input_text:
+            msgs.append({'role': 'user', 'content': input_text})
+        if not msgs:
+            return 0
+        msg = self.config.request(msgs)
+        print(msg)
+        return 0
+
+    # pass args[0] as a filename contains prompt + query
+    def playground (self, options, args):
+        if len(args) == 0:
+            print('requires filename')
+            return 0
+        content = self.config.load_file_text(args[0])
+        textlist = []
+        marker = '>>>'
+        found = -1
+        for lnum, line in enumerate(content.split('\n')):
+            line = line.rstrip('\r\n\t ')
+            if line.startswith(marker):
+                found = lnum
+            textlist.append(line)
+        msgs = []
+        if found >= 0:
+            prompt = '\n'.join(content[:found])
+            if prompt.strip():
+                msgs.append({'role': 'system', 'content': prompt})
+            query = '\n'.join(content[found + 1:])
+        else:
+            query = '\n'.join(content)
+        if query.strip():
+            msgs.append({'role': 'user', 'content': query})
+        if not msgs:
+            return 0
+        msg = self.config.request(msgs)
+        print(msg)
+        return 0
+
 
 #----------------------------------------------------------------------
 # getopt
@@ -336,6 +388,7 @@ def getopt(argv):
 def help(simple = False):
     if simple:
         print('error: no operation specified (use -h for help)')
+        print()
         return 0
     exe = os.path.split(os.path.abspath(sys.executable))[1]
     exe = os.path.splitext(exe)[0]
@@ -343,7 +396,9 @@ def help(simple = False):
     print('usage: %s %s <operation> [...]'%(exe, script))
     print('operations:')
     print('    gptcoder {-h --help}')
-    print('    gptcoder {-p --playground} ')
+    print('    gptcoder {-s --shell}       <prompt>')
+    print('    gptcoder {-p --playground}  <input-file>')
+    print()
     return 0
 
 
@@ -355,8 +410,19 @@ def main(argv = None):
         argv = sys.argv[1:]
     if len(argv) == 0:
         return help(True)
-    operation = argv[1]
-    options, args = getopt(argv)
+    operation = argv[0]
+    options, args = getopt(argv[1:])
+    ca = CodeAssistant()
+    if operation in ('-h', '--help'):
+        if len(argv) <= 1:
+            return help(False)
+        # what = argv[1]
+        hr = help(False)
+        return hr
+    if operation in ('-s', '--shell'):
+        return ca.shell(options, args)
+    if operation in ('-p', '--playground'):
+        return ca.playground(options, args)
     return 0
 
 
@@ -390,6 +456,13 @@ if __name__ == '__main__':
             print(text)
             print('')
         return 0
-    test2()
+    def test4():
+        argv = ['-s', 'hello']
+
+        main(argv)
+        return 0
+    # test4()
+    main()
+
 
 
