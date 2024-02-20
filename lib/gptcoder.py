@@ -167,6 +167,37 @@ class configure (object):
             return path
         return None
 
+    # find vcs root
+    def vcs_find_root (self, path):
+        markers = ('.git', '.svn', '.hg')
+        root = self.find_root(path, markers, False)
+        return root
+
+    # check vcs type
+    def vcs_check_type (self, path):
+        root = self.vsc_find_root(path)
+        if not root:
+            return None
+        for marker in ('.git', '.svn', '.hg'):
+            test = os.path.join(root, marker)
+            if os.path.isdir(test):
+                return marker[1:]
+        return None
+
+    # execute program and return output
+    def execute (self, args):
+        import subprocess
+        p = subprocess.Popen(args, shell = True,
+                             stdin = subprocess.PIPE, 
+                             stdout = subprocess.PIPE,
+                             stderr = subprocess.STDOUT)
+        stdin, stdouterr = (p.stdin, p.stdout)
+        stdin.close()
+        content = stdouterr.read()
+        stdouterr.close()
+        p.wait()
+        return self.string_auto_decode(content)
+
     # request openai
     def _chatgpt_request (self, messages, apikey, opts):
         import urllib, urllib.request
@@ -215,13 +246,13 @@ class configure (object):
         text = data.decode('utf-8', errors = 'ignore')
         return json.loads(text)
 
-    def _get_proxy (self, section):
+    def _get_proxy (self, section, convert = False):
         if section not in self.config:
             return None
         proxy = self.config[section].get('proxy', '')
         if proxy:
             proxy = proxy.strip()
-            if proxy.startswith('socks5://'):
+            if proxy.startswith('socks5://') and convert:
                 proxy = 'socks5h://' + proxy[9:]
         return proxy and proxy or None
 
@@ -301,6 +332,6 @@ if __name__ == '__main__':
             print(text)
             print('')
         return 0
-    test3()
+    test2()
 
 
