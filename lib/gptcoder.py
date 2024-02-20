@@ -260,9 +260,15 @@ class configure (object):
 
 
 #----------------------------------------------------------------------
-# 
+# assistant
 #----------------------------------------------------------------------
+class CodeAssistant (object):
 
+    def __init__ (self, ininame = None):
+        self.config = configure(ininame)
+
+    def set_engine (self, engine):
+        self.config.engine = engine
 
 
 #----------------------------------------------------------------------
