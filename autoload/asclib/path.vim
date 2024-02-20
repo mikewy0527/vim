@@ -79,6 +79,13 @@ function! asclib#path#abspath(path)
 					let is_directory = isdirectory(f)
 				endif
 			endif
+			if is_directory == 0
+				if exists('g:asyncrun_locator')
+					if type(g:asyncrun_locator) == type([])
+
+					endif
+				endif
+			endif
 			let f = (is_directory)? f : ''
 		endif
 	elseif f =~ '^\~[\/\\]'
