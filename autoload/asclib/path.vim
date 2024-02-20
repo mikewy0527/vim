@@ -79,13 +79,6 @@ function! asclib#path#abspath(path)
 					let is_directory = isdirectory(f)
 				endif
 			endif
-			if is_directory == 0
-				if exists('g:asyncrun_locator')
-					if type(g:asyncrun_locator) == type([])
-
-					endif
-				endif
-			endif
 			let f = (is_directory)? f : ''
 		endif
 	elseif f =~ '^\~[\/\\]'
@@ -415,6 +408,11 @@ function! s:find_root(path, markers, strict)
 			return t:asyncrun_root
 		elseif exists('g:asyncrun_root') && g:asyncrun_root != ''
 			return g:asyncrun_root
+		elseif exists('g:asyncrun_locator')
+			let root = call(g:asyncrun_locator, [])
+			if root != ''
+				return root
+			endif
 		endif
 	endif
 	let root = s:guess_root(a:path, a:markers)

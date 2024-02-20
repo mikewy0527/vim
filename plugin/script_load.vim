@@ -107,3 +107,14 @@ function! g:asyncrun_event.program(name)
 endfunc
 
 
+"----------------------------------------------------------------------
+" detect current root
+"----------------------------------------------------------------------
+function! s:root_locator()
+	return ''
+endfunc
+
+
+let g:asyncrun_locator = string(function('s:root_locator'))[10:-3]
+
+
