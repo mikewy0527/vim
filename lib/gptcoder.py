@@ -303,6 +303,64 @@ class CodeAssistant (object):
 
 
 #----------------------------------------------------------------------
+# getopt
+#----------------------------------------------------------------------
+def getopt(argv):
+    args = []
+    options = {}
+    if argv is None:
+        argv = sys.argv[1:]
+    index = 0
+    count = len(argv)
+    while index < count:
+        arg = argv[index]
+        if arg != '':
+            head = arg[:1]
+            if head != '-':
+                break
+            if arg == '-':
+                break
+            name = arg.lstrip('-')
+            key, _, val = name.partition('=')
+            options[key.strip()] = val.strip()
+        index += 1
+    while index < count:
+        args.append(argv[index])
+        index += 1
+    return options, args
+
+
+#----------------------------------------------------------------------
+# help 
+#----------------------------------------------------------------------
+def help(simple = False):
+    if simple:
+        print('error: no operation specified (use -h for help)')
+        return 0
+    exe = os.path.split(os.path.abspath(sys.executable))[1]
+    exe = os.path.splitext(exe)[0]
+    script = os.path.split(sys.argv[0])[1]
+    print('usage: %s %s <operation> [...]'%(exe, script))
+    print('operations:')
+    print('    gptcoder {-h --help}')
+    print('    gptcoder {-p --playground} ')
+    return 0
+
+
+#----------------------------------------------------------------------
+# main
+#----------------------------------------------------------------------
+def main(argv = None):
+    if argv is None:
+        argv = sys.argv[1:]
+    if len(argv) == 0:
+        return help(True)
+    operation = argv[1]
+    options, args = getopt(argv)
+    return 0
+
+
+#----------------------------------------------------------------------
 # testing suit
 #----------------------------------------------------------------------
 if __name__ == '__main__':
