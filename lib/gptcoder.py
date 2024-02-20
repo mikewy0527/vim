@@ -146,6 +146,28 @@ class configure (object):
                     config[sect][key] = val
         return config
 
+    # find root
+    def find_root (self, path, markers = None, fallback = False):
+        if markers is None:
+            markers = ('.git', '.svn', '.hg', '.project', '.root')
+        if path is None:
+            path = os.getcwd()
+        path = os.path.abspath(path)
+        base = path
+        while True:
+            parent = os.path.normpath(os.path.join(base, '..'))
+            for marker in markers:
+                test = os.path.join(base, marker)
+                if os.path.exists(test):
+                    return base
+            if os.path.normcase(parent) == os.path.normcase(base):
+                break
+            base = parent
+        if fallback:
+            return path
+        return None
+
+    # request openai
     def _chatgpt_request (self, messages, apikey, opts):
         import urllib, urllib.request
         url = opts.get('url', "https://api.openai.com/v1/chat/completions")
@@ -170,6 +192,7 @@ class configure (object):
         text = data.decode('utf-8', errors = 'ignore')
         return json.loads(text)
 
+    # request local ollama service
     def _ollama_request (self, messages, model, opts):
         import urllib, urllib.request
         url = opts.get('url', 'http://127.0.0.1:11434/api/chat')
