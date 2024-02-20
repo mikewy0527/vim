@@ -253,6 +253,8 @@ if has_key(s:enabled, 'opt')
 	Plug 'dyng/ctrlsf.vim'
 	Plug 'tpope/vim-speeddating'
 	Plug 'voldikss/vim-translator'
+	Plug 'jreybert/vimagit'
+	Plug 'cohama/agit.vim'
 	" Plug 'tpope/vim-apathy'
 	" Plug 'mh21/errormarker.vim'
 
