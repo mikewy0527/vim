@@ -44,17 +44,17 @@ function! s:GetVisualSelection(mode)
 	let inclusive = (&selection == 'inclusive')? 1 : 2
 	if a:mode ==# 'v'
 		" Must trim the end before the start, the beginning will shift left.
-		let lines[-1] = list2str(str2list(lines[-1])[:column_end - inclusive])
-		let lines[0] = list2str(str2list(lines[0])[column_start - 1:])
+		let lines[-1] = strcharpart(lines[-1], 0, column_end - inclusive + 1)
+		let lines[0] = strcharpart(lines[0], column_start - 1)
 	elseif  a:mode ==# 'V'
 	" Line mode no need to trim start or end
-	elseif  a:mode == "\<c-v>"
+	elseif  a:mode == "\<c-v>" || a:mode == 'b'
 		" Block mode, trim every line
 		let new_lines = []
 		let i = 0
 		for line in lines
-			let t = str2list(line)[column_start - 1:column_end - inclusive]
-			let lines[i] = list2str(t)
+			let w = column_end - inclusive + 2 - column_start
+			let lines[i] = strcharpart(line, column_start - 1, w)
 			let i = i + 1
 		endfor
 	else
