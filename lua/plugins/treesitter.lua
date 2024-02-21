@@ -5,7 +5,7 @@ return {
 
 	dependencies = {
 		{ "windwp/nvim-ts-autotag" },
-		{ "JoosepAlviste/nvim-ts-context-commentstring" },
+		-- { "JoosepAlviste/nvim-ts-context-commentstring" },
 		{ "RRethy/nvim-treesitter-endwise" },
 		{ "RRethy/nvim-treesitter-textsubjects", enabled = false },
 		{ 'nvim-treesitter/nvim-treesitter-textobjects' },
