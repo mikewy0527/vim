@@ -71,7 +71,15 @@ return {
 			"ibhagwan/fzf-lua",              -- optional
 		},
 		config = true
-	}
+	},
+
+	{
+		"kdheepak/lazygit.nvim",
+		-- optional for floating window border decoration
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+	},
 
 }
 
