@@ -32,10 +32,10 @@ return {
 		'nvim-orgmode/orgmode',
 		config = function()
 			utils.defer_init(10, function()
-					require('orgmode').setup_ts_grammar()
-					require('orgmode').setup {
-					}
-				end)
+				require('orgmode').setup_ts_grammar()
+				require('orgmode').setup {
+				}
+			end)
 		end
 	},
 
@@ -59,6 +59,19 @@ return {
 			]]
 		end,
 	},
+
+	{
+		"NeogitOrg/neogit",
+		dependencies = {
+			"nvim-lua/plenary.nvim",         -- required
+			"sindrets/diffview.nvim",        -- optional - Diff integration
+
+			-- Only one of these is needed, not both.
+			"nvim-telescope/telescope.nvim", -- optional
+			"ibhagwan/fzf-lua",              -- optional
+		},
+		config = true
+	}
 
 }
 

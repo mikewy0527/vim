@@ -37,9 +37,6 @@ return {
 			endwise = {
 				enable = true,
 			},
-			context_commentstring = {
-				enable = true,
-			},
 
 			incremental_selection = {
 				enable = true,
