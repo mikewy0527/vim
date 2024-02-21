@@ -50,10 +50,15 @@ function! s:GetVisualSelection(mode)
 	" Line mode no need to trim start or end
 	elseif  a:mode == "\<c-v>" || a:mode == 'b'
 		" Block mode, trim every line
-		let new_lines = []
+		if line_start > line_end
+			let [line_start, line_end] = [line_end, line_start]
+		endif
+		if column_start > column_end
+			let [column_start, column_end] = [column_end, column_start]
+		endif
+		let w = column_end - inclusive + 2 - column_start
 		let i = 0
 		for line in lines
-			let w = column_end - inclusive + 2 - column_start
 			let lines[i] = strcharpart(line, column_start - 1, w)
 			let i = i + 1
 		endfor
