@@ -119,9 +119,6 @@ function! asyncrun#locator#nofile_buffer_path() abort
 				endif
 				return t
 			endif
-		elseif &ft == 'dired'
-			let name = bufname('%')
-			return name
 		endif
 	endif
 	return ''
