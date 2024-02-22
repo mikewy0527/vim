@@ -98,6 +98,12 @@ function! asyncrun#locator#nofile_buffer_path() abort
 				let t = luaeval("require('outline').current.code.buf")
 				return bufname(t)
 			catch
+				try
+					let wid = luaeval("require('symbols-outline').state.code_win")
+					let bid = winbufnr(wid)
+					return bufname(bid)
+				catch
+				endtry
 			endtry
 		endif
 		if exists('b:git_dir')
