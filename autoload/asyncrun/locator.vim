@@ -93,6 +93,12 @@ function! asyncrun#locator#nofile_buffer_path() abort
 				let name = bufname(b:source_buffer)
 				return name
 			endif
+		elseif &ft == 'Outline'
+			try
+				let t = luaeval("require('outline').current.code.buf")
+				return bufname(t)
+			catch
+			endtry
 		endif
 		if exists('b:git_dir')
 			return b:git_dir
