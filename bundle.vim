@@ -589,6 +589,10 @@ if has_key(s:enabled, 'snippets')
 	Plug 'honza/vim-snippets'
 endif
 
+if has_key(s:enabled, 'tagbar')
+	Plug 'preservim/tagbar'
+endif
+
 if has_key(s:enabled, 'lh-cpp')
 	Plug 'LucHermitte/lh-vim-lib'
 	Plug 'LucHermitte/lh-style'
