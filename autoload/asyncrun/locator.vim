@@ -109,15 +109,19 @@ function! asyncrun#locator#nofile_buffer_path() abort
 		if exists('b:git_dir')
 			return b:git_dir
 		endif
-	endif
-	if &ft == 'oil' && &bt != ''
-		let name = bufname('%')
-		if name =~ '\v^oil\:[\\\/][\\\/]'
-			let t = strpart(name, s:windows? 7 : 6)
-			if s:windows && t =~ '\v^\w[\\\/]'
-				let t = strpart(t, 0, 1) . ':' . strpart(t, 1)
+	elseif &bt != ''
+		if &ft == 'oil'
+			let name = bufname('%')
+			if name =~ '\v^oil\:[\\\/][\\\/]'
+				let t = strpart(name, s:windows? 7 : 6)
+				if s:windows && t =~ '\v^\w[\\\/]'
+					let t = strpart(t, 0, 1) . ':' . strpart(t, 1)
+				endif
+				return t
 			endif
-			return t
+		elseif &ft == 'dired'
+			let name = bufname('%')
+			return name
 		endif
 	endif
 	return ''
