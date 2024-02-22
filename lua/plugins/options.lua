@@ -64,6 +64,14 @@ return {
 	},
 
 	{
+		'liuchengxu/vista.vim',
+		enabled = package_enabled('vista'),
+		config = function()
+			-- require('vista')
+		end,
+	},
+
+	{
 		'stevearc/aerial.nvim',
 		enabled = package_enabled('aerial'),
 		config = function() 
