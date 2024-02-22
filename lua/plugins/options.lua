@@ -39,6 +39,30 @@ return {
 			inc('site/bundle/matchup.vim')
 		end
 	},
+
+	{
+		"NeogitOrg/neogit",
+		enabled = package_enabled('neogit'),
+		dependencies = {
+			"nvim-lua/plenary.nvim",         -- required
+			"sindrets/diffview.nvim",        -- optional - Diff integration
+
+			-- Only one of these is needed, not both.
+			"nvim-telescope/telescope.nvim", -- optional
+			"ibhagwan/fzf-lua",              -- optional
+		},
+		config = true
+	},
+
+	{
+		"kdheepak/lazygit.nvim",
+		-- optional for floating window border decoration
+		enabled = package_enabled('lazygit'),
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+	},
+
 }
 
 
