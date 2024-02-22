@@ -88,6 +88,11 @@ function! asyncrun#locator#nofile_buffer_path() abort
 				return fnamemodify(t, ':p')
 			catch
 			endtry
+		elseif &ft == 'aerial'
+			if exists('b:source_buffer')
+				let name = bufname(b:source_buffer)
+				return name
+			endif
 		endif
 		if exists('b:git_dir')
 			return b:git_dir
