@@ -112,7 +112,7 @@ endfunc
 "----------------------------------------------------------------------
 function! module#mode#select() abort
 	let names = module#mode#list()
-	let index = asclib#ui#select('Select mode', names)
+	let index = asclib#ui#select('Select Mode', names)
 	if index >= 0
 		let name = names[index]
 		redraw
