@@ -12,7 +12,7 @@ let g:asclib#common#path = fnamemodify(expand('<sfile>:p'), ':h:h:h')
 " error message
 "----------------------------------------------------------------------
 function! asclib#common#errmsg(text)
-	redraw! | echo | redraw!
+	redraw | echo | redraw
 	echohl ErrorMsg
 	echom a:text
 	echohl None

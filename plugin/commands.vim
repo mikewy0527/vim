@@ -515,3 +515,22 @@ command! -nargs=0 DisableItalic call asclib#style#remove_style('italic')
 command! -nargs=0 ConvertGUIColor call module#colors#convert_gui_color()
 
 
+"----------------------------------------------------------------------
+" ModeSwitch
+"----------------------------------------------------------------------
+command! -nargs=? -complete=customlist,module#mode#complete
+			\ ModeSwitch call module#mode#switch(<bang>0, <q-args>)
+
+
+"----------------------------------------------------------------------
+" ModeList
+"----------------------------------------------------------------------
+command! -nargs=0 ModeList call s:ModeList()
+function! s:ModeList()
+	for n in module#mode#list()
+		echo n
+	endfor
+endfunc
+
+
+

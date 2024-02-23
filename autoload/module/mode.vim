@@ -3,7 +3,7 @@
 " mode.vim - 
 "
 " Created by skywind on 2024/02/23
-" Last Modified: 2024/02/23 22:16:45
+" Last Modified: 2024/02/24 01:04
 "
 "======================================================================
 
@@ -32,11 +32,26 @@ endfunc
 
 
 "----------------------------------------------------------------------
+" locate script path
+"----------------------------------------------------------------------
+function! s:locate_script(name) abort
+	let test = printf('autoload/module/mode/%s.vim', a:name)
+	let fn = findfile(test, &rtp)
+	if fn == ''
+		return ''
+	endif
+	let fn = fnamemodify(fn, ':p')
+	let fn = substitute(fn, '\\', '/', 'g')
+	return fn
+endfunc
+
+
+"----------------------------------------------------------------------
 " switch mode
 "----------------------------------------------------------------------
-function! module#mode#switch(name) abort
+function! module#mode#switch(bang, name) abort
 	if s:current != ''
-		let pname = printf('module#mode#%s#quit', a:name)
+		let pname = printf('module#mode#%s#quit', s:current)
 		if exists('*' . pname)
 			try
 				call call(pname, [])
@@ -46,15 +61,20 @@ function! module#mode#switch(name) abort
 		endif
 		let s:current = ''
 	endif
-	let scripts = s:find_script()
-	if !has_key(scripts, a:name)
+	if a:bang
+		return 0
+	endif
+	let script = s:locate_script(a:name)
+	if script == ''
 		call asclib#common#errmsg('ModeSwitch: mode not found: ' . a:name)
 		return -1
 	endif
-	exec 'source ' . fnameescape(scripts[a:name])
+	exec 'source ' . fnameescape(script)
 	let s:current = a:name
 	let pname = printf('module#mode#%s#init', s:current)
-	call call(pname, [])
+	if exists('*' . pname)
+		call call(pname, [])
+	endif
 	return 0
 endfunc
 
@@ -75,6 +95,15 @@ function! module#mode#list() abort
 	return keys(scripts)
 endfunc
 
+
+
+"----------------------------------------------------------------------
+" command argument completion
+"----------------------------------------------------------------------
+function! module#mode#complete(ArgLead, CmdLine, CursorPos) abort
+	let names = keys(s:find_script())
+	return asclib#common#complete(a:ArgLead, a:CmdLine, a:CursorPos, names)
+endfunc
 
 
 
