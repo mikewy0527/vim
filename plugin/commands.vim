@@ -533,4 +533,10 @@ function! s:ModeList()
 endfunc
 
 
+"----------------------------------------------------------------------
+" ModeSelect: select mode
+"----------------------------------------------------------------------
+command! -nargs=0 ModeSelect call module#mode#select()
+
+
 
