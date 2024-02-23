@@ -705,6 +705,27 @@ endfunc
 
 
 "----------------------------------------------------------------------
+" search runtimepath: asclib#path#lookup('autoload/mode', '*.vim')
+"----------------------------------------------------------------------
+function! asclib#path#lookup(relpath, pattern) abort
+	let result = []
+	for root in split(&rtp, ',')
+		if isdirectory(root)
+			let test = asclib#path#join(root, a:relpath)
+			for t in asclib#path#list(test, a:pattern)
+				let n = asclib#path#join(test, t)
+				if s:windows
+					let n = tr(n, '/', '\')
+				endif
+				call add(result, n)
+			endfor
+		endif
+	endfor
+	return result
+endfunc
+
+
+"----------------------------------------------------------------------
 " win path to msys path
 "----------------------------------------------------------------------
 function! asclib#path#msyspath(winpath)
