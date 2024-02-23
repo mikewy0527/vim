@@ -113,9 +113,9 @@ endfunc
 function! module#mode#select() abort
 	let names = module#mode#list()
 	let index = asclib#ui#select('Select Mode', names)
+	redraw
 	if index >= 0
 		let name = names[index]
-		redraw
 		call module#mode#switch(0, name)
 		" echom printf('switch mode to %s', name)
 	endif
