@@ -73,14 +73,14 @@ endfunc
 "----------------------------------------------------------------------
 " select items
 "----------------------------------------------------------------------
-function! asclib#ui#select(title, textlist)
+function! asclib#ui#select(msg, textlist)
 	if len(a:textlist) == 0
 		return -1
 	endif
 	if has_key(g:asclib.ui, 'select')
-		return g:asclib.ui.select(a:title, a:textlist)
+		return g:asclib.ui.select(a:msg, a:textlist)
 	endif
-	let textlist = [a:title]
+	let textlist = [a:msg]
 	let index = 0
 	for item in a:textlist
 		let textlist += [printf('%d - %s', index + 1, item)]
