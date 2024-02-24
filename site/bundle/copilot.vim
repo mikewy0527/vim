@@ -8,3 +8,58 @@
 "======================================================================
 
 
+"----------------------------------------------------------------------
+" settings
+"----------------------------------------------------------------------
+let g:copilot_no_tab_map = v:true
+let g:copilot_proxy_strict_ssl = v:false
+
+
+"----------------------------------------------------------------------
+" mappings
+"----------------------------------------------------------------------
+imap <silent><script><expr> <m-f> copilot#Accept("\<CR>")
+imap <silent><script><expr> <m-q> copilot#Accept("\<CR>")
+
+
+"----------------------------------------------------------------------
+" whitelist
+"----------------------------------------------------------------------
+let g:copilot_filetypes = {
+			\ '*': v:false,
+			\ 'vim': v:true,
+			\ 'python': v:true,
+			\ 'c': v:true,
+			\ 'cpp': v:true,
+			\ 'javascript': v:true,
+			\ 'typescript': v:true,
+			\ 'html': v:true,
+			\ 'css': v:true,
+			\ 'go': v:true,
+			\ 'rust': v:true,
+			\ 'java': v:true,
+			\ 'lua': v:true,
+			\ 'sh': v:true,
+			\ 'bash': v:true,
+			\ 'zsh': v:true,
+			\ 'yaml': v:true,
+			\ 'json': v:true,
+			\ 'xml': v:true,
+			\ 'markdown': v:true,
+			\ 'php': v:true,
+			\ 'ruby': v:true,
+			\ 'perl': v:true,
+			\ 'scala': v:true,
+			\ 'haskell': v:true,
+			\ 'erlang': v:true,
+			\ 'clojure': v:true,
+			\ 'kotlin': v:true,
+			\ 'pascal': v:true,
+			\ 'fortran': v:true,
+			\ 'scheme': v:true,
+			\ 'lisp': v:true,
+			\ 'zig': v:true,
+			\  }
+
+
+
