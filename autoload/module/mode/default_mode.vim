@@ -2,7 +2,7 @@
 "----------------------------------------------------------------------
 " 
 "----------------------------------------------------------------------
-function! module#mode#default#init()
+function! module#mode#default_mode#init()
 	echom "default: init"
 endfunc
 
@@ -10,7 +10,7 @@ endfunc
 "----------------------------------------------------------------------
 " 
 "----------------------------------------------------------------------
-function! module#mode#default#quit()
+function! module#mode#default_mode#quit()
 	echom "default: quit"
 endfunc
 
