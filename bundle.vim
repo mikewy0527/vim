@@ -355,6 +355,12 @@ if has_key(s:enabled, 'lsp')
 	IncScript site/bundle/lsp.vim
 endif
 
+" copilot.vim
+if has_key(s:enabled, 'copilot')
+	Plug 'github/copilot.vim'
+	IncScript site/bundle/copilot.vim
+endif
+
 " vimspector
 if has_key(s:enabled, 'vimspector')
 	Plug 'puremourning/vimspector'
