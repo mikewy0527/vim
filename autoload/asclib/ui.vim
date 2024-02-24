@@ -92,10 +92,7 @@ function! asclib#ui#select(msg, textlist)
 	catch
 		return -1
 	endtry
-	if hr < 0
-		return -1
-	endif
-	return hr - 1
+	return hr
 endfunc
 
 

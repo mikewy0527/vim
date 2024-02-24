@@ -21,8 +21,10 @@ if has('gui_running')
 	IncScript site/opt/hexhigh.vim
 endif
 
+call module#drivers#install()
 
 call after_object#enable(['r', 'R'], '=', ':', '-', '#', ' ', '/', ';', '(', ')')
+
 
 
 "----------------------------------------------------------------------
