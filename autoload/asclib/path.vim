@@ -93,7 +93,11 @@ function! asclib#path#abspath(path)
 	endif
 	let f = fnamemodify(f, ':p')
 	if s:windows
-		let f = substitute(f, "\\", '/', 'g')
+		let h = matchstr(f, '\v^[\/\\]+')
+		let b = strpart(f, strlen(h))
+		let f = h . substitute(b, '\v[\/\\]+', '/', 'g')
+	else
+		let f = substitute(f, '\v[\/\\]+', '/', 'g')
 	endif
 	if f =~ '\/$'
 		let f = fnamemodify(f, ':h')
@@ -193,9 +197,16 @@ function! asclib#path#normalize(path, ...)
 	elseif s:windows && path =~ '^.:[\/\\]$'
 		return path
 	endif
+	if s:windows
+		let h = matchstr(path, '\v^[\/\\]+')
+		let b = strpart(path, strlen(h))
+		let path = h . substitute(b, '\v[\/\\]+', '/', 'g')
+	else
+		let path = substitute(path, '\v[\/\\]+', '/', 'g')
+	endif
 	let size = len(path)
 	if size > 1 && path[size - 1] == '/'
-		let path = strpart(path, 0, size - 1)
+		let path = fnamemodify(path, ':h')
 	endif
 	return path
 endfunc
@@ -307,7 +318,10 @@ endfunc
 " strip ending slash
 "----------------------------------------------------------------------
 function! asclib#path#stripslash(path)
-	return fnamemodify(a:path, ':s?[/\\]$??')
+	if a:path =~ '\v[\/\\]$'
+		return fnamemodify(a:path, ':h')
+	endif
+	return a:path
 endfunc
 
 
