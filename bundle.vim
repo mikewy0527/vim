@@ -458,6 +458,17 @@ if has_key(s:enabled, 'vista')
 	Plug 'liuchengxu/vista.vim'
 endif
 
+if has_key(s:enabled, 'defx')
+	if has('nvim')
+		Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+	else
+		Plug 'Shougo/defx.nvim'
+		Plug 'roxma/nvim-yarp'
+		Plug 'roxma/vim-hug-neovim-rpc'
+	endif
+	IncScript site/bundle/defx.vim
+endif
+
 if has_key(s:enabled, 'editorconfig')
 	Plug 'editorconfig/editorconfig-vim'
 endif

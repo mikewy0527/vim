@@ -105,3 +105,24 @@ function! asclib#common#print_content(content) abort
 endfunc
 
 
+"----------------------------------------------------------------------
+" timing
+"----------------------------------------------------------------------
+function! asclib#common#timeit(func, ...)
+	let start = reltime()
+	try
+		call call(a:func, a:000)
+	catch
+		echohl ErrorMsg
+		echo "Error: " . v:exception
+		echohl None
+	endtry
+	let end = reltime()
+	let time = reltimestr(reltime(start, end))
+	return time
+endfunc
+
+
+
+
+

@@ -21,7 +21,7 @@ return {
 			inc('site/bundle/dirvish.vim') 
 		end 
 	},
-	
+
 	{
 		'stevearc/oil.nvim',
 		enabled = package_enabled('oil'),
@@ -91,7 +91,7 @@ return {
 		enabled = package_enabled('outline'),
 		config = function()
 			require("outline").setup({
-			})
+				})
 		end,
 	},
 
@@ -119,6 +119,28 @@ return {
 			}
 		end
 	},
+
+	{
+		'nvim-tree/nvim-tree.lua',
+		enabled = package_enabled('nvim-tree'),
+		config = function()
+			require("nvim-tree").setup({
+				})
+		end,
+	},
+
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v3.x",
+		enabled = package_enabled('neo-tree'),
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+			-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+		},
+	},
+
 }
 
 
