@@ -22,6 +22,12 @@ imap <silent><script><expr> <c-b> copilot#Accept("\<CR>")
 imap <silent><script><expr> <m-f> copilot#Accept("\<CR>")
 imap <silent><script><expr> <m-q> copilot#Accept("\<CR>")
 
+imap <silent><m-]> <Plug>(copilot-next)
+imap <silent><m-[> <Plug>(copilot-previous)
+
+imap <silent><m-right> <Plug>(copilot-accept-word)
+imap <silent><c-right> <Plug>(copilot-accept-line)
+
 
 "----------------------------------------------------------------------
 " whitelist
@@ -29,6 +35,7 @@ imap <silent><script><expr> <m-q> copilot#Accept("\<CR>")
 let g:copilot_filetypes = {
 			\ '*': v:false,
 			\ 'vim': v:true,
+			\ 'gitcommit': v:true,
 			\ 'python': v:true,
 			\ 'c': v:true,
 			\ 'cpp': v:true,
