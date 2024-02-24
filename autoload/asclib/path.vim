@@ -93,6 +93,7 @@ function! asclib#path#abspath(path)
 	endif
 	let f = fnamemodify(f, ':p')
 	if s:windows
+		let f = tr(f, '\', '/')
 		let h = matchstr(f, '\v^[\/\\]+')
 		let b = strpart(f, strlen(h))
 		let f = h . substitute(b, '\v[\/\\]+', '/', 'g')
@@ -198,6 +199,7 @@ function! asclib#path#normalize(path, ...)
 		return path
 	endif
 	if s:windows
+		let path = tr(path, '\', '/')
 		let h = matchstr(path, '\v^[\/\\]+')
 		let b = strpart(path, strlen(h))
 		let path = h . substitute(b, '\v[\/\\]+', '/', 'g')
