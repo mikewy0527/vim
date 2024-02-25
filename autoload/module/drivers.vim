@@ -81,6 +81,7 @@ function! s:quickui_select(msg, textlist) abort
 	endfor
 	let opts = {}
 	let opts.title = a:msg
+	" let opts.close = 'button'
 	let choice = quickui#tools#clever_inputlist(a:msg, rows, opts)
 	if choice < 0
 		return 0
