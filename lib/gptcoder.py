@@ -349,7 +349,7 @@ class CodeAssistant (object):
         marker = '>>>'
         found = -1
         for lnum, line in enumerate(content.split('\n')):
-            print(lnum, line)
+            # print(lnum, line)
             line = line.rstrip('\r\n\t ')
             if line.startswith(marker):
                 found = lnum
@@ -363,6 +363,7 @@ class CodeAssistant (object):
         else:
             query = '\n'.join(textlist)
         if query.strip():
+            query = query.rstrip('\r\n')
             msgs.append({'role': 'user', 'content': query})
         if not msgs:
             return 0
@@ -482,8 +483,8 @@ if __name__ == '__main__':
         argv = ['-p', 'd:/temp/test.gpt']
         main(argv)
         return 0
-    test4()
-    # main()
+    # test4()
+    main()
 
 
 
