@@ -305,10 +305,13 @@ class CodeAssistant (object):
         textlist = []
         state = 0
         for line in text.split('\n'):
-            line = line.strip('\r\n\t ')
-            if state == 0 and line:
+            line = line.rstrip('\r\n\t ')
+            if state == 0:
+                if line:
+                    textlist.append(line)
+                    state = 1
+            else:
                 textlist.append(line)
-                state = 1
         while len(textlist) > 0 and not textlist[-1]:
             textlist.pop()
         return '\n'.join(textlist)
@@ -346,31 +349,39 @@ class CodeAssistant (object):
             return 0
         content = self.config.load_file_text(args[0])
         textlist = []
-        marker1 = '<<<'
-        marker2 = '>>>'
         state = ''
         blocks = []
         for lnum, line in enumerate(content.split('\n')):
             line = line.rstrip('\r\n\t ')
-            if line.startswith(marker1):
+            # print(lnum, line)
+            if line.startswith('<<<'):
                 if textlist:
                     blocks.append((state, textlist))
                     textlist = []
                 state = 'user'
-            elif line.startswith(marker2):
+            elif line.startswith('>>>'):
                 if textlist:
                     blocks.append((state, textlist))
                     textlist = []
                 state = 'assistant'
+            elif line.lstrip('\r\n\t ').startswith('#'):
+                if state != '' or len(textlist) != 0:
+                    textlist.append(line)
             else:
                 textlist.append(line)
         if textlist:
             blocks.append((state, textlist))
             textlist = []
+        if 0:
+            import pprint
+            pprint.pprint(blocks)
         msgs = []
         for state, textlist in blocks:
             if state == '':
-                prompt = self.strip_lines('\n'.join(textlist))
+                prompt = '\n'.join(textlist)
+                prompt = self.strip_lines(prompt)
+                # print('prompt', prompt)
+                # print('textlist', textlist)
                 if prompt.strip():
                     msgs.append({'role': 'system', 'content': prompt})
             else:
