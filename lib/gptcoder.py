@@ -301,6 +301,18 @@ class CodeAssistant (object):
     def set_engine (self, engine):
         self.config.engine = engine
 
+    def strip_lines (self, text):
+        textlist = []
+        state = 0
+        for line in text.split('\n'):
+            line = line.strip('\r\n\t ')
+            if state == 0 and line:
+                textlist.append(line)
+                state = 1
+        while len(textlist) > 0 and not textlist[-1]:
+            textlist.pop()
+        return '\n'.join(textlist)
+
     # pass args[0] as prompt
     def shell (self, options, args):
         input_text = ''
@@ -319,8 +331,12 @@ class CodeAssistant (object):
             msgs.append({'role': 'user', 'content': input_text})
         if not msgs:
             return 0
-        msg = self.config.request(msgs)
-        print(msg)
+        if 0:
+            import pprint
+            pprint.pprint(msgs)
+        if 1:
+            msg = self.config.request(msgs)
+            print(msg)
         return 0
 
     # pass args[0] as a filename contains prompt + query
@@ -333,24 +349,29 @@ class CodeAssistant (object):
         marker = '>>>'
         found = -1
         for lnum, line in enumerate(content.split('\n')):
+            print(lnum, line)
             line = line.rstrip('\r\n\t ')
             if line.startswith(marker):
                 found = lnum
             textlist.append(line)
         msgs = []
         if found >= 0:
-            prompt = '\n'.join(content[:found])
+            prompt = self.strip_lines('\n'.join(textlist[:found]))
             if prompt.strip():
                 msgs.append({'role': 'system', 'content': prompt})
-            query = '\n'.join(content[found + 1:])
+            query = '\n'.join(textlist[found + 1:])
         else:
-            query = '\n'.join(content)
+            query = '\n'.join(textlist)
         if query.strip():
             msgs.append({'role': 'user', 'content': query})
         if not msgs:
             return 0
-        msg = self.config.request(msgs)
-        print(msg)
+        if 0:
+            import pprint
+            pprint.pprint(msgs)
+        if 1:
+            msg = self.config.request(msgs)
+            print(msg)
         return 0
 
 
@@ -458,11 +479,11 @@ if __name__ == '__main__':
         return 0
     def test4():
         argv = ['-s', 'hello']
-
+        argv = ['-p', 'd:/temp/test.gpt']
         main(argv)
         return 0
-    # test4()
-    main()
+    test4()
+    # main()
 
 
 
