@@ -346,25 +346,39 @@ class CodeAssistant (object):
             return 0
         content = self.config.load_file_text(args[0])
         textlist = []
-        marker = '>>>'
+        marker1 = '<<<'
+        marker2 = '>>>'
         found = -1
+        state = ''
+        blocks = []
         for lnum, line in enumerate(content.split('\n')):
-            # print(lnum, line)
             line = line.rstrip('\r\n\t ')
-            if line.startswith(marker):
-                found = lnum
-            textlist.append(line)
+            if line.startswith(marker1):
+                if textlist:
+                    blocks.append((state, textlist))
+                    textlist = []
+                state = 'user'
+            elif line.startswith(marker2):
+                if textlist:
+                    blocks.append((state, textlist))
+                    textlist = []
+                state = 'assistant'
+            else:
+                textlist.append(line)
+        if textlist:
+            blocks.append((state, textlist))
+            textlist = []
         msgs = []
-        if found >= 0:
-            prompt = self.strip_lines('\n'.join(textlist[:found]))
-            if prompt.strip():
-                msgs.append({'role': 'system', 'content': prompt})
-            query = '\n'.join(textlist[found + 1:])
-        else:
-            query = '\n'.join(textlist)
-        if query.strip():
-            query = query.rstrip('\r\n')
-            msgs.append({'role': 'user', 'content': query})
+        for state, textlist in blocks:
+            if state == '':
+                prompt = self.strip_lines('\n'.join(textlist))
+                if prompt.strip():
+                    msgs.append({'role': 'system', 'content': prompt})
+            else:
+                query = '\n'.join(textlist)
+                query = query.rstrip('\r\n\t ')
+                if query.strip():
+                    msgs.append({'role': state, 'content': query})
         if not msgs:
             return 0
         if 0:
