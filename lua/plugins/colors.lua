@@ -27,7 +27,7 @@ return {
 		'kaicataldo/material.vim',
 		'cocopon/iceberg.vim',
 		'rafi/awesome-vim-colorschemes',
-		'flazz/vim-colorschemes',
+		'skywind3000/vim-colorschemes',
 		'jaredgorski/SpaceCamp',
 		'mswift42/vim-themes',
 }
