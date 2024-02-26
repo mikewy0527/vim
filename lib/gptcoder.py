@@ -348,7 +348,6 @@ class CodeAssistant (object):
         textlist = []
         marker1 = '<<<'
         marker2 = '>>>'
-        found = -1
         state = ''
         blocks = []
         for lnum, line in enumerate(content.split('\n')):
