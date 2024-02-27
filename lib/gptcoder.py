@@ -301,6 +301,21 @@ class CodeAssistant (object):
     def set_engine (self, engine):
         self.config.engine = engine
 
+    def strip_lines (self, text):
+        textlist = []
+        state = 0
+        for line in text.split('\n'):
+            line = line.rstrip('\r\n\t ')
+            if state == 0:
+                if line:
+                    textlist.append(line)
+                    state = 1
+            else:
+                textlist.append(line)
+        while len(textlist) > 0 and not textlist[-1]:
+            textlist.pop()
+        return '\n'.join(textlist)
+
     # pass args[0] as prompt
     def shell (self, options, args):
         input_text = ''
@@ -319,8 +334,12 @@ class CodeAssistant (object):
             msgs.append({'role': 'user', 'content': input_text})
         if not msgs:
             return 0
-        msg = self.config.request(msgs)
-        print(msg)
+        if 0:
+            import pprint
+            pprint.pprint(msgs)
+        if 1:
+            msg = self.config.request(msgs)
+            print(msg)
         return 0
 
     # pass args[0] as a filename contains prompt + query
@@ -330,27 +349,54 @@ class CodeAssistant (object):
             return 0
         content = self.config.load_file_text(args[0])
         textlist = []
-        marker = '>>>'
-        found = -1
+        state = ''
+        blocks = []
         for lnum, line in enumerate(content.split('\n')):
             line = line.rstrip('\r\n\t ')
-            if line.startswith(marker):
-                found = lnum
-            textlist.append(line)
+            # print(lnum, line)
+            if line.startswith('<<<'):
+                if textlist:
+                    blocks.append((state, textlist))
+                    textlist = []
+                state = 'user'
+            elif line.startswith('>>>'):
+                if textlist:
+                    blocks.append((state, textlist))
+                    textlist = []
+                state = 'assistant'
+            elif line.lstrip('\r\n\t ').startswith('#'):
+                if state != '' or len(textlist) != 0:
+                    textlist.append(line)
+            else:
+                textlist.append(line)
+        if textlist:
+            blocks.append((state, textlist))
+            textlist = []
+        if 0:
+            import pprint
+            pprint.pprint(blocks)
         msgs = []
-        if found >= 0:
-            prompt = '\n'.join(content[:found])
-            if prompt.strip():
-                msgs.append({'role': 'system', 'content': prompt})
-            query = '\n'.join(content[found + 1:])
-        else:
-            query = '\n'.join(content)
-        if query.strip():
-            msgs.append({'role': 'user', 'content': query})
+        for state, textlist in blocks:
+            if state == '':
+                prompt = '\n'.join(textlist)
+                prompt = self.strip_lines(prompt)
+                # print('prompt', prompt)
+                # print('textlist', textlist)
+                if prompt.strip():
+                    msgs.append({'role': 'system', 'content': prompt})
+            else:
+                query = '\n'.join(textlist)
+                query = query.rstrip('\r\n\t ')
+                if query.strip():
+                    msgs.append({'role': state, 'content': query})
         if not msgs:
             return 0
-        msg = self.config.request(msgs)
-        print(msg)
+        if 0:
+            import pprint
+            pprint.pprint(msgs)
+        if 1:
+            msg = self.config.request(msgs)
+            print(msg)
         return 0
 
 
@@ -458,7 +504,7 @@ if __name__ == '__main__':
         return 0
     def test4():
         argv = ['-s', 'hello']
-
+        argv = ['-p', 'd:/temp/test.gpt']
         main(argv)
         return 0
     # test4()

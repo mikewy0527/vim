@@ -12,7 +12,7 @@ let g:asclib#common#path = fnamemodify(expand('<sfile>:p'), ':h:h:h')
 " error message
 "----------------------------------------------------------------------
 function! asclib#common#errmsg(text)
-	redraw! | echo | redraw!
+	redraw | echo | redraw
 	echohl ErrorMsg
 	echom a:text
 	echohl None
@@ -34,33 +34,41 @@ endfunc
 
 
 "----------------------------------------------------------------------
-" get visual selection
+" get region text
 "----------------------------------------------------------------------
-function! s:GetVisualSelection(mode)
-	" call with visualmode() as the argument
-	let [line_start, column_start] = getpos("'<")[1:2]
-	let [line_end, column_end]     = getpos("'>")[1:2]
+function! s:GetRegionText(pos1, pos2, mode)
+	if exists('*getregion') && has('patch-9.1.128') && 0
+		let mode = (a:mode == "b")? "\<c-v>" : a:mode
+		return join(getregion(a:pos1, a:pos2, mode))
+	endif
+	let [line_start, column_start] = [line(a:pos1), charcol(a:pos1)]
+	let [line_end, column_end]     = [line(a:pos2), charcol(a:pos2)]
+	let delta = line_end - line_start
+	if delta < 0 || (delta == 0 && column_start > column_end)
+		let [line_start, line_end] = [line_end, line_start]
+		let [column_start, column_end] = [column_end, column_start]
+	endif
 	let lines = getline(line_start, line_end)
 	let inclusive = (&selection == 'inclusive')? 1 : 2
 	if a:mode ==# 'v'
 		" Must trim the end before the start, the beginning will shift left.
-		let lines[-1] = lines[-1][: column_end - inclusive]
-		let lines[0] = lines[0][column_start - 1:]
+		let lines[-1] = strcharpart(lines[-1], 0, column_end - inclusive + 1)
+		let lines[0] = strcharpart(lines[0], column_start - 1)
 	elseif  a:mode ==# 'V'
 	" Line mode no need to trim start or end
-	elseif  a:mode == "\<c-v>"
+	elseif  a:mode == "\<c-v>" || a:mode == 'b'
 		" Block mode, trim every line
-		let new_lines = []
+		let w = column_end - inclusive + 2 - column_start
 		let i = 0
 		for line in lines
-			let lines[i] = line[column_start - 1: column_end - inclusive]
+			let lines[i] = strcharpart(line, column_start - 1, w)
 			let i = i + 1
 		endfor
 	else
 		return ''
 	endif
 	return join(lines, "\n")
-endfunction
+endfunc
 
 
 "----------------------------------------------------------------------
@@ -68,7 +76,7 @@ endfunction
 "----------------------------------------------------------------------
 function! asclib#common#get_selected_text(...)
 	let mode = get(a:, 1, mode(1))
-	return s:GetVisualSelection(mode)
+	return s:GetRegionText("'<", "'>", mode)
 endfunc
 
 
@@ -95,5 +103,26 @@ function! asclib#common#print_content(content) abort
 		echo text
 	endfor
 endfunc
+
+
+"----------------------------------------------------------------------
+" timing
+"----------------------------------------------------------------------
+function! asclib#common#timeit(func, ...)
+	let start = reltime()
+	try
+		call call(a:func, a:000)
+	catch
+		echohl ErrorMsg
+		echo "Error: " . v:exception
+		echohl None
+	endtry
+	let end = reltime()
+	let time = reltimestr(reltime(start, end))
+	return time
+endfunc
+
+
+
 
 

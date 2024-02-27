@@ -355,6 +355,12 @@ if has_key(s:enabled, 'lsp')
 	IncScript site/bundle/lsp.vim
 endif
 
+" copilot.vim
+if has_key(s:enabled, 'copilot')
+	Plug 'github/copilot.vim'
+	IncScript site/bundle/copilot.vim
+endif
+
 " vimspector
 if has_key(s:enabled, 'vimspector')
 	Plug 'puremourning/vimspector'
@@ -450,6 +456,17 @@ endif
 
 if has_key(s:enabled, 'vista')
 	Plug 'liuchengxu/vista.vim'
+endif
+
+if has_key(s:enabled, 'defx')
+	if has('nvim')
+		Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+	else
+		Plug 'Shougo/defx.nvim'
+		Plug 'roxma/nvim-yarp'
+		Plug 'roxma/vim-hug-neovim-rpc'
+	endif
+	IncScript site/bundle/defx.vim
 endif
 
 if has_key(s:enabled, 'editorconfig')
@@ -587,6 +604,10 @@ endif
 
 if has_key(s:enabled, 'snippets')
 	Plug 'honza/vim-snippets'
+endif
+
+if has_key(s:enabled, 'tagbar')
+	Plug 'preservim/tagbar'
 endif
 
 if has_key(s:enabled, 'lh-cpp')

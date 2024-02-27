@@ -93,7 +93,12 @@ function! asclib#path#abspath(path)
 	endif
 	let f = fnamemodify(f, ':p')
 	if s:windows
-		let f = substitute(f, "\\", '/', 'g')
+		let f = tr(f, '\', '/')
+		let h = matchstr(f, '\v^[\/\\]+')
+		let b = strpart(f, strlen(h))
+		let f = h . substitute(b, '\v[\/\\]+', '/', 'g')
+	else
+		let f = substitute(f, '\v[\/\\]+', '/', 'g')
 	endif
 	if f =~ '\/$'
 		let f = fnamemodify(f, ':h')
@@ -193,9 +198,17 @@ function! asclib#path#normalize(path, ...)
 	elseif s:windows && path =~ '^.:[\/\\]$'
 		return path
 	endif
+	if s:windows
+		let path = tr(path, '\', '/')
+		let h = matchstr(path, '\v^[\/\\]+')
+		let b = strpart(path, strlen(h))
+		let path = h . substitute(b, '\v[\/\\]+', '/', 'g')
+	else
+		let path = substitute(path, '\v[\/\\]+', '/', 'g')
+	endif
 	let size = len(path)
 	if size > 1 && path[size - 1] == '/'
-		let path = strpart(path, 0, size - 1)
+		let path = fnamemodify(path, ':h')
 	endif
 	return path
 endfunc
@@ -307,7 +320,10 @@ endfunc
 " strip ending slash
 "----------------------------------------------------------------------
 function! asclib#path#stripslash(path)
-	return fnamemodify(a:path, ':s?[/\\]$??')
+	if a:path =~ '\v[\/\\]$'
+		return fnamemodify(a:path, ':h')
+	endif
+	return a:path
 endfunc
 
 
@@ -701,6 +717,27 @@ function! asclib#path#list(path, ...)
 		endif
 	endfor
 	return candidate
+endfunc
+
+
+"----------------------------------------------------------------------
+" search runtimepath: asclib#path#lookup('autoload/mode', '*.vim')
+"----------------------------------------------------------------------
+function! asclib#path#lookup(relpath, pattern) abort
+	let result = []
+	for root in split(&rtp, ',')
+		if isdirectory(root)
+			let test = asclib#path#join(root, a:relpath)
+			for t in asclib#path#list(test, a:pattern)
+				let n = asclib#path#join(test, t)
+				if s:windows
+					let n = tr(n, '/', '\')
+				endif
+				call add(result, n)
+			endfor
+		endif
+	endfor
+	return result
 endfunc
 
 

@@ -70,3 +70,30 @@ function! asclib#ui#inputlist(textlist)
 endfunc
 
 
+"----------------------------------------------------------------------
+" select items
+"----------------------------------------------------------------------
+function! asclib#ui#select(msg, textlist)
+	if len(a:textlist) == 0
+		return -1
+	endif
+	if has_key(g:asclib.ui, 'select')
+		return g:asclib.ui.select(a:msg, a:textlist)
+	endif
+	let textlist = [a:msg]
+	let index = 0
+	for item in a:textlist
+		let textlist += [printf('%d - %s', index + 1, item)]
+		let index += 1
+	endfor
+	call inputsave()
+	try
+		let hr = inputlist(textlist)
+	catch
+		return -1
+	endtry
+	return hr
+endfunc
+
+
+
