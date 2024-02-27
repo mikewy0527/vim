@@ -719,6 +719,16 @@ function! AltMeta_Setup()
 		return
 	endif
 	call s:init_meta_marks()
+	if exists('g:altmeta_extension')
+		if type(g:altmeta_extension) == type([])
+			for n in g:altmeta_extension
+				let key = n[0]
+				let code = n[1]
+				call s:set_newkey(key, code)
+			endfor
+		endif
+	endif
+	" echom printf("spared %d/50", s:fn_spare_keys_used)
 endfunc
 
 " With newer Xterm, Vim enters an extended negotiation during startup.  First
