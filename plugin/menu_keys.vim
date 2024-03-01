@@ -114,6 +114,7 @@ let g:navigator.o = {
 			\ 'p' : [':Leaderf mru', 'leaderf-project-files'],
 			\ 'f' : [':EditFileTypeScript', 'open-file-type-script'],
 			\ 'w' : [':VimwikiTabIndex', 'open-wiki'],
+			\ 'g' : [':FileSwitch ~/.gitconfig', 'open-gitconfig'],
 			\ }
 
 
