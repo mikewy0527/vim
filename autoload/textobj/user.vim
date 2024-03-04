@@ -24,7 +24,7 @@
 " Interfaces  "{{{1
 " simple  "{{{2
 
-function! asclib#textobj#move(pattern, flags, previous_mode)
+function! textobj#user#move(pattern, flags, previous_mode)
   let i = v:count1
 
   call s:prepare_movement(a:previous_mode)
@@ -38,7 +38,7 @@ endfunction
 
 " FIXME: growing the current selection like iw/aw, is/as, and others.
 " FIXME: countable.
-function! asclib#textobj#select(pattern, flags, previous_mode)
+function! textobj#user#select(pattern, flags, previous_mode)
   let ORIG_POS = s:gpos_to_spos(getpos('.'))
 
   let pft = searchpos(a:pattern, 'ceW')
@@ -92,12 +92,12 @@ endfunction
 " pair  "{{{2
 
 " FIXME: NIY, but is this necessary?
-" function! asclib#textobj#move_pair(pattern1, pattern2, flags)
+" function! textobj#user#move_pair(pattern1, pattern2, flags)
 " endfunction
 
 
 " BUGS: With o_CTRL-V, this may not work properly.
-function! asclib#textobj#select_pair(pattern1, pattern2, flags, previous_mode)
+function! textobj#user#select_pair(pattern1, pattern2, flags, previous_mode)
   let ORIG_POS = s:gpos_to_spos(getpos('.'))
 
   " adjust the cursor to the head of a:pattern2 if it's already in the range.
@@ -147,7 +147,7 @@ endfunction
 
 
 
-function! asclib#textobj#define(pat0, pat1, pat2, guideline)  "{{{2
+function! textobj#user#define(pat0, pat1, pat2, guideline)  "{{{2
   let pat0 = s:rhs_escape(a:pat0)
   let pat1 = s:rhs_escape(a:pat1)
   let pat2 = s:rhs_escape(a:pat2)
@@ -198,7 +198,7 @@ endfunction
 
 
 
-function! asclib#textobj#map(plugin_name, obj_specs, ...)  "{{{2
+function! textobj#user#map(plugin_name, obj_specs, ...)  "{{{2
   if a:0 == 0
     " It seems to be directly called by user - a:obj_specs are not normalized.
     call s:normalize(a:obj_specs)
@@ -233,7 +233,7 @@ endfunction
 
 
 
-function! asclib#textobj#plugin(plugin_name, obj_specs)  "{{{2
+function! textobj#user#plugin(plugin_name, obj_specs)  "{{{2
   if a:plugin_name =~# '\L'
     throw '{plugin} contains non-lowercase alphabet: ' . string(a:plugin_name)
   endif
@@ -346,7 +346,7 @@ endfunction
 
 
 
-" for asclib#textobj#define()  "{{{2
+" for textobj#user#define()  "{{{2
 
 function! s:rhs_escape(pattern)
   let r = a:pattern
@@ -357,20 +357,20 @@ endfunction
 
 
 function! s:mapargs_single_move(lhs, pattern, flags, previous_mode)
-  return printf('<silent> %s  :<C-u>call asclib#textobj#move(%s, %s, %s)<CR>',
+  return printf('<silent> %s  :<C-u>call textobj#user#move(%s, %s, %s)<CR>',
               \ a:lhs,
               \ string(a:pattern), string(a:flags), string(a:previous_mode))
 endfunction
 
 function! s:mapargs_single_select(lhs, pattern, flags, previous_mode)
-  return printf('<silent> %s  :<C-u>call asclib#textobj#select(%s, %s, %s)<CR>',
+  return printf('<silent> %s  :<C-u>call textobj#user#select(%s, %s, %s)<CR>',
               \ a:lhs,
               \ string(a:pattern), string(a:flags), string(a:previous_mode))
 endfunction
 
 function! s:mapargs_pair_select(lhs, pattern1, pattern2, flags, previous_mode)
   return printf(
-       \   '<silent> %s  :<C-u>call asclib#textobj#select_pair(%s,%s,%s,%s)<CR>',
+       \   '<silent> %s  :<C-u>call textobj#user#select_pair(%s,%s,%s,%s)<CR>',
        \   a:lhs,
        \   string(a:pattern1), string(a:pattern2),
        \   string(a:flags), string(a:previous_mode)
@@ -380,7 +380,7 @@ endfunction
 
 
 
-" for asclib#textobj#plugin()  "{{{2
+" for textobj#user#plugin()  "{{{2
 " basics  "{{{3
 let s:plugin = {}
 
@@ -451,7 +451,7 @@ endfunction
 
 
 function! s:plugin.define_default_key_mappings(banged_p)  "{{{3
-  call asclib#textobj#map(self.name, self.obj_specs, a:banged_p)
+  call textobj#user#map(self.name, self.obj_specs, a:banged_p)
 endfunction
 
 
@@ -527,7 +527,7 @@ let s:PATTERN_IMPL_TABLE = {
 \   'move-N': 's:move_wrapper',
 \   'move-p': 's:move_wrapper',
 \   'move-P': 's:move_wrapper',
-\   'select': 'asclib#textobj#select',
+\   'select': 'textobj#user#select',
 \   'select-a': 's:select_pair_wrapper',
 \   'select-i': 's:select_pair_wrapper',
 \ }
@@ -544,7 +544,7 @@ let s:PATTERN_FLAGS_TABLE = {
 
 function! s:move_wrapper(patterns, flags, previous_mode)
   " \x16 = CTRL-V
-  call asclib#textobj#move(
+  call textobj#user#move(
   \   a:patterns,
   \   substitute(a:flags, '[vV\x16]', '', 'g'),
   \   a:previous_mode
@@ -552,7 +552,7 @@ function! s:move_wrapper(patterns, flags, previous_mode)
 endfunction
 
 function! s:select_pair_wrapper(patterns, flags, previous_mode)
-  call asclib#textobj#select_pair(
+  call textobj#user#select_pair(
   \   a:patterns[0],
   \   a:patterns[1],
   \   a:flags,
@@ -663,7 +663,7 @@ endfunction
 
 " Etc  "{{{2
 
-function! asclib#textobj#_sid()
+function! textobj#user#_sid()
   return maparg('<SID>', 'n')
 endfunction
 nnoremap <SID>  <SID>
