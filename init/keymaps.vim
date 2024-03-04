@@ -547,13 +547,3 @@ vmap <Leader>xy   :y *<CR>
 
 
 
-"----------------------------------------------------------------------
-" text objects
-"----------------------------------------------------------------------
-
-" IP address
-" vnoremap <silent>IP /\v[^0-9\.]<cr>ho?\v[^0-9\.]<cr>lo<esc>:nohl<cr>gv
-" omap <silent>IP :normal vIP<cr>
-
-
-
