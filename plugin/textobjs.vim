@@ -1,6 +1,9 @@
 "======================================================================
 "
-" textobjs.vim - 
+" textobjs.vim - use it with vim-textobj-user
+"
+" Requirement:
+" https://github.com/kana/vim-textobj-user
 "
 " Created by skywind on 2024/03/04
 " Last Modified: 2024/03/04 15:24:53
