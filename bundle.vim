@@ -131,13 +131,21 @@ if has_key(s:enabled, 'basic')
 	Plug 'jamessan/vim-gnupg'
 
 	Plug 'kana/vim-textobj-user'
-	" Plug 'kana/vim-textobj-indent'
 	Plug 'kana/vim-textobj-syntax'
 	Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
-	Plug 'sgur/vim-textobj-parameter'
 	Plug 'bps/vim-textobj-python', {'for': 'python'}
 	Plug 'jceb/vim-textobj-uri'
 
+	if mapcheck('ii', 'v') == ''
+		Plug 'kana/vim-textobj-indent'
+	endif
+	
+	if has_key(s:enabled, 'targets')
+		Plug 'wellle/targets.vim'
+		IncScript site/bundle/targets.vim
+	else
+		Plug 'sgur/vim-textobj-parameter'
+	endif
 
 
 	if !has_key(s:enabled, 'syntax-extra')
