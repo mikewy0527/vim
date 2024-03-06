@@ -143,9 +143,9 @@ if has_key(s:enabled, 'basic')
 	if has_key(s:enabled, 'targets')
 		Plug 'wellle/targets.vim'
 		IncScript site/bundle/targets.vim
-	else
-		Plug 'sgur/vim-textobj-parameter'
 	endif
+
+	Plug 'sgur/vim-textobj-parameter'
 
 
 	if !has_key(s:enabled, 'syntax-extra')
