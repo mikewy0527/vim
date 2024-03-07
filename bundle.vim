@@ -135,18 +135,16 @@ if has_key(s:enabled, 'basic')
 	Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim', 'java'] }
 	Plug 'bps/vim-textobj-python', {'for': 'python'}
 	Plug 'jceb/vim-textobj-uri'
+	Plug 'sgur/vim-textobj-parameter'
 
 	if mapcheck('ii', 'v') == ''
 		Plug 'kana/vim-textobj-indent'
 	endif
-	
+
 	if has_key(s:enabled, 'targets')
 		Plug 'wellle/targets.vim'
 		IncScript site/bundle/targets.vim
 	endif
-
-	Plug 'sgur/vim-textobj-parameter'
-
 
 	if !has_key(s:enabled, 'syntax-extra')
 		Plug 'octol/vim-cpp-enhanced-highlight', { 'for': ['c', 'cpp'] }

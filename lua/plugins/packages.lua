@@ -27,6 +27,7 @@ return {
 	{ 'sgur/vim-textobj-parameter', dependencies = {'kana/vim-textobj-user'} },
 	{ 'bps/vim-textobj-python', dependencies = {'kana/vim-textobj-user'} },
 	{ 'jceb/vim-textobj-uri', dependencies = {'kana/vim-textobj-user'} },
+	{ 'wellle/targets.vim', },
 
 	{
 		'nvim-orgmode/orgmode',

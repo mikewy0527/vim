@@ -208,8 +208,8 @@ nnoremap <space>aa ggVG
 "----------------------------------------------------------------------
 onoremap az :<c-u>normal! ggVG<cr>
 vnoremap az ogg0oG$
-onoremap il :<c-u>normal! v$o^oh<cr>
-vnoremap il $o^oh
+" onoremap il :<c-u>normal! v$o^oh<cr>
+" vnoremap il $o^oh
 
 
 "----------------------------------------------------------------------
