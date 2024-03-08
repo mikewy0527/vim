@@ -1,19 +1,25 @@
 "======================================================================
 "
-" lua.vim - 
+" quickfix.vim - 
 "
-" Created by skywind on 2023/07/31
-" Last Modified: 2023/07/31 11:20:37
+" Created by skywind on 2024/03/08
+" Last Modified: 2024/03/08 17:33:22
 "
 "======================================================================
 
-let b:cursorword = 1
-
 
 "----------------------------------------------------------------------
-" mapping
+" 
 "----------------------------------------------------------------------
-noremap <buffer><f4> :<c-u>silent update<cr>:call asclib#lua#refresh('%')<cr>
-
+function! module#quickfix#filter() abort
+	let l:qflist = getqflist()
+	let l:qf = []
+	for l:item in l:qflist
+		if l:item.valid
+			call add(l:qf, l:item)
+		endif
+	endfor
+	call setqflist(l:qf)
+endfunc
 
 

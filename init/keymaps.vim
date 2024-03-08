@@ -329,15 +329,6 @@ nnoremap <silent><tab>; :PreviewGoto edit<cr>
 nnoremap <silent><tab>: :PreviewGoto tabe<cr>
 
 if has('autocmd')
-	function! s:quickfix_keymap()
-		if &buftype != 'quickfix'
-			return
-		endif
-		nnoremap <silent><buffer> p :call quickui#tools#preview_quickfix()<cr>
-		nnoremap <silent><buffer> P :PreviewClose<cr>
-		nnoremap <silent><buffer> q :close<cr>
-		setlocal nonumber
-	endfunc
 	function! s:insert_enter()
 		if get(g:, 'echodoc#enable_at_startup', 0) != 0
 			set noshowmode
@@ -354,10 +345,6 @@ if has('autocmd')
 	endfunc
 	augroup AscKeymapsAu
 		autocmd!
-		autocmd FileType qf call s:quickfix_keymap()
-		autocmd FileType vim noremap <buffer><F4> :<c-u>silent update<cr>:so %<cr>
-		autocmd FileType python noremap <buffer><F4> :<c-u>silent update<cr>:call asclib#python#refresh('%')<cr>
-		autocmd FileType lua noremap <buffer><f4> :<c-u>silent update<cr>:call asclib#lua#refresh('%')<cr>
 		autocmd InsertLeave * call s:insert_leave()
 		autocmd InsertEnter * call s:insert_enter()
 		" autocmd InsertLeave * set showmode
