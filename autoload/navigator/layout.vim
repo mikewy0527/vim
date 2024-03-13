@@ -38,8 +38,6 @@ function! s:layout_horizon(ctx, opts) abort
 	if type(ctx.nrows) == 5
 		let ctx.nrows = float2nr(ctx.nrows)
 	endif
-	" echom printf("winsize=%dx%d stride=%d ncols=%d nrows=%d", ctx.wincx, ctx.wincy, ctx.stride, ctx.ncols, ctx.nrows)
-	" echom printf("win size %s", navigator#display#getsize())
 	let min_height = navigator#config#get(a:opts, 'min_height')
 	let max_height = navigator#config#get(a:opts, 'max_height')
 	if min_height > max_height
@@ -60,8 +58,6 @@ function! s:layout_horizon(ctx, opts) abort
 	let ctx.pg_size = ctx.pg_height * ctx.ncols
 	let ctx.cy = ctx.pg_height + ypad
 	let ctx.pages = []
-	" echom printf("ctx: nrows=%d pg_height=%d pg_size=%d pg_count=%d", ctx.nrows, ctx.pg_height, ctx.pg_size, ctx.pg_count)
-	" echom printf("min_height=%d max_height=%d", min_height, max_height)
 endfunc
 
 
