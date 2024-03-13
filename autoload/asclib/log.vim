@@ -3,7 +3,7 @@
 " log.vim - 
 "
 " Created by skywind on 2024/03/13
-" Last Modified: 2024/03/13 17:22:27
+" Last Modified: 2024/03/13 23:17
 "
 "======================================================================
 
@@ -106,6 +106,14 @@ endfunc
 
 
 "----------------------------------------------------------------------
+" headless log
+"----------------------------------------------------------------------
+function! asclib#log#clear(fmt, ...) abort
+	call asclib#log#out('', asclib#log#format(a:fmt, a:000))
+endfunc
+
+
+"----------------------------------------------------------------------
 " log info
 "----------------------------------------------------------------------
 function! asclib#log#info(fmt, ...) abort
@@ -156,7 +164,10 @@ endfunc
 " get log function 
 "----------------------------------------------------------------------
 function! asclib#log#get(name) abort
-	return function('asclib#log#'.a:name)
+	if has_key(s:enabled, a:name) && a:name != ''
+		return function('asclib#log#'.a:name)
+	endif
+	return function('asclib#log#clear')
 endfunc
 
 
