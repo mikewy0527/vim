@@ -19,7 +19,9 @@ let s:option = {'path': '~/.vim/logs', 'echo': 0, 'file': 1}
 " enable channel
 "----------------------------------------------------------------------
 function! asclib#log#enable(channel, enabled) abort
-	let s:enabled[a:channel] = a:enabled
+	if has_key(s:enabled, a:channel)
+		let s:enabled[a:channel] = a:enabled
+	endif
 endfunc
 
 
