@@ -80,6 +80,21 @@ endfunc
 
 
 "----------------------------------------------------------------------
+" return help text for current mode
+"----------------------------------------------------------------------
+function! module#mode#help() abort
+	if s:current == ''
+		return ''
+	endif
+	let pname = printf('module#mode#%s#help', s:current)
+	if exists('*' . pname)
+		return call(pname, [])
+	endif
+	return ''
+endfunc
+
+
+"----------------------------------------------------------------------
 " get current mode name
 "----------------------------------------------------------------------
 function! module#mode#current() abort

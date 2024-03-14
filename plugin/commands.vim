@@ -520,6 +520,12 @@ command! -nargs=0 ConvertGUIColor call module#colors#convert_gui_color()
 "----------------------------------------------------------------------
 command! -nargs=? -complete=customlist,module#mode#complete
 			\ ModeSwitch call module#mode#switch(<bang>0, <q-args>)
+function! s:ModeSwitch(bang, name) abort
+	call module#mode#switch(a:bang, a:name)
+	if module#mode#current() == a:name
+		let text = module#mode#help()
+	endif
+endfunc
 
 
 "----------------------------------------------------------------------

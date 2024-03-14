@@ -273,10 +273,18 @@ noremap <silent><f1> :AsyncTask task-f1<cr>
 noremap <silent><f2> :AsyncTask task-f2<cr>
 noremap <silent><f3> :AsyncTask task-f3<cr>
 noremap <silent><f4> :AsyncTask task-f4<cr>
+noremap <silent><s-f1> :AsyncTask task-s-f1<cr>
+noremap <silent><s-f2> :AsyncTask task-s-f2<cr>
+noremap <silent><s-f3> :AsyncTask task-s-f3<cr>
+noremap <silent><s-f4> :AsyncTask task-s-f4<cr>
 inoremap <silent><f1> <ESC>:AsyncTask task-f1<cr>
 inoremap <silent><f2> <ESC>:AsyncTask task-f2<cr>
 inoremap <silent><f3> <ESC>:AsyncTask task-f3<cr>
 inoremap <silent><f4> <ESC>:AsyncTask task-f4<cr>
+inoremap <silent><s-f1> <ESC>:AsyncTask task-s-f1<cr>
+inoremap <silent><s-f2> <ESC>:AsyncTask task-s-f2<cr>
+inoremap <silent><s-f3> <ESC>:AsyncTask task-s-f3<cr>
+inoremap <silent><s-f4> <ESC>:AsyncTask task-s-f4<cr>
 
 
 "----------------------------------------------------------------------
