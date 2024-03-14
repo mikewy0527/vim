@@ -13,7 +13,7 @@ let b:cursorword = 1
 "----------------------------------------------------------------------
 " mapping
 "----------------------------------------------------------------------
-noremap <buffer><f4> :<c-u>silent update<cr>:call asclib#lua#refresh('%')<cr>
+noremap <buffer><f11> :<c-u>silent update<cr>:call asclib#lua#refresh('%')<cr>
 
 
 

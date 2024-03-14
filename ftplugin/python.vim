@@ -27,7 +27,7 @@ let b:cursorword = 1
 "----------------------------------------------------------------------
 " mapping
 "----------------------------------------------------------------------
-noremap <buffer><F4> :<c-u>silent update<cr>:call asclib#python#refresh('%')<cr>
+noremap <buffer><F11> :<c-u>silent update<cr>:call asclib#python#refresh('%')<cr>
 
 
 "----------------------------------------------------------------------
