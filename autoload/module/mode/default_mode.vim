@@ -3,6 +3,7 @@
 " 
 "----------------------------------------------------------------------
 function! module#mode#default_mode#init()
+	redraw
 	echom "default: init"
 endfunc
 
@@ -11,6 +12,7 @@ endfunc
 " 
 "----------------------------------------------------------------------
 function! module#mode#default_mode#quit()
+	redraw
 	echom "default: quit"
 endfunc
 

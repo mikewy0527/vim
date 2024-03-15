@@ -149,7 +149,7 @@ function! module#mode#select() abort
 	redraw
 	if index > 0
 		let name = names[index - 1]
-		call module#mode#switch(0, name)
+		call module#mode#cmd(0, name)
 		" echom printf('switch mode to %s', name)
 	endif
 endfunc
