@@ -95,6 +95,24 @@ endfunc
 
 
 "----------------------------------------------------------------------
+" switch command
+"----------------------------------------------------------------------
+function! module#mode#cmd(bang, name) abort
+	call module#mode#switch(a:bang, a:name)
+	if s:current != ''
+		let text = module#mode#help()
+		if text != ''
+			let msg = printf('[%s] %s', s:current, text)
+		else
+			let msg = printf('[%s] enabled', s:current)
+		endif
+		let opts = {'highlight': 'Special', 'mode': ''}
+		call asclib#ui#notify(msg, opts)
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
 " get current mode name
 "----------------------------------------------------------------------
 function! module#mode#current() abort

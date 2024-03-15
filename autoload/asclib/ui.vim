@@ -19,7 +19,7 @@ let g:asclib.ui = get(g:asclib, 'ui', {})
 "----------------------------------------------------------------------
 " input
 "----------------------------------------------------------------------
-function! asclib#ui#input(prompt, text, name)
+function! asclib#ui#input(prompt, text, name) abort
 	if has_key(g:asclib.ui, 'input')
 		return g:asclib.ui.input(a:prompt, a:text, a:name)
 	endif
@@ -37,7 +37,7 @@ endfunc
 "----------------------------------------------------------------------
 " confirm
 "----------------------------------------------------------------------
-function! asclib#ui#confirm(msg, choices, default)
+function! asclib#ui#confirm(msg, choices, default) abort
 	if has_key(g:asclib.ui, 'confirm')
 		return g:asclib.ui.confirm(a:msg, a:choices, a:default)
 	endif
@@ -55,7 +55,7 @@ endfunc
 "----------------------------------------------------------------------
 " inputlist
 "----------------------------------------------------------------------
-function! asclib#ui#inputlist(textlist)
+function! asclib#ui#inputlist(textlist) abort
 	if has_key(g:asclib.ui, 'inputlist')
 		return g:asclib.ui.inputlist(a:textlist)
 	endif
@@ -73,7 +73,7 @@ endfunc
 "----------------------------------------------------------------------
 " select items
 "----------------------------------------------------------------------
-function! asclib#ui#select(msg, textlist)
+function! asclib#ui#select(msg, textlist) abort
 	if len(a:textlist) == 0
 		return -1
 	endif
@@ -95,5 +95,49 @@ function! asclib#ui#select(msg, textlist)
 	return hr
 endfunc
 
+
+"----------------------------------------------------------------------
+" notification
+"----------------------------------------------------------------------
+function! asclib#ui#notify(text, ...) abort
+	let opts = (a:0 > 0)? a:1 : {}
+	let mode = get(opts, 'mode', 'info')
+	let text = a:text
+	if has_key(g:asclib.ui, 'notify')
+		return g:asclib.ui.notify(text, opts)
+	endif
+	let text = (mode == '')? text : printf('[%s] %s', mode, text)
+	let pos = stridx(text, "\n")
+	if pos >= 0
+		let text = strpart(text, 0, pos)
+	endif
+	if exists('v:echospace')
+		let echospace = v:echospace
+	else
+		let statusline = (&laststatus == 2)? 1 : 0
+		let statusline = statusline || (&laststatus == 1 && winnr('$') > 1)
+		let reqspaces_lastline = (statusline || !&ruler) ? 12 : 29
+		let echospace = &columns - reqspaces_lastline
+	endif
+	let text = strpart(text, 0, echospace - 1)
+	let high = ''
+	if has_key(opts, 'highlight')
+		let high = opts.highlight
+	elseif mode == 'error'
+		let high = 'ErrorMsg'
+	elseif mode == 'info'
+		let high = 'Normal'
+	elseif mode == 'warn' || mode == 'warning'
+		let high = 'WarningMsg'
+	endif
+	redraw
+	if high != ''
+		exec 'echohl ' . high
+		echo text
+		echohl None
+	else
+		echo text
+	endif
+endfunc
 
 
