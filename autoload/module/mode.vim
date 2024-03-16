@@ -64,13 +64,14 @@ function! module#mode#switch(bang, name) abort
 	if a:bang
 		return 0
 	endif
-	let script = s:locate_script(a:name)
+	let name = asclib#string#strip(a:name)
+	let script = s:locate_script(name)
 	if script == ''
-		call asclib#common#errmsg('ModeSwitch: mode not found: ' . a:name)
+		call asclib#common#errmsg('ModeSwitch: mode not found: ' . name)
 		return -1
 	endif
 	exec 'source ' . fnameescape(script)
-	let s:current = a:name
+	let s:current = name
 	let pname = printf('module#mode#%s#init', s:current)
 	if exists('*' . pname)
 		call call(pname, [])
