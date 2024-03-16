@@ -26,7 +26,6 @@ call quickui#menu#install("&File", [
 			\ [ "--", ],
 			\ [ "&Terminal Tab", 'OpenTerminal tab', 'Open internal terminal in a new tab'],
 			\ [ "Terminal Spl&it", 'OpenTerminal right', 'Open internal terminal in a split'],
-			\ [ "Open &URL", 'OpenURL', 'Open URL under cursor'],
 			\ [ "Browse &Git", 'BrowseGit', 'Browse code in github'],
 			\ ])
 
@@ -148,7 +147,7 @@ call quickui#menu#install('&Tools', [
 			\ ['&Mode Switch', 'ModeSelect', ],
 			\ ['&Display Messages', 'call quickui#tools#display_messages()', ],
 			\ ['--',''],
-			\ ["&DelimitMate %{get(b:, 'delimitMate_enabled', 0)? 'Disable':'Enable'}", 'DelimitMateSwitch'],
+			\ ["D&elimitMate %{get(b:, 'delimitMate_enabled', 0)? 'Disable':'Enable'}", 'DelimitMateSwitch'],
 			\ ['&Open URL', 'OpenURL', 'open current URL in browser'],
 			\ ['Read &URL', 'call menu#ReadUrl()', 'load content from url into current buffer'],
 			\ ['&Spell %{&spell? "Disable":"Enable"}', 'set spell!', 'Toggle spell check %{&spell? "off" : "on"}'],
