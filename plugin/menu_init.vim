@@ -145,7 +145,8 @@ call quickui#menu#install('&Tools', [
 			\ ['&Compare Buffer', 'call svnhelp#compare_ask_buffer()', ''],
 			\ ['--',''],
 			\ ['List &Buffer', 'call quickui#tools#list_buffer("FileSwitch tabe")', ],
-			\ ['Display &Messages', 'call quickui#tools#display_messages()', ],
+			\ ['&Mode Switch', 'ModeSelect', ],
+			\ ['&Display Messages', 'call quickui#tools#display_messages()', ],
 			\ ['--',''],
 			\ ["&DelimitMate %{get(b:, 'delimitMate_enabled', 0)? 'Disable':'Enable'}", 'DelimitMateSwitch'],
 			\ ['&Open URL', 'OpenURL', 'open current URL in browser'],
@@ -154,7 +155,7 @@ call quickui#menu#install('&Tools', [
 			\ ['&Profile Start', 'call MonitorInit()', ''],
 			\ ['Profile S&top', 'call MonitorExit()', ''],
 			\ ["Relati&ve number %{&relativenumber? '[+]':'[-]'}", 'set relativenumber!'],
-			\ ["Proxy &Enable", 'call MenuHelp_Proxy(1)', 'setup http_proxy/https_proxy/all_proxy'],
+			\ ["Proxy E&nable", 'call MenuHelp_Proxy(1)', 'setup http_proxy/https_proxy/all_proxy'],
 			\ ["Proxy D&isable", 'call MenuHelp_Proxy(0)', 'clear http_proxy/https_proxy/all_proxy'],
 			\ ])
 
