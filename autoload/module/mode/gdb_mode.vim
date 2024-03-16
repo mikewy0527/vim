@@ -12,7 +12,7 @@
 " 
 "----------------------------------------------------------------------
 function! module#mode#gdb_mode#help()
-	return 'F1: Info Locals, F2: Until, F3: Step(Into), F4: Next(Step Over)'
+	return 'F1: Info Locals, F2: Until, F3: Step, F4: Next'
 endfunc
 
 
