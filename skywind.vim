@@ -87,9 +87,9 @@ endif
 " term keymap
 "----------------------------------------------------------------------
 let g:altmeta_extension = get(g:, 'altmeta_extension', [])
-let g:altmeta_extension += [['<m-\>', "\e\\"]]
+" let g:altmeta_extension += [['<m-\>', "\e\\"]]
 " let g:altmeta_extension += [['<m-[>', "\e["]]
-let g:altmeta_extension += [['<m-]>', "\e]"]]
+" let g:altmeta_extension += [['<m-]>', "\e]"]]
 
 if !has('nvim')
 	" exec "set <m-[>=\e["
