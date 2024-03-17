@@ -148,6 +148,7 @@ let g:navigator.p = {
 			\ 'g' : ['module#project#open(".clangd")', 'edit-clangd-config'],
 			\ 'l' : ['module#project#try_open(".git/config")', 'edit-git-config'],
 			\ 'r' : ['module#project#open(".lvimrc")', 'edit-local-vimrc'],
+			\ 'm' : ['module#project#open("go.mod")', 'edit-go-mod'],
 			\ }
 
 
