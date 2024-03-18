@@ -30,6 +30,57 @@ imap <silent><c-right> <Plug>(copilot-accept-line)
 
 
 "----------------------------------------------------------------------
+" is copilot enabled for current buffer
+"----------------------------------------------------------------------
+function! IsCopilotEnabled() abort
+	if &bt != ''
+		return 0
+	elseif bufname('') == ''
+		return 0
+	elseif !exists(':Copilot')
+		return 0
+	elseif exists('b:copilot_enabled')
+		return (b:copilot_enabled)? 1 : 0
+	elseif exists('g:copilot_filetypes')
+		if has_key(g:copilot_filetypes, &ft)
+			return (g:copilot_filetypes[&ft])? 1 : 0
+		elseif has_key(g:copilot_filetypes, '*')
+			return (g:copilot_filetypes['*'])? 1 : 0
+		endif
+	endif
+	return 0
+endfunc
+
+
+"----------------------------------------------------------------------
+" setup root
+"----------------------------------------------------------------------
+function! s:setup_copilot() abort
+	if &bt != '' || bufname('') == ''
+		return 0
+	elseif !IsCopilotEnabled()
+		return 0
+	endif
+	let root = module#generic#root()
+	if !exists('b:workspace_folder')
+		if root != ''
+			let b:workspace_folder = root
+		endif
+	endif
+	return 0
+endfunc
+
+
+"----------------------------------------------------------------------
+" setup copilot
+"----------------------------------------------------------------------
+augroup CopilotEventGroupX
+	au!
+	au FileType * call s:setup_copilot()
+augroup END
+
+
+"----------------------------------------------------------------------
 " whitelist
 "----------------------------------------------------------------------
 let g:copilot_filetypes = {
