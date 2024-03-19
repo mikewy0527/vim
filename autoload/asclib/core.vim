@@ -20,6 +20,8 @@ let g:asclib#core#has_vim9 = v:version >= 900
 let g:asclib#core#has_popup = exists('*popup_create') && v:version >= 800
 let g:asclib#core#has_floating = has('nvim-0.4')
 let g:asclib#core#has_vim9script = (v:version >= 900) && has('vim9script')
+let g:asclib#core#has_winexe = exists('*win_execute')
+let g:asclib#core#has_winid = exists('*win_gotoid')
 
 
 "----------------------------------------------------------------------
@@ -113,6 +115,34 @@ function! asclib#core#execute(cmd, ...)
 		endif
 		redir END
 		return l:hr
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
+" win_execute
+"----------------------------------------------------------------------
+function! asclib#core#win_execute(winid, command, ...)
+	let silent = (a:0 < 1)? 0 : (a:1)
+	let command = ''
+	if type(a:command) == v:t_string
+		let command = a:command
+	elseif type(a:command) == v:t_list
+		let command = join(a:command, "\n")
+	endif
+	if g:asclib#core#has_winexe != 0
+		keepalt call win_execute(a:winid, command, silent)
+	elseif g:asclib#core#has_winid
+		let current = win_getid()
+		keepalt call win_gotoid(a:winid)
+		if win_getid() == a:winid
+			if silent == 0
+				exec command
+			else
+				silent exec command
+			endif
+		endif
+		keepalt call win_gotoid(current)
 	endif
 endfunc
 

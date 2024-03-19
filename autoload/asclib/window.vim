@@ -7,6 +7,51 @@
 "
 "======================================================================
 
+
+"----------------------------------------------------------------------
+" execute in window number
+"----------------------------------------------------------------------
+function! asclib#window#execute(number, command, ...)
+	let silent = (a:0 < 1)? 0 : (a:1)
+	if type(a:command) == v:t_string
+		let command = a:command
+	elseif type(a:command) == v:t_list
+		let command = join(a:command, "\n")
+	endif
+	if a:number >= 1000
+		call asclib#core#win_execute(a:number, command, silent)
+	else
+		let current = winnr()
+		keepalt exec printf('%dwincmd w', a:number)
+		if winnr() == a:number
+			if silent == 0
+				exec command
+			else
+				silent exec command
+			endif
+		endif
+		keepalt exec printf('%dwincmd w', current)
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
+" search buftype and filetype
+"----------------------------------------------------------------------
+function! asclib#window#search(buftype, filetype, modifiable)
+	for i in range(winnr('$'))
+		if getwinvar(i + 1, '&buftype') == a:buftype 
+			if getwinvar(i + 1, '&filetype') == a:filetype
+				if getwinvar(i + 1, '&modifiable') == a:modifiable
+					return i + 1
+				endif
+			endif
+		endif
+	endfor
+	return 0
+endfunc
+
+
 "----------------------------------------------------------------------
 " window basic
 "----------------------------------------------------------------------
@@ -207,23 +252,6 @@ function! asclib#window#new(position, size, avoid)
 	endif
 	call asclib#window#goto_uid(uid)
 	return retval
-endfunc
-
-
-"----------------------------------------------------------------------
-" search buftype and filetype
-"----------------------------------------------------------------------
-function! asclib#window#search(buftype, filetype, modifiable)
-	for i in range(winnr('$'))
-		if getwinvar(i + 1, '&buftype') == a:buftype 
-			if getwinvar(i + 1, '&filetype') == a:filetype
-				if getwinvar(i + 1, '&modifiable') == a:modifiable
-					return i + 1
-				endif
-			endif
-		endif
-	endfor
-	return 0
 endfunc
 
 

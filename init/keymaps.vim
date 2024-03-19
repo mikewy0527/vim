@@ -366,19 +366,19 @@ inoremap <silent><m-a> <c-\><c-o>:PreviewSignature<cr>
 "----------------------------------------------------------------------
 " GUI/Terminal
 "----------------------------------------------------------------------
-noremap <silent><M-[> :call Tools_QuickfixCursor(2)<cr>
-noremap <silent><M-]> :call Tools_QuickfixCursor(3)<cr>
-noremap <silent><M-{> :call Tools_QuickfixCursor(4)<cr>
-noremap <silent><M-}> :call Tools_QuickfixCursor(5)<cr>
+noremap <silent><M-[> :call asclib#quickfix#scroll(2)<cr>
+noremap <silent><M-]> :call asclib#quickfix#scroll(3)<cr>
+noremap <silent><M-{> :call asclib#quickfix#scroll(4)<cr>
+noremap <silent><M-}> :call asclib#quickfix#scroll(5)<cr>
 noremap <silent><M-u> :call Tools_PreviousCursor(6)<cr>
 noremap <silent><M-d> :call Tools_PreviousCursor(7)<cr>
 noremap <silent><M-U> :call quickui#preview#scroll(-1)<cr>
 noremap <silent><M-D> :call quickui#preview#scroll(1)<cr>
 
-inoremap <silent><M-[> <c-\><c-o>:call Tools_QuickfixCursor(2)<cr>
-inoremap <silent><M-]> <c-\><c-o>:call Tools_QuickfixCursor(3)<cr>
-inoremap <silent><M-{> <c-\><c-o>:call Tools_QuickfixCursor(4)<cr>
-inoremap <silent><M-}> <c-\><c-o>:call Tools_QuickfixCursor(5)<cr>
+inoremap <silent><M-[> <c-\><c-o>:call asclib#quickfix#scroll(2)<cr>
+inoremap <silent><M-]> <c-\><c-o>:call asclib#quickfix#scroll(3)<cr>
+inoremap <silent><M-{> <c-\><c-o>:call asclib#quickfix#scroll(4)<cr>
+inoremap <silent><M-}> <c-\><c-o>:call asclib#quickfix#scroll(5)<cr>
 inoremap <silent><M-u> <c-\><c-o>:call Tools_PreviousCursor(6)<cr>
 inoremap <silent><M-d> <c-\><c-o>:call Tools_PreviousCursor(7)<cr>
 
