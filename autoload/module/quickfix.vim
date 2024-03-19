@@ -40,3 +40,14 @@ function! module#quickfix#iconv(encoding) abort
 endfunc
 
 
+"----------------------------------------------------------------------
+" ensure encoding for quickfix items
+"----------------------------------------------------------------------
+function! module#quickfix#ensure_encoding() abort
+	let encoding = get(g:, 'asyncrun_encs', '')
+	if encoding != ''
+		call module#quickfix#iconv(encoding)
+	endif
+endfunc
+
+
