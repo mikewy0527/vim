@@ -125,7 +125,11 @@ endfunc
 "----------------------------------------------------------------------
 function! asclib#buffer#object(bid)
 	let name = '__asclib__'
-	let bid = (a:bid > 0)? a:bid : (bufnr(''))
+	if type(a:bid) == 0
+		let bid = (a:bid >= 0)? bufnr(a:bid) : (bufnr(''))
+	else
+		let bid = bufnr(a:bid)
+	endif
 	if bufexists(bid) == 0
 		return v:null
 	endif

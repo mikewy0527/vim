@@ -10,24 +10,24 @@
 
 
 "----------------------------------------------------------------------
-" Global
+" Global Variable
+"----------------------------------------------------------------------
+let g:asclib = get(g:, 'asclib', {})
+
+
+"----------------------------------------------------------------------
+" Compatibility Check
 "----------------------------------------------------------------------
 let s:windows = has('win32') || has('win64') || has('win95') || has('win16')
-let g:asclib = get(g:, 'asclib', {})
-let g:asclib#core#windows = s:windows
-let g:asclib#core#has_nvim = has('nvim')
-let g:asclib#core#has_vim9 = v:version >= 900
-let g:asclib#core#has_popup = exists('*popup_create') && v:version >= 800
-let g:asclib#core#has_floating = has('nvim-0.4')
-let g:asclib#core#has_vim9script = (v:version >= 900) && has('vim9script')
-let g:asclib#core#has_winexe = exists('*win_execute')
-let g:asclib#core#has_winapi = exists('*nvim_set_current_win')
-let g:asclib#core#has_winid = exists('*win_gotoid')
-
-
-"----------------------------------------------------------------------
-" Internal
-"----------------------------------------------------------------------
+let s:has_windows = s:windows
+let s:has_nvim = has('nvim')
+let s:has_vim9 = v:version >= 900
+let s:has_popup = exists('*popup_create') && v:version >= 800
+let s:has_floating = has('nvim-0.4')
+let s:has_vim9script = (v:version >= 900) && has('vim9script')
+let s:has_winexe = exists('*win_execute')
+let s:has_winapi = exists('*nvim_set_current_win')
+let s:has_winid = exists('*win_gotoid')
 let s:has_execute = exists('*execute')
 
 
@@ -127,9 +127,9 @@ function! asclib#core#win_execute(winid, command, ...)
 	elseif type(a:command) == v:t_list
 		let command = join(a:command, "\n")
 	endif
-	if g:asclib#core#has_winexe != 0
+	if s:has_winexe != 0
 		keepalt call win_execute(a:winid, command, silent)
-	elseif g:asclib#core#has_winapi
+	elseif s:has_winapi
 		let current = nvim_get_current_win()
 		keepalt call nvim_set_current_win(a:winid)
 		if nvim_get_current_win() == a:winid
@@ -140,7 +140,7 @@ function! asclib#core#win_execute(winid, command, ...)
 			endif
 		endif
 		keepalt call nvim_set_current_win(current)
-	elseif g:asclib#core#has_winid
+	elseif s:has_winid
 		let current = win_getid()
 		keepalt call win_gotoid(a:winid)
 		if win_getid() == a:winid
