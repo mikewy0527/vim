@@ -107,6 +107,23 @@ endfunc
 
 
 "----------------------------------------------------------------------
+" return matched text at certain position
+"----------------------------------------------------------------------
+function! asclib#string#matchat(text, pattern, position)
+	let start = match(a:text, a:pattern, 0)
+	while (start >= 0) && (start <= a:position)
+		let endup = matchend(a:text, a:pattern, start)
+		if (start <= a:position) && (endup > a:position)
+			return strpart(a:text, start, endup - start)
+		else
+			let start = match(a:text, a:pattern, endup)
+		endif
+	endwhile
+	return ''
+endfunc
+
+
+"----------------------------------------------------------------------
 " eval & expand: '%{script}' in string
 "----------------------------------------------------------------------
 function! asclib#string#expand(string) abort
@@ -132,6 +149,63 @@ function! asclib#string#expand(string) abort
 			let script = strpart(a:string, pos + 2, endup - (pos + 2))
 			let script = substitute(script, '^\s*\(.\{-}\)\s*$', '\1', '')
 			let result = eval(script)
+			let partial += [result]
+		endif
+	endwhile
+	return join(partial, '')
+endfunc
+
+
+"----------------------------------------------------------------------
+" ask user input to replace each %{NAME} in string
+"----------------------------------------------------------------------
+function! asclib#string#prompt(string) abort
+	let partial = []
+	let index = 0
+	while 1
+		let pos = stridx(a:string, '%{', index)
+		if pos < 0
+			let partial += [strpart(a:string, index)]
+			break
+		endif
+		let head = ''
+		if pos > index
+			let partial += [strpart(a:string, index, pos - index)]
+		endif
+		let endup = stridx(a:string, '}', pos + 2)
+		if endup < 0
+			let partial += [strpart(a:stirng, index)]
+			break
+		endif
+		let index = endup + 1
+		if endup > pos + 2
+			let script = strpart(a:string, pos + 2, endup - (pos + 2))
+			let script = substitute(script, '^\s*\(.\{-}\)\s*$', '\1', '')
+			let varname = script
+			let default = ""
+			let pos = stridx(script, '=')
+			if pos >= 0
+				let varname = strpart(script, 0, pos)
+				let default = strpart(script, pos + 1)
+			endif
+			if varname == ''
+				if default != ''
+					let result = eval(devault)
+				endif
+			else
+				redraw
+				call inputsave()
+				try
+					let result = input('input ('.varname.'): ', default)
+				catch /^Vim:Interrupt$/
+					let result = ''
+				endtry
+				call inputrestore()
+				redraw
+				if result == ''
+					return ''
+				endif
+			endif
 			let partial += [result]
 		endif
 	endwhile
