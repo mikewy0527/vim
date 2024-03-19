@@ -168,7 +168,7 @@ endfunc
 function! asclib#utils#dash(language, keyword)
 	let zeal = asclib#setting#get('zeal', 'zeal.exe')
 	if !executable(zeal)
-		call asclib#errmsg('cannot find executable: '.zeal)
+		call asclib#common#errmsg('cannot find executable: '.zeal)
 		return
 	endif
 	let url = 'dash://'.a:language.':'.a:keyword
