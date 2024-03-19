@@ -17,7 +17,7 @@ function! module#generic#root() abort
 	elseif bufname('') == ''
 		return asclib#path#current_root()
 	endif
-	let obj = asclib#core#object(-1)
+	let obj = asclib#core#object('b')
 	if !has_key(obj, 'root')
 		let obj.root = asclib#path#current_root()
 	endif

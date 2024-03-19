@@ -32,33 +32,29 @@ let s:has_execute = exists('*execute')
 
 
 "----------------------------------------------------------------------
-" Get Instance
+" core object: 'b' for buffer, 't' for tab, 'g' for global
 "----------------------------------------------------------------------
-function! asclib#core#instance(mode, name)
-	if !exists('s:__asclib_core_instance__')
-		let s:__asclib_core_instance__ = {}
-	endif
-	let hr = s:__asclib_core_instance__
-	if a:mode =~ '^b'
-		if !exists('b:__asclib_core_instance__')
-			let b:__asclib_core_instance__ = {}
+function! asclib#core#object(scope)
+	if a:scope == 'g'
+		if !exists('g:__asclib__')
+			let g:__asclib__ = {}
 		endif
-		let hr = b:__asclib_core_instance__
-	elseif a:mode =~ '^t'
-		if !exists('t:__asclib_core_instance__')
-			let t:__asclib_core_instance__ = {}
+		return g:__asclib__
+	elseif a:scope == 't'
+		if !exists('t:__asclib__')
+			let t:__asclib__ = {}
 		endif
-		let hr = t:__asclib_core_instance__
-	elseif a:mode =~ '^w'
-		if !exists('w:__asclib_core_instance__')
-			let w:__asclib_core_instance__ = {}
+		return t:__asclib__
+	elseif a:scope == 'b'
+		if !exists('b:__asclib__')
+			let b:__asclib__ = {}
 		endif
-		let hr = w:__asclib_core_instance__
+		return b:__asclib__
 	endif
-	if !has_key(hr, a:name)
-		let hr[a:name] = {}
+	if !exists('s:__asclib__')
+		let s:__asclib__ = {}
 	endif
-	return hr[a:name]
+	return s:__asclib__
 endfunc
 
 
@@ -629,44 +625,6 @@ function! asclib#core#writefile(lines, name)
 	endif
 endfunc
 
-
-"----------------------------------------------------------------------
-" instance
-"----------------------------------------------------------------------
-function! asclib#core#instance(local)
-	let local = a:local
-	if local != 0
-		if exists('t:__asclib__')
-			return t:__asclib__
-		endif
-		let t:__asclib__ = {}
-		return t:__asclib__
-	else
-		if exists('g:__asclib__')
-			return g:__asclib__
-		endif
-		let g:__asclib__ = {}
-		return g:__asclib__
-	endif
-endfunc
-
-
-"----------------------------------------------------------------------
-" buffer local object
-"----------------------------------------------------------------------
-function! asclib#core#object(bid)
-	let name = '__asclib__'
-	let bid = (a:bid > 0)? a:bid : (bufnr(''))
-	if bufexists(bid) == 0
-		return v:null
-	endif
-	let obj = getbufvar(bid, name)
-	if type(obj) != 4
-		call setbufvar(bid, name, {})
-		let obj = getbufvar(bid, name)
-	endif
-	return obj
-endfunc
 
 
 "----------------------------------------------------------------------

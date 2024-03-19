@@ -16,4 +16,14 @@ function! asclib#text#match_at_cursor(pattern) abort
 endfunc
 
 
+"----------------------------------------------------------------------
+" get select text
+"----------------------------------------------------------------------
+function! asclib#text#get_selected(...) abort
+	let mode = get(a:, 1, mode(1))
+	let lines = asclib#compat#getregion("'<", "'>", mode)
+	return join(lines, "\n")
+endfunc
+
+
 
