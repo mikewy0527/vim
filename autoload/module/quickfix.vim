@@ -9,7 +9,7 @@
 
 
 "----------------------------------------------------------------------
-" 
+" filter unused quickfix items
 "----------------------------------------------------------------------
 function! module#quickfix#filter() abort
 	let l:qflist = getqflist()
@@ -20,6 +20,23 @@ function! module#quickfix#filter() abort
 		endif
 	endfor
 	call setqflist(l:qf)
+endfunc
+
+
+"----------------------------------------------------------------------
+" convert encoding for quickfix items
+"----------------------------------------------------------------------
+function! module#quickfix#iconv(encoding) abort
+	if &encoding == a:encoding
+		return -1
+	elseif !exists('*iconv')
+		return -1
+	endif
+	let l:qflist = getqflist()
+	for i in l:qflist
+		let i.text = iconv(i.text, a:encoding, &encoding)
+	endfor
+	return 0
 endfunc
 
 

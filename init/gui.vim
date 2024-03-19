@@ -1,17 +1,4 @@
 
-
-"----------------------------------------------------------------------
-"- Quickfix Chinese Convertion
-"----------------------------------------------------------------------
-function! QuickfixChineseConvert()
-   let qflist = getqflist()
-   for i in qflist
-	  let i.text = iconv(i.text, "gbk", "utf-8")
-   endfor
-   call setqflist(qflist)
-endfunction
-
-
 "----------------------------------------------------------------------
 "- FontBoldOff
 "----------------------------------------------------------------------
