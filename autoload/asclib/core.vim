@@ -21,6 +21,7 @@ let g:asclib#core#has_popup = exists('*popup_create') && v:version >= 800
 let g:asclib#core#has_floating = has('nvim-0.4')
 let g:asclib#core#has_vim9script = (v:version >= 900) && has('vim9script')
 let g:asclib#core#has_winexe = exists('*win_execute')
+let g:asclib#core#has_winapi = exists('*nvim_set_current_win')
 let g:asclib#core#has_winid = exists('*win_gotoid')
 
 
@@ -120,7 +121,7 @@ endfunc
 
 
 "----------------------------------------------------------------------
-" win_execute
+" win_execute: execute command in a window
 "----------------------------------------------------------------------
 function! asclib#core#win_execute(winid, command, ...)
 	let silent = (a:0 < 1)? 0 : (a:1)
@@ -132,6 +133,17 @@ function! asclib#core#win_execute(winid, command, ...)
 	endif
 	if g:asclib#core#has_winexe != 0
 		keepalt call win_execute(a:winid, command, silent)
+	elseif g:asclib#core#has_winapi
+		let current = nvim_get_current_win()
+		keepalt call nvim_set_current_win(a:winid)
+		if nvim_get_current_win() == a:winid
+			if silent == 0
+				exec command
+			else
+				silent exec command
+			endif
+		endif
+		keepalt call nvim_set_current_win(current)
 	elseif g:asclib#core#has_winid
 		let current = win_getid()
 		keepalt call win_gotoid(a:winid)

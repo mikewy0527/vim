@@ -60,34 +60,12 @@ endfunc
 
 
 "----------------------------------------------------------------------
-" move cursor in quickfix window
+" scroll quickfix:  0:up, 1:down, 2:pgup, 3:pgdown 4:top, 5:bottom
 "----------------------------------------------------------------------
 function! module#quickfix#scroll(mode) abort
 	let num = module#quickfix#search_window()
 	if num > 0
-		let cmd = ''
-		if a:mode == 0
-			let cmd = "normal! \<c-y>"
-		elseif a:mode == 1
-			let cmd = "normal! \<c-e>"
-		elseif a:mode == 2
-			let cmd = "normal! ".winheight(num)."\<c-y>"
-		elseif a:mode == 3
-			let cmd = "normal! ".winheight(num)."\<c-e>"
-		elseif a:mode == 4
-			let cmd = 'normal! gg'
-		elseif a:mode == 5
-			let cmd = 'normal! G'
-		elseif a:mode == 6
-			let cmd = "normal! \<c-u>"
-		elseif a:mode == 7
-			let cmd = "normal! \<c-d>"
-		elseif a:mode == 8
-			let cmd = "normal! k"
-		elseif a:mode == 9
-			let cmd = "normal! j"
-		endif
-		noautocmd call asclib#window#execute(num, cmd)
+		call asclib#window#scroll(num, a:mode)
 	endif
 endfunc
 

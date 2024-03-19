@@ -53,6 +53,51 @@ endfunc
 
 
 "----------------------------------------------------------------------
+" scroll - 0:up, 1:down, 2:pgup, 3:pgdown, 4:top, 5:bottom
+"----------------------------------------------------------------------
+function! asclib#window#scroll(number, mode) abort
+	if type(a:number) == type(0)
+		let wid = a:number
+	else
+		let wid = winnr(a:number)
+	endif
+	if wid > 0
+		let cmd = ''
+		if a:mode == 0
+			let cmd = "normal! \<c-y>"
+		elseif a:mode == 1
+			let cmd = "normal! \<c-e>"
+		elseif a:mode == 2
+			let cmd = "normal! ".winheight(wid)."\<c-y>"
+		elseif a:mode == 3
+			let cmd = "normal! ".winheight(wid)."\<c-e>"
+		elseif a:mode == 4
+			let cmd = 'normal! gg'
+		elseif a:mode == 5
+			let cmd = 'normal! G'
+		elseif a:mode == 6
+			let cmd = "normal! \<c-u>"
+		elseif a:mode == 7
+			let cmd = "normal! \<c-d>"
+		elseif a:mode == 8
+			let cmd = "normal! k"
+		elseif a:mode == 9
+			let cmd = "normal! j"
+		endif
+		if exists('*win_id2win')
+			let winid = win_getid(wid)
+			call asclib#core#win_execute(winid, cmd, 1)
+		else
+			let current = winnr()
+			noautocmd silent! exec wid . 'wincmd w'
+			silent exec cmd
+			noautocmd silent! exec current . 'wincmd w'
+		endif
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
 " window basic
 "----------------------------------------------------------------------
 
