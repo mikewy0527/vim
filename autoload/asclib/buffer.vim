@@ -125,12 +125,12 @@ endfunc
 "----------------------------------------------------------------------
 function! asclib#buffer#object(bid)
 	let name = '__asclib__'
-	let bid = (a:bid > 0)? a:bid : (bufnr())
+	let bid = (a:bid > 0)? a:bid : (bufnr(''))
 	if bufexists(bid) == 0
 		return v:null
 	endif
 	let obj = getbufvar(bid, name)
-	if type(obj) != v:t_dict
+	if type(obj) != 4
 		call setbufvar(bid, name, {})
 		let obj = getbufvar(bid, name)
 	endif
