@@ -21,6 +21,9 @@ endfunc
 "----------------------------------------------------------------------
 function! asclib#text#get_selected(...) abort
 	let mode = get(a:, 1, mode(1))
+	if mode =~ '^n'
+		let mode = 'v'
+	endif
 	let lines = asclib#compat#getregion("'<", "'>", mode)
 	return join(lines, "\n")
 endfunc

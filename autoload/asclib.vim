@@ -254,28 +254,6 @@ function! asclib#nextcloud_sync()
 endfunc
 
 
-function! asclib#show_rtp()
-	for key in split(&rtp, ',')
-		echo key
-	endfor
-endfunc
-
-
-function! asclib#quickfix_title(title)
-	if !has('nvim')
-		if v:version >= 800 || has('patch-7.4.2210')
-			call setqflist([], 'a', {'title': a:title})
-			redrawstatus!
-		else
-			call setqflist([], 'a')
-		endif
-	else
-		call setqflist([], 'a', a:title)
-		redrawstatus!
-	endif
-endfunc
-
-
 "----------------------------------------------------------------------
 " bash for windows 
 "----------------------------------------------------------------------

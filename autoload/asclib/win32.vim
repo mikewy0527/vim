@@ -45,7 +45,7 @@ function! asclib#win32#open_hlp(hlp, keyword) abort
 			let cmd .= '-k '.kw. ' '
 		endif
 	endif
-	exec 'AsyncRun -mode=5 '.cmd. shellescape(a:hlp)
+	call asclib#core#start(cmd . shellescape(a:hlp))
 	return 0
 endfunc
 
@@ -69,7 +69,7 @@ function! asclib#win32#open_chm(chm, keyword) abort
 	endif
 	let chm = shellescape(a:chm)
 	let cmd = 'KeyHH.exe -\#klink '.shellescape(a:keyword).' '.chm
-	silent exec '!start /b '.cmd
+	call asclib#core#start(cmd)
 endfunc
 
 

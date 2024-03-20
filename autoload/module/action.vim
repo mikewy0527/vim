@@ -46,7 +46,7 @@ function! module#action#grep() abort
 	redraw
 	if strlen(t) > 0
 		silent exec "GrepCode! ".fnameescape(t)
-		call asclib#quickfix_title('- searching "'. t. '"')
+		call asclib#compat#quickfix_title('- searching "'. t. '"')
 	endif
 endfunc
 
