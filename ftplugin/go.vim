@@ -37,7 +37,7 @@ call module#go#init()
 let obj = asclib#core#object('b')
 let obj.post_format = 0
 
-if get(g:, 'asclib_go_post_format', 0)
+if get(g:, 'module_go_post_format', 0)
 	let obj.post_format = 1
 endif
 
