@@ -34,8 +34,10 @@ function! asclib#text#filter(line1, line2, command) abort
 	let line2 = (type(a:line2) != v:t_number)? line(a:line2) : (a:line2)
 	let size = line2 - line1 + 1
 	if line1 < line2
+		let lnum = line('.')
 		let bid = bufnr('')
-		call asclib#core#text_replace(bid, line1, size, command)
+		call asclib#core#text_replace(bid, line1, size, a:command)
+		exec ':' . lnum
 	endif
 endfunc
 

@@ -534,8 +534,7 @@ function! asclib#core#text_replace(bid, lnum, count, program) abort
 		let bid = bufnr(a:bid)
 	endif
 	let current = (bid == bufnr(''))? 1 : 0
-	let current = 0
-	echom current
+	let current = exists('*deletebufline')? 0 : current
 	if a:count <= 0
 		return 0
 	endif
