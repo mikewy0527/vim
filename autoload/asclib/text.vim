@@ -26,4 +26,26 @@ function! asclib#text#get_selected(...) abort
 endfunc
 
 
+"----------------------------------------------------------------------
+" filter current buffer
+"----------------------------------------------------------------------
+function! asclib#text#filter(line1, line2, command) abort
+	let line1 = (type(a:line1) != v:t_number)? line(a:line1) : (a:line1)
+	let line2 = (type(a:line2) != v:t_number)? line(a:line2) : (a:line2)
+	let size = line2 - line1 + 1
+	if line1 < line2
+		let bid = bufnr('')
+		call asclib#core#text_replace(bid, line1, size, command)
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
+" format the whole buffer
+"----------------------------------------------------------------------
+function! asclib#text#format(command) abort
+	call asclib#text#filter(1, line('$'), a:command)
+endfunc
+
+
 

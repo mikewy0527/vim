@@ -4,7 +4,7 @@
 " core.vim - 
 "
 " Created by skywind on 2020/02/06
-" Last Modified: 2022/09/30 18:39
+" Last Modified: 2024/03/20 22:47
 "
 "======================================================================
 
@@ -528,10 +528,22 @@ endfunc
 " replace the text from range
 "----------------------------------------------------------------------
 function! asclib#core#text_replace(bid, lnum, count, program) abort
+	if type(a:bid) == 0
+		let bid = (a:bid >= 0)? bufnr(a:bid) : (bufnr(''))
+	else
+		let bid = bufnr(a:bid)
+	endif
+	let current = (bid == bufnr(''))? 1 : 0
+	let current = 0
+	echom current
 	if a:count <= 0
 		return 0
 	endif
-	let text = getbufline(a:bid, a:lnum, a:lnum + a:count - 1)
+	if current
+		let text = getline(a:lnum, a:lnum + a:count - 1)
+	else
+		let text = getbufline(bid, a:lnum, a:lnum + a:count - 1)
+	endif
 	if type(a:program) == v:t_string
 		if a:program =~ '^\s*:'
 			let funname = matchstr(a:program, '^\s*:\zs.*$')
@@ -542,12 +554,23 @@ function! asclib#core#text_replace(bid, lnum, count, program) abort
 	elseif type(a:program) == v:t_func
 		let hr = call(a:program, [text])
 	endif
-	if len(text) < len(hr)
-		call appendbufline(a:bid, a:lnum, repeat([''], len(hr) - len(text)))
-	elseif len(text) > len(hr)
-		call deletebufline(a:bid, a:lnum, a:lnum + len(text) - len(hr) - 1)
+	if current
+		if len(text) < len(hr)
+			call append(a:lnum, repeat([''], len(hr) - len(text)))
+		elseif len(text) > len(hr)
+			let endup = a:lnum + len(text) - len(hr) - 1
+			silent! exec printf('%d,%dd', a:lnum, endup)
+		endif
+		call setline(a:lnum, hr)
+		return 0
 	endif
-	call setbufline(a:bid, a:lnum, hr)
+	if len(text) < len(hr)
+		call appendbufline(bid, a:lnum, repeat([''], len(hr) - len(text)))
+	elseif len(text) > len(hr)
+		call deletebufline(bid, a:lnum, a:lnum + len(text) - len(hr) - 1)
+	endif
+	call setbufline(bid, a:lnum, hr)
+	return 0
 endfunc
 
 
