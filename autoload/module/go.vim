@@ -12,6 +12,7 @@
 " internal 
 "----------------------------------------------------------------------
 let s:has_goimports = executable('goimports')? 1 : 0
+let s:inited = 0
 
 
 "----------------------------------------------------------------------
@@ -19,10 +20,13 @@ let s:has_goimports = executable('goimports')? 1 : 0
 "----------------------------------------------------------------------
 function! module#go#init()
 	if &bt == '' && &ft == 'go'
-		augroup ModuleGoEvents
-			au! * <buffer>
-			au BufWritePre <buffer> :call module#go#format()
-		augroup END
+		if s:inited == 0
+			augroup ModuleGoEvents
+				au!
+				au BufWritePre *.go :call module#go#format()
+			augroup END
+			let s:inited = 1
+		endif
 	endif
 endfunc
 
