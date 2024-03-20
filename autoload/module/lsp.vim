@@ -103,3 +103,42 @@ function! module#lsp#goto_references() abort
 endfunc
 
 
+"----------------------------------------------------------------------
+" goto implementation
+"----------------------------------------------------------------------
+function! module#lsp#goto_implementation() abort
+	let tt = module#lsp#type()
+	if tt == 'ycm'
+		exec 'YcmCompleter GoToImplementation'
+	elseif tt == 'coc'
+		call CocActionAsync('jumpImplementation')
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
+" goto declaration
+"----------------------------------------------------------------------
+function! module#lsp#goto_declaration() abort
+	let tt = module#lsp#type()
+	if tt == 'ycm'
+		exec 'YcmCompleter GoToDeclaration'
+	elseif tt == 'coc'
+		call CocActionAsync('jumpDeclaration')
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
+" goto type definition
+"----------------------------------------------------------------------
+function! module#lsp#goto_type_definition() abort
+	let tt = module#lsp#type()
+	if tt == 'ycm'
+		exec 'YcmCompleter GoToTypeDefinition'
+	elseif tt == 'coc'
+		call CocActionAsync('jumpTypeDefinition')
+	endif
+endfunc
+
+

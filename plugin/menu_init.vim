@@ -63,10 +63,11 @@ call quickui#menu#install('&Search', [
 			\ [ "Find C&alling\t(GNU Global)", 'call MenuHelp_Gscope("c")', 'GNU Global search c'],
 			\ [ "Find &From Ctags\t(GNU Global)", 'call MenuHelp_Gscope("z")', 'GNU Global search c'],
 			\ [ "--", ],
-			\ [ "Goto D&efinition\t(YCM)", 'YcmCompleter GoToDefinitionElseDeclaration'],
-			\ [ "Goto &References\t(YCM)", 'YcmCompleter GoToReferences'],
-			\ [ "Get D&oc\t(YCM)", 'YcmCompleter GetDoc'],
-			\ [ "Get &Type\t(YCM)", 'YcmCompleter GetTypeImprecise'],
+			\ [ "Goto D&efinition\t(LSP)", 'call module#lsp#goto_definition()'],
+			\ [ "Goto &References\t(LSP)", 'call module#lsp#goto_references()'],
+			\ [ "Goto Declara&tion\t(LSP)", 'call module#lsp#goto_declaration()'],
+			\ [ "Goto &Implementaion\t(LSP)", 'call module#lsp#goto_implementation()'],
+			\ [ "Cursor Ho&ver\t(LSP)", 'call module#lsp#hover()'],
 			\ ])
 
 call quickui#menu#install('&Move', [
@@ -205,9 +206,9 @@ let g:quickui_context = [
 			\ [ "--", ],
 			\ [ "Goto D&efinition\t(LSP)", 'call module#lsp#goto_definition()'],
 			\ [ "Goto &References\t(LSP)", 'call module#lsp#goto_references()'],
+			\ [ "Goto Declara&tion\t(LSP)", 'call module#lsp#goto_declaration()'],
+			\ [ "Goto &Implementaion\t(LSP)", 'call module#lsp#goto_implementation()'],
 			\ [ "Cursor Ho&ver\t(LSP)", 'call module#lsp#hover()'],
-			\ [ "Get D&oc\t(YCM)", 'call module#lsp#get_document()'],
-			\ [ "Get &Type\t(YCM)", 'YcmCompleter GetTypeImprecise'],
 			\ ]
 
 let g:quickui_context_foot = [
