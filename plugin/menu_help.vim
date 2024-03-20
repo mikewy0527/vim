@@ -142,12 +142,6 @@ function! MenuHelp_SplitLine()
 	exec 'LineBreaker ' . width
 endfunc
 
-function! MenuHelp_EasyMotion(what)
-	if a:what != ''
-		stopinsert
-		call feedkeys("\<Plug>(easymotion-" . a:what . ")", '')
-	endif
-endfunc
 
 function! MenuHelp_FeedPlug(text)
 	call feedkeys("\<plug>" . a:text)
