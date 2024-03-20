@@ -501,14 +501,21 @@ function! asclib#core#text_process(command, stdin, ...) abort
 	if filereadable(tmpname) == 0
 		return ''
 	endif
-	let outname = tempname()
 	let script = asclib#core#script_write('vim_pipe', a:command, 0)
-	let cmd = script . ' < ' . shellescape(tmpname) 
-	let cmd = cmd . ' > ' . shellescape(outname) . ' 2>&1'
-	let hr = asclib#core#system(cmd, cwd, encoding)
-	let hr = readfile(outname)
+	let mode = 0
+	if mode == 0
+		let cmd = script . ' < ' . shellescape(tmpname)  . ' 2>&1'
+		let hr = asclib#core#system(cmd, cwd, encoding)
+		let hr = split(hr, "\n")
+	else
+		let outname = tempname()
+		let cmd = script . ' < ' . shellescape(tmpname) 
+		let cmd = cmd . ' > ' . shellescape(outname) . ' 2>&1'
+		let hr = asclib#core#system(cmd, cwd, encoding)
+		let hr = readfile(outname)
+		silent! call delete(outname)
+	endif
 	silent! call delete(tmpname)
-	silent! call delete(outname)
 	let textlist = []
 	for text in hr
 		if encoding != ''
@@ -528,16 +535,21 @@ endfunc
 " replace the text from range
 "----------------------------------------------------------------------
 function! asclib#core#text_replace(bid, lnum, count, program) abort
+	if a:count <= 0
+		return 0
+	endif
 	if type(a:bid) == 0
 		let bid = (a:bid >= 0)? bufnr(a:bid) : (bufnr(''))
 	else
 		let bid = bufnr(a:bid)
 	endif
-	let current = (bid == bufnr(''))? 1 : 0
-	let current = exists('*deletebufline')? 0 : current
-	if a:count <= 0
-		return 0
+	if !exists('*deletebufline')
+		if bid != bufnr('')
+			return 0
+		endif
 	endif
+	let current = (bid == bufnr(''))? 1 : 0
+	" let current = exists('*deletebufline')? 0 : current
 	if current
 		let text = getline(a:lnum, a:lnum + a:count - 1)
 	else
