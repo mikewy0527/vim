@@ -343,6 +343,13 @@ elseif has_key(s:enabled, 'neosnippet')
 	IncScript site/bundle/neosnippet.vim
 endif
 
+" vim-go
+if has_key(s:enabled, 'vim-go')
+	Plug 'fatih/vim-go'
+	IncScript site/bundle/go.vim
+endif
+
+
 " CoC
 if has_key(s:enabled, 'coc')
 	Plug 'neoclide/coc.nvim', {'branch': 'release'}
