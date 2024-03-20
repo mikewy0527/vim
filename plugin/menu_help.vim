@@ -63,15 +63,15 @@ function! MenuHelp_WinHelp(help)
 	let t = input('Search help of ('. fnamemodify(a:help, ':t').'): ', t)
 	call inputrestore()
 	echohl None
-	redraw | echo "" | redraw
+	redraw
 	if t == ''
 		return 0
 	endif
 	let extname = tolower(fnamemodify(a:help, ':e'))
 	if extname == 'hlp'
-		call asclib#open_win32_help(a:help, t)
+		call asclib#win32#open_hlp(a:help, t)
 	elseif extname == 'chm'
-		call asclib#open_win32_chm(a:help, t)
+		call asclib#win32#open_chm(a:help, t)
 	else
 		echo "unknow filetype"
 	endif

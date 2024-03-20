@@ -83,63 +83,6 @@ endfunc
 
 
 "----------------------------------------------------------------------
-" open something
-"----------------------------------------------------------------------
-let s:config = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
-
-" call winhlp32.exe to open .hlp
-function! asclib#open_win32_help(hlp, keyword)
-	if !filereadable(a:hlp)
-		call asclib#errmsg('can not open: '.a:hlp)
-		return 1
-	endif
-	if asclib#path#which('winhlp32.exe') == ''
-		call asclib#errmsg('can not find WinHlp32.exe, please install it')
-		return 2
-	endif
-	if executable('python')
-		let path = s:config
-		let cmd = 'python '
-		let cmd .= path . '/lib/vimhelp.py -h '.shellescape(a:hlp)
-		if a:keyword != ''
-			let cmd .= ' ' . shellescape(a:keyword)
-		endif
-		exec 'AsyncRun -mode=5 '.cmd
-		return 0
-	endif
-	let cmd = 'WinHlp32.exe '
-	if a:keyword != ''
-		let kw = split(a:keyword, ' ')[0]
-		if kw != ''
-			let cmd .= '-k '.kw. ' '
-		endif
-	endif
-	exec 'AsyncRun -mode=5 '.cmd. shellescape(a:hlp)
-	return 0
-endfunc
-
-
-function! asclib#open_win32_chm(chm, keyword)
-	if !filereadable(a:chm)
-		call asclib#errmsg('can not open: '.a:chm)
-		return 1
-	endif
-	if a:keyword == ''
-		silent exec 'AsyncRun -mode=5 '.shellescape(a:chm)
-		return 0
-	else
-		if asclib#path#which('KeyHH.exe') == ''
-			call asclib#errmsg('can not find KeyHH.exe, please install it')
-			return 2
-		endif
-	endif
-	let chm = shellescape(a:chm)
-	let cmd = 'KeyHH.exe -\#klink '.shellescape(a:keyword).' '.chm
-	silent exec '!start /b '.cmd
-endfunc
-
-
-"----------------------------------------------------------------------
 " smooth interface
 "----------------------------------------------------------------------
 function! s:smooth_scroll(dir, dist, duration, speed)
@@ -207,38 +150,6 @@ function! asclib#open_gprof(image, profile)
 	setlocal filetype=gprof
 endfunc
 
-
-"----------------------------------------------------------------------
-" execute scripts in string
-"----------------------------------------------------------------------
-function! asclib#eval_text(string) abort
-	let partial = []
-	let index = 0
-	while 1
-		let pos = stridx(a:string, '%{', index)
-		if pos < 0
-			let partial += [strpart(a:string, index)]
-			break
-		endif
-		let head = ''
-		if pos > index
-			let partial += [strpart(a:string, index, pos - index)]
-		endif
-		let endup = stridx(a:string, '}', pos + 2)
-		if endup < 0
-			let partial += [strpart(a:stirng, index)]
-			break
-		endif
-		let index = endup + 1
-		if endup > pos + 2
-			let script = strpart(a:string, pos + 2, endup - (pos + 2))
-			let script = substitute(script, '^\s*\(.\{-}\)\s*$', '\1', '')
-			let result = eval(script)
-			let partial += [result]
-		endif
-	endwhile
-	return join(partial, '')
-endfunc
 
 
 "----------------------------------------------------------------------
