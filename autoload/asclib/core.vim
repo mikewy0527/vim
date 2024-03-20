@@ -50,6 +50,11 @@ function! asclib#core#object(scope)
 			let b:__asclib__ = {}
 		endif
 		return b:__asclib__
+	elseif a:scope == 'w'
+		if !exists('w:__asclib__')
+			let w:__asclib__ = {}
+		endif
+		return w:__asclib__
 	endif
 	if !exists('s:__asclib__')
 		let s:__asclib__ = {}
