@@ -29,14 +29,15 @@ endfunc
 "----------------------------------------------------------------------
 " filter current buffer
 "----------------------------------------------------------------------
-function! asclib#text#filter(line1, line2, command) abort
+function! asclib#text#filter(line1, line2, command, ...) abort
 	let line1 = (type(a:line1) != v:t_number)? line(a:line1) : (a:line1)
 	let line2 = (type(a:line2) != v:t_number)? line(a:line2) : (a:line2)
 	let size = line2 - line1 + 1
 	if line1 < line2
 		let lnum = line('.')
 		let bid = bufnr('')
-		call asclib#core#text_replace(bid, line1, size, a:command)
+		let encoding = (a:0 > 0)? a:1 : ''
+		call asclib#core#text_replace(bid, line1, size, a:command, encoding)
 		exec ':' . lnum
 	endif
 endfunc
@@ -45,8 +46,9 @@ endfunc
 "----------------------------------------------------------------------
 " format the whole buffer
 "----------------------------------------------------------------------
-function! asclib#text#format(command) abort
-	call asclib#text#filter(1, line('$'), a:command)
+function! asclib#text#format(command, ...) abort
+	let encoding = (a:0 > 0)? a:1 : ''
+	call asclib#text#filter(1, line('$'), a:command, encoding)
 endfunc
 
 

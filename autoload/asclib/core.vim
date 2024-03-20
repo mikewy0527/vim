@@ -518,12 +518,6 @@ function! asclib#core#text_process(command, stdin, ...) abort
 	silent! call delete(tmpname)
 	let textlist = []
 	for text in hr
-		if encoding != ''
-			try
-				let text = iconv(text, encoding, &encoding)
-			catch /.*/
-			endtry
-		endif
 		let text = substitute(text, '\r$', '', 'g')
 		let textlist += [text]
 	endfor
@@ -534,7 +528,7 @@ endfunc
 "----------------------------------------------------------------------
 " replace the text from range
 "----------------------------------------------------------------------
-function! asclib#core#text_replace(bid, lnum, count, program) abort
+function! asclib#core#text_replace(bid, lnum, count, program, encoding) abort
 	if a:count <= 0
 		return 0
 	endif
@@ -560,7 +554,8 @@ function! asclib#core#text_replace(bid, lnum, count, program) abort
 			let funname = matchstr(a:program, '^\s*:\zs.*$')
 			let hr = call(funname, [text])
 		else
-			let hr = asclib#core#text_process(a:program, text)
+			let enc = a:encoding
+			let hr = asclib#core#text_process(a:program, text, '', enc)
 		endif
 	elseif type(a:program) == v:t_func
 		let hr = call(a:program, [text])
