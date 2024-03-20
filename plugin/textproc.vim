@@ -400,9 +400,16 @@ endfunc
 function! s:run_in_split(name, args, lnum, count, debug) abort
 	if a:count <= 0
 		return 0
+	elseif exists('*deletebufline') == 0 || exists('*bufadd') == 0
+		redraw
+		echohl ErrorMsg
+		echo 'ERROR: require at least vim-9.0.961 or nvim-0.9.0'
+		echohl None
+		return 0
 	endif
 	let scripts = s:script_list()
 	if has_key(scripts, a:name) == 0
+		redraw
 		echohl ErrorMsg
 		echo 'ERROR: runner not find: ' . a:name
 		echohl None
