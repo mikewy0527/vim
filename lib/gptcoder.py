@@ -507,7 +507,7 @@ if __name__ == '__main__':
         argv = ['-p', 'd:/temp/test.gpt']
         main(argv)
         return 0
-    # test4()
+    # test3()
     main()
 
 
