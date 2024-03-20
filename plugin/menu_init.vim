@@ -203,9 +203,9 @@ let g:quickui_context = [
 			\ [ "Find C&alling\t\\cc", 'call MenuHelp_Fscope("c")', 'GNU Global search c'],
 			\ [ "Find &From Ctags\t\\cz", 'call MenuHelp_Fscope("z")', 'GNU Global search c'],
 			\ [ "--", ],
-			\ [ "Goto D&efinition\t(YCM)", 'YcmCompleter GoToDefinitionElseDeclaration'],
-			\ [ "Goto &References\t(YCM)", 'YcmCompleter GoToReferences'],
-			\ [ "Cursor Ho&ver\t(YCM)", 'call module#lsp#hover()'],
+			\ [ "Goto D&efinition\t(LSP)", 'call module#lsp#goto_definition()'],
+			\ [ "Goto &References\t(LSP)", 'call module#lsp#goto_references()'],
+			\ [ "Cursor Ho&ver\t(LSP)", 'call module#lsp#hover()'],
 			\ [ "Get D&oc\t(YCM)", 'call module#lsp#get_document()'],
 			\ [ "Get &Type\t(YCM)", 'YcmCompleter GetTypeImprecise'],
 			\ ]

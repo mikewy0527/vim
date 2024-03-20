@@ -61,7 +61,7 @@ function! module#lsp#get_document() abort
 	let tt = module#lsp#type()
 	if tt == 'ycm'
 		exec 'YcmCompleter GetDoc'
-	elseif tt == 'ycm'
+	elseif tt == 'coc'
 	endif
 endfunc
 
@@ -73,6 +73,32 @@ function! module#lsp#get_type() abort
 	let tt = module#lsp#type()
 	if tt == 'ycm'
 	elseif tt == 'coc'
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
+" goto definition
+"----------------------------------------------------------------------
+function! module#lsp#goto_definition() abort
+	let tt = module#lsp#type()
+	if tt == 'ycm'
+		exec 'YcmCompleter GoToDefinitionElseDeclaration'
+	elseif tt == 'coc'
+		call CocActionAsync('jumpDefinition')
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
+" goto references
+"----------------------------------------------------------------------
+function! module#lsp#goto_references() abort
+	let tt = module#lsp#type()
+	if tt == 'ycm'
+		exec 'YcmCompleter GoToReferences'
+	elseif tt == 'coc'
+		call CocActionAsync('jumpReferences')
 	endif
 endfunc
 
