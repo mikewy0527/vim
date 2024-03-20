@@ -36,7 +36,8 @@ endfunc
 "----------------------------------------------------------------------
 function! module#go#format()
 	if s:has_goimports
-		if get(g:, 'asclib_go_post_format', 0)
+		let obj = asclib#core#object('b')
+		if get(obj, 'post_format', 0)
 			call asclib#text#format('goimports')
 		endif
 	endif
