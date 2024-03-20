@@ -50,36 +50,6 @@ function! MenuHelp_Gscope(what)
 	exec 'GscopeFind '. a:what. ' ' . fnameescape(t)
 endfunc
 
-function! MenuHelp_GrepCode()
-	let p = asyncrun#get_root('%')
-	let t = 'Find word in (' . p . '): '
-	if 0
-		echohl Type
-		call inputsave()
-		let t = input(t, '')
-		call inputrestore()
-		echohl None
-	else
-		let t = quickui#input#open(t, expand('<cword>'), 'grep')
-	endif
-	let t = substitute(t, '^\s*\(.\{-}\)[\s\r\n]*$', '\1', '')
-	redraw | echo "" | redraw
-	if strlen(t) > 0
-		silent exec "GrepCode! ".fnameescape(t)
-		call asclib#quickfix_title('- searching "'. t. '"')
-	endif
-endfunc
-
-function! MenuHelp_Cppman()
-	let t = 'Find word in Cppman:'
-	let t = quickui#input#open(t, module#cpp#fetch_cword(), 'cppman')
-	let t = substitute(t, '^\s*\(.\{-}\)[\s\r\n]*$', '\1', '')
-	redraw | echo "" | redraw
-	if strlen(t) > 0
-		exec 'Cppman' t
-	endif
-endfunc
-
 function! MenuHelp_Proxy(enable)
 	let $http_proxy = (a:enable)? 'http://localhost:1080' : ''
 	let $https_proxy = $http_proxy

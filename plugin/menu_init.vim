@@ -55,7 +55,7 @@ call quickui#menu#install("&Edit", [
 			\ ])
 
 call quickui#menu#install('&Search', [
-			\ [ "&Grep Word\t(In Project)", 'call MenuHelp_GrepCode()', 'Grep keyword in current project' ],
+			\ [ "&Grep Word\t(In Project)", 'call module#action#grep()', 'Grep keyword in current project' ],
 			\ [ "--", ],
 			\ [ "Find &Definition\t(GNU Global)", 'call MenuHelp_Gscope("g")', 'GNU Global search g'],
 			\ [ "Find &Symbol\t(GNU Global)", 'call MenuHelp_Gscope("s")', 'GNU Gloal search s'],
@@ -133,7 +133,7 @@ call quickui#menu#install("&C/C++", [
 			\ ["&Code Snippet\t<spc>fp", "Leaderf snippet"],
 			\ ["&Edit Snippet\t", "CodeSnipEdit"],
 			\ ["&Debug Menu\tCtrl+F1", "GdbHelp"],
-			\ ["Cpp&man Help\t", 'call MenuHelp_Cppman()'],
+			\ ["Cpp&man Help\t", 'call module#action#cppman()'],
 			\ ["&Target Profile\tCtrl+F12", 'AsyncTaskEnviron profile debug release static'],
 			\ ['--'],
 			\ ["&Switch Header/Source\t<spc>fw", "SwitchHeader edit"],
