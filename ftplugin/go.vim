@@ -34,8 +34,10 @@ endif
 " install BufWritePre hook
 call module#go#init()
 
+let obj = asclib#core#object('b')
+let obj.post_format = 0
+
 if get(g:, 'asclib_go_post_format', 0)
-	let obj = asclib#core#object('b')
 	let obj.post_format = 1
 endif
 
