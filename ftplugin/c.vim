@@ -98,7 +98,7 @@ endif
 " context 
 "----------------------------------------------------------------------
 let b:quickui_context = [
-			\ ['Cpp&man', 'exec "Cppman " . expand("<cword>")'],
+			\ ['Cpp&man', 'call module#cpp#cppman()'],
 			\ ["S&witch Header\t<SPC>fw", 'SwitchHeader vsplit'],
 			\ ]
 

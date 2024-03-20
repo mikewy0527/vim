@@ -9,6 +9,31 @@
 
 
 "----------------------------------------------------------------------
+" fetch current word
+"----------------------------------------------------------------------
+function! module#cpp#fetch_cword() abort
+	let word = expand('<cword>')
+	let text = asclib#text#match_at_cursor('\v(\w+\:\:)*\w+')
+	if len(word) > len(text)
+		return word
+	endif
+	return text
+endfunc
+
+
+"----------------------------------------------------------------------
+" call cppman
+"----------------------------------------------------------------------
+function! module#cpp#cppman()
+	let word = module#cpp#fetch_cword()
+	if word == ''
+		return
+	endif
+	exec printf('Cppman %s', word)
+endfunc
+
+
+"----------------------------------------------------------------------
 " switch header
 "----------------------------------------------------------------------
 function! module#cpp#switch_header(...)

@@ -72,7 +72,7 @@ endfunc
 
 function! MenuHelp_Cppman()
 	let t = 'Find word in Cppman:'
-	let t = quickui#input#open(t, expand('<cword>'), 'cppman')
+	let t = quickui#input#open(t, module#cpp#fetch_cword(), 'cppman')
 	let t = substitute(t, '^\s*\(.\{-}\)[\s\r\n]*$', '\1', '')
 	redraw | echo "" | redraw
 	if strlen(t) > 0
