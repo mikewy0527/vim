@@ -386,7 +386,8 @@ function! s:script_run(name, args, lnum, count, debug) abort
 		if len(text) < len(hr)
 			call appendbufline(bid, a:lnum, repeat([''], len(hr) - len(text)))
 		elseif len(text) > len(hr)
-			call deletebufline(bid, a:lnum, a:lnum + len(text) - len(hr) - 1)
+			let endup = a:lnum + len(text) - len(hr) - 1
+			silent call deletebufline(bid, a:lnum, endup)
 		endif
 		call setbufline(bid, a:lnum, hr)
 	endif
@@ -463,7 +464,7 @@ function! s:run_in_split(name, args, lnum, count, debug) abort
 	endif
 	call setbufvar(bid, '_textproc_buffer', bid)
 	call setbufvar(bid, '&modifiable', 1)
-	call deletebufline(bid, 1, '$')
+	silent call deletebufline(bid, 1, '$')
 	call setbufline(bid, 1, output)
 	call setbufvar(bid, '&modified', 0)
 	return bid

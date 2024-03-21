@@ -46,7 +46,7 @@ function! asclib#buffer#alloc()
 		endif
 	endif
 	call setbufvar(bid, '&modifiable', 1)
-	call deletebufline(bid, 1, '$')
+	silent call deletebufline(bid, 1, '$')
 	call setbufvar(bid, '&modified', 0)
 	call setbufvar(bid, '&filetype', '')
 	return bid
@@ -63,7 +63,7 @@ function! asclib#buffer#release(bid)
 	let index = len(s:buffer_array)
 	let s:buffer_array[index] = a:bid
 	call setbufvar(a:bid, '&modifiable', 1)
-	call deletebufline(a:bid, 1, '$')
+	silent call deletebufline(a:bid, 1, '$')
 	call setbufvar(a:bid, '&modified', 0)
 endfunc
 
@@ -230,7 +230,8 @@ endfunc
 "----------------------------------------------------------------------
 function! asclib#buffer#deleteline(bid, lnum) abort
 	if s:has_deletebufline
-		return deletebufline(a:bid, a:lnum)
+		silent call deletebufline(a:bid, a:lnum)
+		return 0
 	endif
 	return -1
 endfunc

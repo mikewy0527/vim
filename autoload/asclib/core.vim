@@ -578,7 +578,8 @@ function! asclib#core#text_replace(bid, lnum, count, program, encoding) abort
 	if len(text) < len(hr)
 		call appendbufline(bid, a:lnum, repeat([''], len(hr) - len(text)))
 	elseif len(text) > len(hr)
-		call deletebufline(bid, a:lnum, a:lnum + len(text) - len(hr) - 1)
+		let endup = a:lnum + len(text) - len(hr) - 1
+		silent call deletebufline(bid, a:lnum, endup)
 	endif
 	call setbufline(bid, a:lnum, hr)
 	return 0
