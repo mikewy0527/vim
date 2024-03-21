@@ -37,7 +37,7 @@ endfunc
 " echo message (size safe)
 "----------------------------------------------------------------------
 function! asclib#common#echo(highlight, text, ...) abort
-	let text = (a:0 == 0)? a:text : a:text . join(a:000, ' ')
+	let text = (a:0 == 0)? a:text : a:text . ' ' . join(a:000, ' ')
 	let pos = stridx(text, "\n")
 	if pos >= 0
 		let text = strpart(text, 0, pos)
@@ -58,6 +58,15 @@ endfunc
 function! asclib#common#notify(text, type) abort
 	let text = (a:type == '')? a:text : printf("[%s] %s", a:type, a:text)
 	call asclib#common#echo('Special', text)
+endfunc
+
+
+"----------------------------------------------------------------------
+" message
+"----------------------------------------------------------------------
+function! asclib#common#message(text, ...) abort
+	let text = (a:0 == 0)? a:text : a:text . ' ' . join(a:000, ' ')
+	call asclib#common#echo('Title', text)
 endfunc
 
 

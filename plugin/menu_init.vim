@@ -43,11 +43,12 @@ call quickui#menu#install("&File", [
 			\ ])
 
 call quickui#menu#install("&Edit", [
+			\ ['&Template Select', 'call module#action#template(&ft)', ''],
 			\ ['Copyright &Header', 'call feedkeys("\<esc> ec")', 'Insert copyright information at the beginning'],
-			\ ['&Trailing Space', 'call StripTrailingWhitespace()', ''],
+			\ ['Trailing &Space', 'call StripTrailingWhitespace()', ''],
 			\ ['Update &ModTime', 'UpdateLastModified', ''],
 			\ ['&Paste Mode Line', 'PasteVimModeLine', ''],
-			\ ['Format J&son', '%!python -m json.tool', ''],
+			\ ['Format Js&on', '%!python -m json.tool', ''],
 			\ ['--'],
 			\ ['&Align Table', 'Tabularize /|', ''],
 			\ ['Align &Cheatsheet', 'MyCheatSheetAlign', ''],

@@ -65,4 +65,25 @@ function! module#action#cppman() abort
 endfunc
 
 
+"----------------------------------------------------------------------
+" apply template
+"----------------------------------------------------------------------
+function! module#action#template(ft) abort
+	let items = template#list_names(a:ft)
+	let names = keys(items)
+	call sort(names)
+	let items = []
+	for name in names
+		call add(items, printf("%s/%s", a:ft, name))
+	endfor
+	let msg = printf('Apply Template (for %s): ', a:ft)
+	let index = asclib#ui#select(msg, items)
+	if index > 0
+		let name = names[index - 1]
+		exec printf("Template %s/%s", a:ft, name)
+		call asclib#common#message('Template applied:', name)
+	endif
+endfunc
+
+
 
