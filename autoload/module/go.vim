@@ -39,6 +39,7 @@ function! module#go#format()
 		let obj = asclib#core#object('b')
 		if get(obj, 'post_format', 0)
 			call asclib#text#format('goimports')
+			" call asclib#text#format('gofmt')
 		endif
 	endif
 endfunc

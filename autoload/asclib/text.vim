@@ -40,7 +40,9 @@ function! asclib#text#filter(line1, line2, command, ...) abort
 		let lnum = line('.')
 		let bid = bufnr('')
 		let encoding = (a:0 > 0)? a:1 : ''
-		call asclib#core#text_replace(bid, line1, size, a:command, encoding)
+		let opts = {'encoding': encoding}
+		let opts.strict = 1
+		call asclib#core#text_replace(bid, line1, size, a:command, opts)
 		exec ':' . lnum
 	endif
 endfunc

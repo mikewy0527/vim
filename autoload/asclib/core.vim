@@ -533,7 +533,7 @@ endfunc
 "----------------------------------------------------------------------
 " replace the text from range
 "----------------------------------------------------------------------
-function! asclib#core#text_replace(bid, lnum, count, program, encoding) abort
+function! asclib#core#text_replace(bid, lnum, count, program, opts) abort
 	if a:count <= 0
 		return 0
 	endif
@@ -559,8 +559,15 @@ function! asclib#core#text_replace(bid, lnum, count, program, encoding) abort
 			let funname = matchstr(a:program, '^\s*:\zs.*$')
 			let hr = call(funname, [text])
 		else
-			let enc = a:encoding
+			let enc = get(a:opts, 'encoding', '')
+			let s:shell_error = 0
 			let hr = asclib#core#text_process(a:program, text, '', enc)
+			if s:shell_error != 0
+				if get(a:opts, 'strict', 0) != 0
+					call asclib#core#errmsg('shell error: ' . s:shell_error)
+					return 0
+				endif
+			endif
 		endif
 	elseif type(a:program) == v:t_func
 		let hr = call(a:program, [text])
