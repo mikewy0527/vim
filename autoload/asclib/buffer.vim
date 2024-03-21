@@ -228,9 +228,12 @@ endfunc
 "----------------------------------------------------------------------
 " deletebufline
 "----------------------------------------------------------------------
-function! asclib#buffer#deleteline(bid, lnum) abort
+function! asclib#buffer#deleteline(bid, lnum, end) abort
 	if s:has_deletebufline
-		silent call deletebufline(a:bid, a:lnum)
+		silent let hr = deletebufline(a:bid, a:lnum, a:end)
+		return hr
+	elseif bufnr('%') == a:bid
+		silent exec printf('%d,%dd', a:lnum, a:end)
 		return 0
 	endif
 	return -1
