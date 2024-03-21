@@ -544,7 +544,7 @@ function! asclib#core#text_replace(bid, lnum, count, program, opts) abort
 	endif
 	if !exists('*deletebufline')
 		if bid != bufnr('')
-			return 0
+			return -1
 		endif
 	endif
 	let current = (bid == bufnr(''))? 1 : 0
@@ -560,12 +560,13 @@ function! asclib#core#text_replace(bid, lnum, count, program, opts) abort
 			let hr = call(funname, [text])
 		else
 			let encoding = get(a:opts, 'encoding', '')
+			let cwd = get(a:opts, 'cwd', '')
 			let s:shell_error = 0
-			let hr = asclib#core#text_process(a:program, text, '', encoding)
+			let hr = asclib#core#text_process(a:program, text, cwd, encoding)
 			if s:shell_error != 0
 				if get(a:opts, 'strict', 0) != 0
-					call asclib#core#errmsg('shell error: ' . s:shell_error)
-					return 0
+					let g:asclib#core#filter_error = hr
+					return -1
 				endif
 			endif
 		endif

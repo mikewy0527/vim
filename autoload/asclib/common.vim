@@ -9,17 +9,6 @@ let g:asclib#common#path = fnamemodify(expand('<sfile>:p'), ':h:h:h')
 
 
 "----------------------------------------------------------------------
-" error message
-"----------------------------------------------------------------------
-function! asclib#common#errmsg(text)
-	redraw
-	echohl ErrorMsg
-	echom a:text
-	echohl None
-endfunc
-
-
-"----------------------------------------------------------------------
 " returns v:echospace
 "----------------------------------------------------------------------
 function! asclib#common#echospace() abort
@@ -30,6 +19,23 @@ function! asclib#common#echospace() abort
 	let statusline = statusline || (&laststatus == 1 && winnr('$') > 1)
     let reqspaces_lastline = (statusline || !&ruler) ? 12 : 29
     return &columns - reqspaces_lastline
+endfunc
+
+
+"----------------------------------------------------------------------
+" error message
+"----------------------------------------------------------------------
+function! asclib#common#errmsg(text, ...)
+	let text = (a:0 == 0)? a:text : a:text . ' ' . join(a:000, ' ')
+	let pos = stridx(text, "\n")
+	if pos >= 0
+		let text = strpart(text, 0, pos)
+	endif
+	let text = strpart(text, 0, asclib#common#echospace() - 1)
+	redraw
+	echohl ErrorMsg
+	echom text
+	echohl None
 endfunc
 
 

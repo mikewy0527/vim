@@ -44,6 +44,10 @@ function! asclib#text#filter(line1, line2, command, ...) abort
 		let opts.strict = 1
 		call asclib#core#text_replace(bid, line1, size, a:command, opts)
 		exec ':' . lnum
+		if g:asclib#core#shell_error != 0
+			let t ='filter shell error: ' . g:asclib#core#shell_error
+			call asclib#common#errmsg(t)
+		endif
 	endif
 endfunc
 
