@@ -19,7 +19,8 @@ import json
 #----------------------------------------------------------------------
 def chatgpt_request(messages, apikey, opts):
     import urllib, urllib.request, json
-    url = opts.get('url', "https://api.openai.com/v1/chat/completions")
+    url = opts.get('url', 'https://api.openai.com').rstrip('/')
+    url = url + "/v1/chat/completions"
     proxy = opts.get('proxy', None)
     timeout = opts.get('timeout', 20000)
     d = {'messages': messages}
