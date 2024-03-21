@@ -559,9 +559,9 @@ function! asclib#core#text_replace(bid, lnum, count, program, opts) abort
 			let funname = matchstr(a:program, '^\s*:\zs.*$')
 			let hr = call(funname, [text])
 		else
-			let enc = get(a:opts, 'encoding', '')
+			let encoding = get(a:opts, 'encoding', '')
 			let s:shell_error = 0
-			let hr = asclib#core#text_process(a:program, text, '', enc)
+			let hr = asclib#core#text_process(a:program, text, '', encoding)
 			if s:shell_error != 0
 				if get(a:opts, 'strict', 0) != 0
 					call asclib#core#errmsg('shell error: ' . s:shell_error)
