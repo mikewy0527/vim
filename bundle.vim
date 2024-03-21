@@ -261,8 +261,15 @@ if has_key(s:enabled, 'opt')
 	Plug 'voldikss/vim-translator'
 	Plug 'jreybert/vimagit'
 	Plug 'cohama/agit.vim'
+
 	" Plug 'tpope/vim-apathy'
 	" Plug 'mh21/errormarker.vim'
+
+	if 1
+		" vimscript development
+		Plug 'mhinz/vim-lookup'
+		Plug 'tweekmonster/helpful.vim'
+	endif
 
 	if 1
 		Plug 'AndrewRadev/switch.vim'
