@@ -233,7 +233,7 @@ function! asclib#buffer#deleteline(bid, lnum, end) abort
 		silent let hr = deletebufline(a:bid, a:lnum, a:end)
 		return hr
 	elseif bufnr('%') == a:bid
-		silent exec printf('%d,%dd', a:lnum, a:end)
+		silent noautocmd exec printf('%d,%dd', a:lnum, a:end)
 		return 0
 	endif
 	return -1
