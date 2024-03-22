@@ -357,6 +357,7 @@ if has('autocmd')
 			exec printf('nnoremap <buffer>q :<c-u>close<cr>')
 			exec printf('nnoremap <buffer><m-x> :<c-u>close<cr>')
 			exec printf('nnoremap <buffer><tab>q :<c-u>close<cr>')
+			let b:matchup_matchparen_enabled = 0
 		endif
 	endfunc
 	augroup AscKeymapsAu
