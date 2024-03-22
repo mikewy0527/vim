@@ -355,7 +355,8 @@ if has('autocmd')
 		if &bt == 'terminal'
 			let bid = bufnr('')
 			exec printf('nnoremap <buffer>q :<c-u>close<cr>')
-			exec printf('nnoremap <buffer><cr> :<c-u>close<cr>')
+			exec printf('nnoremap <buffer><m-x> :<c-u>close<cr>')
+			exec printf('nnoremap <buffer><tab>q :<c-u>close<cr>')
 		endif
 	endfunc
 	augroup AscKeymapsAu

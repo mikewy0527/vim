@@ -9,6 +9,6 @@
 
 let g:switch_mapping = ""
 
-noremap <m-x> :Switch<cr>
+" noremap <m-x> :Switch<cr>
 noremap <m--> :Switch<cr>
 

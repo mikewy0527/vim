@@ -68,7 +68,7 @@ endfunc
 "----------------------------------------------------------------------
 " apply template
 "----------------------------------------------------------------------
-function! module#action#template(ft) abort
+function! module#action#template_select(ft) abort
 	let items = template#list_names(a:ft)
 	let names = keys(items)
 	call sort(names)
@@ -85,5 +85,22 @@ function! module#action#template(ft) abort
 	endif
 endfunc
 
+
+
+"----------------------------------------------------------------------
+" select escript
+"----------------------------------------------------------------------
+function! module#action#escript_select() abort
+	let items = escript#list()
+	let names = keys(items)
+	call sort(names)
+	let msg = 'Select Script: '
+	let index = asclib#ui#select(msg, names)
+	if index > 0
+		let name = names[index - 1]
+		let script = items[name]
+		exec printf('EScript %s', name)
+	endif
+endfunc
 
 

@@ -43,7 +43,7 @@ call quickui#menu#install("&File", [
 			\ ])
 
 call quickui#menu#install("&Edit", [
-			\ ['&Template Select', 'call module#action#template(&ft)', ''],
+			\ ['&Template Select', 'call module#action#template_select(&ft)', ''],
 			\ ['Copyright &Header', 'call feedkeys("\<esc> ec")', 'Insert copyright information at the beginning'],
 			\ ['Trailing &Space', 'call StripTrailingWhitespace()', ''],
 			\ ['Update &ModTime', 'UpdateLastModified', ''],
@@ -142,14 +142,14 @@ call quickui#menu#install("&C/C++", [
 			\ ])
 
 call quickui#menu#install('&Tools', [
-			\ ['Compare &History', 'call svnhelp#compare_ask_file()', ''],
-			\ ['&Compare Buffer', 'call svnhelp#compare_ask_buffer()', ''],
-			\ ['--',''],
 			\ ['List &Buffer', 'call quickui#tools#list_buffer("FileSwitch tabe")', ],
 			\ ['&Mode Switch', 'ModeSelect', ],
+			\ ['&EScript Run', 'call module#action#escript_select()', ],
+			\ ['--',''],
+			\ ['Compare &File', 'call svnhelp#compare_ask_file()', ''],
+			\ ['&Compare Buffer', 'call svnhelp#compare_ask_buffer()', ''],
 			\ ['&Display Messages', 'call quickui#tools#display_messages()', ],
 			\ ['--',''],
-			\ ["D&elimitMate %{get(b:, 'delimitMate_enabled', 0)? 'Disable':'Enable'}", 'DelimitMateSwitch'],
 			\ ['&Open URL', 'OpenURL', 'open current URL in browser'],
 			\ ['Read &URL', 'call menu#ReadUrl()', 'load content from url into current buffer'],
 			\ ['&Spell %{&spell? "Disable":"Enable"}', 'set spell!', 'Toggle spell check %{&spell? "off" : "on"}'],
@@ -171,6 +171,7 @@ call quickui#menu#install('&Plugin', [
 			\ ["&Gist", "Gist", "open gist with mattn/gist-vim"],
 			\ ["&Edit Note", "Note", "edit note with vim-notes"],
 			\ ["&Display Calendar", "Calendar", "display a calender"],
+			\ ["D&elimitMate %{get(b:, 'delimitMate_enabled', 0)? 'Disable':'Enable'}", 'DelimitMateSwitch'],
 			\ ["-"],
 			\ ["Plugin &List", "PlugList", "Update list"],
 			\ ["Plugin &Update", "PlugUpdate", "Update plugin"],
