@@ -351,11 +351,23 @@ if has('autocmd')
 			set showmode
 		endif
 	endfunc
+	function! s:terminal_open()
+		if &bt == 'terminal'
+			let bid = bufnr('')
+			exec printf('nnoremap <buffer>q :<c-u>close<cr>')
+			exec printf('nnoremap <buffer><cr> :<c-u>close<cr>')
+		endif
+	endfunc
 	augroup AscKeymapsAu
 		autocmd!
 		autocmd InsertLeave * call s:insert_leave()
 		autocmd InsertEnter * call s:insert_enter()
 		" autocmd InsertLeave * set showmode
+		if exists('##TerminalOpen')
+			autocmd TerminalOpen * call s:terminal_open()
+		elseif exists('##TermOpen')
+			autocmd TermOpen * call s:terminal_open()
+		endif
 	augroup END
 endif
 
