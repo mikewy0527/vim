@@ -7,12 +7,16 @@
 "
 "======================================================================
 
+unsilent echom "t1"
 if &bt != 'terminal'
+	unsilent echom "t2"
 	finish
 elseif !exists('b:asyncrun_cmd')
+	unsilent echom "t3"
 	finish
 endif
 
+unsilent echom "t4"
 exec printf('nnoremap <buffer>q :<c-u>close<cr>')
 exec printf('nnoremap <buffer><m-x> :<c-u>close<cr>')
 exec printf('nnoremap <buffer><tab>q :<c-u>close<cr>')
