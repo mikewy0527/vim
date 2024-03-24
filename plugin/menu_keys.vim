@@ -65,8 +65,8 @@ let g:navigator.w = {
 "----------------------------------------------------------------------
 let g:navigator['<tab>'] = {
 			\ 'name': '+tab',
-			\ 't' : [':tabnew', 'new-tab'],
-			\ 'c' : [':tabclose', 'close-current-tab'],
+			\ 'c' : [':tabnew', 'new-tab'],
+			\ 'v' : [':tabclose', 'close-current-tab'],
 			\ 'n' : [':tabnext', 'next-tab'],
 			\ 'p' : [':tabprev', 'previous-tab'],
 			\ 'o' : [':tabonly', 'close-all-other-tabs'],
