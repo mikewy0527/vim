@@ -1,3 +1,11 @@
+"======================================================================
+"
+" borland256.vim - 
+"
+" Created by skywind on 2024/03/24
+" Last Modified: 2024/03/24 19:52:04
+"
+"======================================================================
 set background=dark
 hi clear
 
@@ -51,7 +59,8 @@ hi ModeMsg gui=NONE term=NONE cterm=NONE guifg=#ffffff guibg=NONE ctermfg=15 cte
 hi MoreMsg gui=bold term=bold cterm=bold guifg=SeaGreen guibg=NONE ctermfg=29 ctermbg=NONE
 hi NonText gui=NONE term=NONE cterm=NONE guifg=#00a8a8 guibg=NONE ctermfg=37 ctermbg=NONE
 hi Normal gui=NONE term=NONE cterm=NONE guifg=#ffff57 guibg=#0000a8 ctermfg=227 ctermbg=19
-hi link Number NormalTransparent
+" hi link Number NormalTransparent
+hi link Number Todo
 hi link Operator Statement
 hi Pmenu gui=NONE term=NONE cterm=NONE guifg=#000000 guibg=#00a8a8 ctermfg=0 ctermbg=37
 hi link PmenuExtra Pmenu
@@ -68,7 +77,8 @@ hi link QuickFixLine Search
 hi Removed gui=NONE term=NONE cterm=NONE guifg=Red guibg=NONE ctermfg=9 ctermbg=NONE
 hi link Repeat Statement
 hi Search gui=NONE term=reverse,inverse cterm=NONE guifg=Black guibg=Yellow ctermfg=0 ctermbg=11
-hi SignColumn gui=NONE term=standout cterm=NONE guifg=Cyan guibg=Grey ctermfg=14 ctermbg=7
+" hi SignColumn gui=NONE term=standout cterm=NONE guifg=Cyan guibg=Grey ctermfg=14 ctermbg=7
+hi SignColumn gui=NONE term=standout cterm=NONE guifg=Cyan guibg=NONE ctermfg=14 ctermbg=NONE
 hi Special gui=NONE term=NONE cterm=NONE guifg=#57ffff guibg=NONE ctermfg=87 ctermbg=NONE
 hi link SpecialChar Special
 hi link SpecialComment Special
@@ -78,16 +88,21 @@ hi SpellCap gui=undercurl term=reverse,inverse cterm=undercurl guifg=NONE guibg=
 hi SpellLocal gui=undercurl term=underline cterm=undercurl guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE guisp=Cyan
 hi SpellRare gui=undercurl term=reverse,inverse cterm=undercurl guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE guisp=Magenta
 hi Statement gui=NONE term=NONE cterm=NONE guifg=#ffffff guibg=NONE ctermfg=15 ctermbg=NONE
-hi StatusLine gui=NONE term=NONE cterm=NONE guifg=#000000 guibg=#00a800 ctermfg=0 ctermbg=34
+" hi StatusLine gui=NONE term=NONE cterm=NONE guifg=#000000 guibg=#00a800 ctermfg=0 ctermbg=34
+hi StatusLine gui=NONE term=NONE cterm=NONE guifg=#000000 guibg=#e0e0e0 ctermfg=0 ctermbg=253
 hi StatusLineNC gui=NONE term=NONE cterm=NONE guifg=#000000 guibg=#a8a8a8 ctermfg=0 ctermbg=248
 hi StatusLineTerm gui=bold term=reverse,inverse,bold cterm=bold guifg=bg guibg=LightGreen ctermfg=19 ctermbg=120
 hi StatusLineTermNC gui=NONE term=reverse,inverse cterm=NONE guifg=bg guibg=LightGreen ctermfg=19 ctermbg=120
 hi link StorageClass Type
-hi link String NormalTransparent
+" hi link String NormalTransparent
+hi link String Special
 hi link Structure Type
-hi TabLine gui=underline term=underline cterm=underline guifg=NONE guibg=DarkGrey ctermfg=NONE ctermbg=248
-hi TabLineFill gui=reverse,inverse term=reverse,inverse cterm=reverse,inverse guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
-hi TabLineSel gui=bold term=bold cterm=bold guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+" hi TabLine gui=underline term=underline cterm=underline guifg=NONE guibg=DarkGrey ctermfg=NONE ctermbg=248
+" hi TabLineFill gui=reverse,inverse term=reverse,inverse cterm=reverse,inverse guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+" hi TabLineSel gui=bold term=bold cterm=bold guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+hi TabLine gui=underline term=underline cterm=NONE guifg=#000000 guibg=DarkGrey ctermfg=0 ctermbg=7
+hi TabLineFill gui=NONE term=NONE cterm=NONE guifg=NONE guibg=#c0c0c0 ctermfg=NONE ctermbg=7
+hi TabLineSel gui=bold term=bold cterm=bold guifg=#c0c0c0 guibg=NONE ctermfg=7 ctermbg=NONE
 hi link Tag Special
 hi link Terminal Normal
 hi Title gui=bold term=bold cterm=bold guifg=Magenta guibg=NONE ctermfg=13 ctermbg=NONE
@@ -97,7 +112,8 @@ hi ToolbarLine gui=NONE term=underline cterm=NONE guifg=NONE guibg=Grey50 ctermf
 hi Type gui=NONE term=NONE cterm=NONE guifg=#ffffff guibg=NONE ctermfg=15 ctermbg=NONE
 hi link Typedef Type
 hi Underlined gui=underline term=underline cterm=underline guifg=#80a0ff guibg=NONE ctermfg=111 ctermbg=NONE
-hi VertSplit gui=reverse,inverse term=reverse,inverse cterm=reverse,inverse guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+" hi VertSplit gui=reverse,inverse term=reverse,inverse cterm=reverse,inverse guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
+hi VertSplit gui=NONE term=NONE cterm=NONE guifg=#000000 guibg=#dadada ctermfg=0 ctermbg=253
 hi Visual gui=NONE term=NONE cterm=NONE guifg=#0000a8 guibg=#a8a8a8 ctermfg=19 ctermbg=248
 hi VisualNOS gui=NONE term=NONE cterm=NONE guifg=#0000a8 guibg=#575757 ctermfg=19 ctermbg=240
 hi WarningMsg gui=NONE term=NONE cterm=NONE guifg=#ffff57 guibg=#a85700 ctermfg=227 ctermbg=130
