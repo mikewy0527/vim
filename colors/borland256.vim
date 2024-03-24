@@ -100,7 +100,7 @@ hi link Structure Type
 " hi TabLine gui=underline term=underline cterm=underline guifg=NONE guibg=DarkGrey ctermfg=NONE ctermbg=248
 " hi TabLineFill gui=reverse,inverse term=reverse,inverse cterm=reverse,inverse guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
 " hi TabLineSel gui=bold term=bold cterm=bold guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
-hi TabLine gui=underline term=underline cterm=NONE guifg=#000000 guibg=#c0c0c0 ctermfg=0 ctermbg=7
+hi TabLine gui=underline term=underline cterm=NONE guifg=#000000 guibg=#a8a8a8 ctermfg=0 ctermbg=248
 hi TabLineFill gui=NONE term=NONE cterm=NONE guifg=NONE guibg=#e0e0e0 ctermfg=NONE ctermbg=253
 hi TabLineSel gui=bold term=bold cterm=bold guifg=#c0c0c0 guibg=NONE ctermfg=7 ctermbg=NONE
 " hi TabLineSel gui=bold term=bold cterm=bold guifg=#000000 guibg=#eeeeee ctermfg=0 ctermbg=255
