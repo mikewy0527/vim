@@ -100,13 +100,13 @@ nnoremap <silent>\w9 :9wincmd w<cr>
 "----------------------------------------------------------------------
 " tab keymap
 "----------------------------------------------------------------------
-nnoremap <silent>\tc :tabnew<cr>
-nnoremap <silent>\tq :tabclose<cr>
+nnoremap <silent>\tt :tabnew<cr>
+nnoremap <silent>\tc :tabclose<cr>
 nnoremap <silent>\tn :tabnext<cr>
 nnoremap <silent>\tp :tabprev<cr>
 nnoremap <silent>\to :tabonly<cr>
-nnoremap <silent>\th :-tabmove<cr>
-nnoremap <silent>\tl :+tabmove<cr>
+nnoremap <silent>\th :tabmove -1<cr>
+nnoremap <silent>\tl :tabmove +1<cr>
 nnoremap <silent>\ta g<tab>
 nnoremap <silent>\1 :tabn 1<cr>
 nnoremap <silent>\2 :tabn 2<cr>

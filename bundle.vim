@@ -304,8 +304,8 @@ if has_key(s:enabled, 'opt')
 
 	if 1
 		" Echo translation in the cmdline
-		nmap <silent> <Leader>tt <Plug>Translate
-		vmap <silent> <Leader>tt <Plug>TranslateV
+		nmap <silent> <Leader>ts <Plug>Translate
+		vmap <silent> <Leader>ts <Plug>TranslateV
 		" Display translation in a window
 		nmap <silent> <Leader>tw <Plug>TranslateW
 		vmap <silent> <Leader>tw <Plug>TranslateWV
