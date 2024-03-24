@@ -3,7 +3,7 @@
 " menu_keys.vim - vim-navigator initialize
 "
 " Created by skywind on 2023/06/27
-" Last Modified: 2023/06/27 22:10:10
+" Last Modified: 2024/03/24 18:43
 "
 "======================================================================
 
@@ -149,6 +149,7 @@ let g:navigator.p = {
 			\ 'l' : ['module#project#try_open(".git/config")', 'edit-git-config'],
 			\ 'r' : ['module#project#open(".lvimrc")', 'edit-local-vimrc'],
 			\ 'g' : ['module#project#open("go.mod")', 'edit-go-mod'],
+			\ 'm' : ['module#project#open("Makefile")', 'edit-makefile'],
 			\ }
 
 
