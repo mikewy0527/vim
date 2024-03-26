@@ -24,7 +24,8 @@ hi link CurSearch Search
 hi Cursor gui=reverse,inverse term=NONE cterm=reverse,inverse guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE
 hi CursorColumn gui=NONE term=reverse,inverse cterm=NONE guifg=NONE guibg=Grey40 ctermfg=NONE ctermbg=241
 hi link CursorIM Cursor
-hi CursorLine gui=NONE term=underline cterm=NONE guifg=NONE guibg=Grey40 ctermfg=NONE ctermbg=241
+" hi CursorLine gui=NONE term=underline cterm=NONE guifg=NONE guibg=Grey40 ctermfg=NONE ctermbg=241
+hi CursorLine gui=NONE term=underline cterm=NONE guifg=NONE guibg=#0038a8 ctermfg=NONE ctermbg=24
 hi link CursorLineFold Folded
 hi CursorLineNr gui=bold term=bold cterm=bold guifg=Yellow guibg=NONE ctermfg=11 ctermbg=NONE
 hi link CursorLineSign LineNr
