@@ -8,6 +8,7 @@
 "======================================================================
 
 if get(g:, 'colors_name', '') == 'borland256'
+	finish
 	syntax match goMark2 '('
 	syntax match goMark2 ')'
 	syntax match goMark2 '{'

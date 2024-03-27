@@ -122,3 +122,39 @@ hi WarningMsg gui=NONE term=NONE cterm=NONE guifg=#ffff57 guibg=#a85700 ctermfg=
 hi WildMenu gui=NONE term=standout cterm=NONE guifg=Black guibg=Yellow ctermfg=0 ctermbg=11
 hi clear lCursor
 hi NormalTransparent gui=NONE term=NONE cterm=NONE guifg=#ffff57 guibg=NONE ctermfg=227 ctermbg=NONE
+hi link BorlandSpecial Statement
+
+
+"----------------------------------------------------------------------
+" extra elements for syntax highlighting
+"----------------------------------------------------------------------
+let s:langmap = {'c':1, 'cpp':1, 'java':1, 'go':1, 'cs':1, 'javascript': 1,
+			\ 'typescript':1, 'rust':1, 'php':1, 'perl':1, 'ps1': 1,
+			\ 'yacc':1, 'lex':1 }
+
+function! s:newmatch()
+	if &bt != ''
+		return
+	elseif !has_key(s:langmap, &ft)
+		return
+	elseif get(g:, 'colors_name', '') != 'borland256'
+		return
+	endif
+	if get(b:, 'borland256_init', 0) == 0
+		let b:borland256_init = 1
+		syntax match BorlandSpecial '('
+		syntax match BorlandSpecial ')'
+		syntax match BorlandSpecial '{'
+		syntax match BorlandSpecial '}'
+		syntax match BorlandSpecial '\['
+		syntax match BorlandSpecial '\]'
+	endif
+endfunc
+
+augroup BorlandEventGroup
+	au!
+	au VimEnter,WinEnter,FileType * call s:newmatch()
+	au BufNew,BufWinEnter,BufReadPost * call s:newmatch()
+augroup END
+
+
