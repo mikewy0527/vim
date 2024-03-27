@@ -142,12 +142,7 @@ function! s:newmatch()
 	endif
 	if get(b:, 'borland256_init', 0) == 0
 		let b:borland256_init = 1
-		syntax match BorlandSpecial '('
-		syntax match BorlandSpecial ')'
-		syntax match BorlandSpecial '{'
-		syntax match BorlandSpecial '}'
-		syntax match BorlandSpecial '\['
-		syntax match BorlandSpecial '\]'
+		syntax match BorlandSpecial '\v(\(|\)|\{|\}|\[|\])'
 	endif
 endfunc
 
