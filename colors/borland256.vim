@@ -152,4 +152,6 @@ augroup BorlandEventGroup
 	au BufNew,BufWinEnter,BufReadPost * call s:newmatch()
 augroup END
 
+call s:newmatch()
+
 
