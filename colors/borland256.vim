@@ -124,9 +124,6 @@ hi clear lCursor
 hi NormalTransparent gui=NONE term=NONE cterm=NONE guifg=#ffff57 guibg=NONE ctermfg=227 ctermbg=NONE
 hi link BorlandSpecial Statement
 
-hi BorlandDialog gui=NONE term=NONE cterm=NONE guifg=#e4e4e4 guibg=#00aaaa ctermfg=250 ctermbg=37
-hi BorlandDialogActive gui=NONE term=NONE cterm=NONE guifg=#e4e4e4 guibg=#00aaaa ctermfg=250 ctermbg=34
-
 
 "----------------------------------------------------------------------
 " extra elements for syntax highlighting
