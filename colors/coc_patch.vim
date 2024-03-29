@@ -7,4 +7,5 @@ hi! CocFloating ctermbg=37 guibg=#00aaaa ctermfg=253
 hi! CocSearch ctermfg=227
 hi! CocFloating ctermbg=37 guibg=#00aaaa ctermfg=19
 
-
+hi! QuickPreview ctermbg=18
+hi! QuickFixLine ctermbg=222 ctermfg=NONE

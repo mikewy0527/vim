@@ -3,14 +3,22 @@
 " borland256.vim - 
 "
 " Created by skywind on 2024/03/24
-" Last Modified: 2024/03/24 19:52:04
+" Last Modified: 2024/03/30 04:30
 "
 "======================================================================
+
+"----------------------------------------------------------------------
+" initialize
+"----------------------------------------------------------------------
 set background=dark
 hi clear
 
 let g:colors_name = "borland256"
 
+
+"----------------------------------------------------------------------
+" color table
+"----------------------------------------------------------------------
 hi Added gui=NONE term=NONE cterm=NONE guifg=LimeGreen guibg=NONE ctermfg=77 ctermbg=NONE
 hi link Boolean NormalTransparent
 hi Changed gui=NONE term=NONE cterm=NONE guifg=DodgerBlue guibg=NONE ctermfg=33 ctermbg=NONE
@@ -126,6 +134,14 @@ hi link BorlandSpecial Statement
 
 
 "----------------------------------------------------------------------
+" options
+"----------------------------------------------------------------------
+if get(g:, 'borland256_darker', 0) == 1
+	hi Normal ctermbg=18 guibg=#000087
+endif
+
+
+"----------------------------------------------------------------------
 " extra elements for syntax highlighting
 "----------------------------------------------------------------------
 let s:langmap = {'c':1, 'cpp':1, 'java':1, 'go':1, 'cs':1, 'javascript': 1,
@@ -153,5 +169,16 @@ augroup BorlandEventGroup
 augroup END
 
 call s:newmatch()
+
+
+"----------------------------------------------------------------------
+" plugin adaptation
+"----------------------------------------------------------------------
+
+" plugin: coc
+hi! CocMenuSel ctermbg=34 guibg=#00aa00
+hi! CocFloating ctermbg=37 guibg=#00aaaa ctermfg=253 guibg=#dadada
+hi! CocSearch ctermfg=227 guifg=#ffff57
+hi! CocFloating ctermbg=37 guibg=#00aaaa ctermfg=19 guifg=#0000af
 
 
