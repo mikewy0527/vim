@@ -147,12 +147,12 @@ endif
 "----------------------------------------------------------------------
 let s:langmap = {'c':1, 'cpp':1, 'java':1, 'go':1, 'cs':1, 'javascript': 1,
 			\ 'typescript':1, 'rust':1, 'php':1, 'perl':1, 'ps1': 1,
-			\ 'yacc':1, 'lex':1 }
+			\ 'vim':1, 'yacc':1, 'lex':1 }
 
 function! s:newmatch()
 	if &bt != ''
 		return
-	elseif !has_key(s:langmap, &ft)
+	elseif get(s:langmap, &ft, 0) == 0
 		return
 	elseif get(g:, 'colors_name', '') != 'borland256'
 		return
