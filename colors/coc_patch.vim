@@ -1,11 +1,4 @@
-hi! def link CocSearch Special
-hi! def link CocMenuSel CursorLine
 
-hi! CocMenuSel ctermbg=34 guibg=#00aa00
-hi! CocFloating ctermbg=37 guibg=#00aaaa ctermfg=253
+" hi Normal ctermfg=185 guifg=#e5e555
+hi! def link Directory Special
 
-hi! CocSearch ctermfg=227
-hi! CocFloating ctermbg=37 guibg=#00aaaa ctermfg=19
-
-hi! QuickPreview ctermbg=18
-hi! QuickFixLine ctermbg=222 ctermfg=NONE

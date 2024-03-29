@@ -44,7 +44,8 @@ hi DiffAdd gui=NONE term=bold cterm=NONE guifg=NONE guibg=DarkBlue ctermfg=NONE 
 hi DiffChange gui=NONE term=bold cterm=NONE guifg=NONE guibg=DarkMagenta ctermfg=NONE ctermbg=90
 hi DiffDelete gui=bold term=bold cterm=bold guifg=Blue guibg=DarkCyan ctermfg=12 ctermbg=30
 hi DiffText gui=bold term=reverse,inverse cterm=bold guifg=NONE guibg=Red ctermfg=NONE ctermbg=9
-hi Directory gui=NONE term=bold cterm=NONE guifg=Cyan guibg=NONE ctermfg=14 ctermbg=NONE
+" hi Directory gui=NONE term=bold cterm=NONE guifg=Cyan guibg=NONE ctermfg=14 ctermbg=NONE
+hi link Directory Special
 hi link EndOfBuffer NonText
 hi Error gui=NONE term=reverse,inverse cterm=NONE guifg=White guibg=Red ctermfg=15 ctermbg=9
 hi ErrorMsg gui=NONE term=NONE cterm=NONE guifg=#ffff57 guibg=#a80000 ctermfg=227 ctermbg=124
