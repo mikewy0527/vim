@@ -1,3 +1,6 @@
+# vim: set fenc=utf-8 ft=taskini:
+# see: https://github.com/skywind3000/asynctasks.vim/wiki/Task-Config
+
 [project-init]
 command=go mod init $(?module name)
 cwd=<root>
