@@ -3,12 +3,12 @@
 " colors.vim - 
 "
 " Created by skywind on 2024/02/01
-" Last Modified: 2024/02/01 22:48
+" Last Modified: 2024/03/30 02:36
 "
 "======================================================================
 
 "----------------------------------------------------------------------
-" 
+" internal
 "----------------------------------------------------------------------
 let s:default_fg = 'NONE'
 let s:default_bg = 'NONE'
@@ -109,16 +109,41 @@ endfunc
 
 
 "----------------------------------------------------------------------
-" 
+" update normal 
 "----------------------------------------------------------------------
 function! colorexp#colors#update_normal()
 	if hlexists('Normal')
 		let xid = hlID('Normal')
+		let link = synIDtrans(xid)
+		while xid != link
+			let xid = link
+			let link = synIDtrans(xid)
+		endwhile
 		let bg = synIDattr(xid, 'bg#', 'gui')
 		let fg = synIDattr(xid, 'fg#', 'gui')
 		let s:default_fg = colorexp#palette#name2index(fg)
 		let s:default_bg = colorexp#palette#name2index(bg)
 	endif
+endfunc
+
+
+"----------------------------------------------------------------------
+" real_highlight
+"----------------------------------------------------------------------
+function! colorexp#colors#real_highlight(hid, gui2term)
+	let hid = (type(a:hid) == 0)? (a:hid) : hlID(a:hid)
+	let name = synIDattr(hid, 'name')
+	if !hlexists(name) 
+		return ''
+	endif
+	let link = synIDtrans(hid)
+	while hid != link
+		let hid = link
+		let link = synIDtrans(hid)
+	endwhile
+	let script = colorexp#colors#dump_highlight(hid, a:gui2term)
+	let part = split(script, ' ')[2:]
+	return printf('hi %s %s', name, join(part, ' '))
 endfunc
 
 
@@ -142,7 +167,6 @@ function! colorexp#colors#list_highlight(gui2term)
 	endwhile
 	return output
 endfunc
-
 
 
 "----------------------------------------------------------------------
