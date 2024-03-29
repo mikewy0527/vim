@@ -111,7 +111,7 @@ endfunc
 "----------------------------------------------------------------------
 " update normal 
 "----------------------------------------------------------------------
-function! colorexp#colors#update_normal()
+function! colorexp#colors#init()
 	if hlexists('Normal')
 		let xid = hlID('Normal')
 		let link = synIDtrans(xid)
@@ -142,8 +142,14 @@ function! colorexp#colors#real_highlight(hid, gui2term)
 		let link = synIDtrans(hid)
 	endwhile
 	let script = colorexp#colors#dump_highlight(hid, a:gui2term)
+	if script =~ '^hi clear'
+		if name == 'Normal'
+			return 'hi! clear Normal'
+		endif
+		let script = colorexp#colors#real_highlight('Normal', a:gui2term)
+	endif
 	let part = split(script, ' ')[2:]
-	return printf('hi %s %s', name, join(part, ' '))
+	return printf('hi! %s %s', name, join(part, ' '))
 endfunc
 
 
@@ -155,7 +161,7 @@ function! colorexp#colors#list_highlight(gui2term)
 	let output = []
 	let s:default_bg = 'NONE'
 	let s:default_fg = 'NONE'
-	call colorexp#colors#update_normal()
+	call colorexp#colors#init()
 	while 1
 		let hln = synIDattr(hid, 'name')
 		if !hlexists(hln) 
@@ -163,6 +169,24 @@ function! colorexp#colors#list_highlight(gui2term)
 		endif
 		let t = colorexp#colors#dump_highlight(hid, a:gui2term)
 		let output += [t]
+		let hid += 1
+	endwhile
+	return output
+endfunc
+
+
+"----------------------------------------------------------------------
+" list color names 
+"----------------------------------------------------------------------
+function! colorexp#colors#list_names()
+	let hid = 1
+	let output = []
+	while 1
+		let hln = synIDattr(hid, 'name')
+		if !hlexists(hln) 
+			break
+		endif
+		let output += [hln]
 		let hid += 1
 	endwhile
 	return output
