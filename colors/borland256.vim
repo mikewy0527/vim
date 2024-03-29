@@ -176,6 +176,9 @@ call s:newmatch()
 " plugin adaptation
 "----------------------------------------------------------------------
 
+" quickui
+hi QuickPreview gui=NONE term=NONE cterm=NONE guifg=#ffff57 guibg=#000087 ctermfg=227 ctermbg=18
+
 " plugin: coc
 hi! CocMenuSel ctermbg=34 guibg=#00aa00
 hi! CocFloating ctermbg=37 guibg=#00aaaa ctermfg=253 guibg=#dadada
