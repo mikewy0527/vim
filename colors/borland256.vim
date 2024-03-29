@@ -147,7 +147,7 @@ endif
 "----------------------------------------------------------------------
 let s:langmap = {'c':1, 'cpp':1, 'java':1, 'go':1, 'cs':1, 'javascript': 1,
 			\ 'typescript':1, 'rust':1, 'php':1, 'perl':1, 'ps1': 1,
-			\ 'vim':1, 'yacc':1, 'lex':1 }
+			\ 'vim':0, 'yacc':1, 'lex':1 }
 
 function! s:newmatch()
 	if &bt != ''
@@ -175,6 +175,10 @@ call s:newmatch()
 "----------------------------------------------------------------------
 " plugin adaptation
 "----------------------------------------------------------------------
+
+" vim
+hi! def link vimParenSep BorlandSpecial 
+hi! def link Delimiter BorlandSpecial 
 
 " quickui
 hi QuickPreview gui=NONE term=NONE cterm=NONE guifg=#ffff57 guibg=#000087 ctermfg=227 ctermbg=18
