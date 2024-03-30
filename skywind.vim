@@ -177,19 +177,6 @@ endif
 nnoremap <silent><space>hf :FileSwitch ~/.vim/test.comp<cr>
 
 
-"----------------------------------------------------------------------
-"- bufferhint
-"----------------------------------------------------------------------
-if has('patch-8.2.1') || has('nvim-0.4')
-	nnoremap <silent>+ :call quickui#tools#list_buffer('FileSwitch tabe')<cr>
-else
-	nnoremap + :call bufferhint#Popup()<CR>
-endif
-
-let g:bufferhint_CustomHighlight = 1
-hi! default link KeyHint Statement
-hi! default link AtHint Identifier
-
 
 "----------------------------------------------------------------------
 "- miscs

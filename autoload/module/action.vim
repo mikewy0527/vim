@@ -9,6 +9,49 @@
 
 
 "----------------------------------------------------------------------
+" ask input for grep
+"----------------------------------------------------------------------
+function! module#action#grep() abort
+	let p = asyncrun#get_root('%')
+	let d = p
+	if len(p) > (&columns * 2) / 3 || len(p) > 60
+		let d = pathshorten(p)
+	endif
+	let t = 'Find word in (' . d . '): '
+	let t = asclib#ui#input(t, expand('<cword>'), 'grep')
+	let t = asclib#string#strip(t)
+	redraw
+	if strlen(t) > 0
+		silent exec "GrepCode! ".fnameescape(t)
+		call asclib#compat#quickfix_title('- searching "'. t. '"')
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
+" run shell commands on current project root
+"----------------------------------------------------------------------
+function! module#action#shell() abort
+	let p = asclib#path#current_root()
+	if len(p) > (&columns * 2) / 3 || len(p) > 60
+		let p = pathshorten(p)
+	endif
+	let prev = get(s:, 'previous_cmd', '')
+	let t = 'Run shell cmd in project root (' . p . '): '
+	let t = asclib#ui#input(t, prev, 'shell')
+	let t = asclib#string#strip(t)
+	if t != ''
+		let opts = {}
+		let opts.mode = 'quickfix'
+		let opts.raw = 1
+		let opts.cwd = '<root>'
+		let s:previous_cmd = t
+		call asyncrun#run('', opts, t)
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
 " toggle: tagbar/vista/aerial/outline
 "----------------------------------------------------------------------
 function! module#action#tagbar() abort
@@ -34,21 +77,6 @@ function! module#action#easymotion(what) abort
 	endif
 endfunc
 
-
-"----------------------------------------------------------------------
-" ask input for grep
-"----------------------------------------------------------------------
-function! module#action#grep() abort
-	let p = asyncrun#get_root('%')
-	let t = 'Find word in (' . p . '): '
-	let t = asclib#ui#input(t, expand('<cword>'), 'grep')
-	let t = asclib#string#strip(t)
-	redraw
-	if strlen(t) > 0
-		silent exec "GrepCode! ".fnameescape(t)
-		call asclib#compat#quickfix_title('- searching "'. t. '"')
-	endif
-endfunc
 
 
 "----------------------------------------------------------------------

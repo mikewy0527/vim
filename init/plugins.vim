@@ -315,3 +315,11 @@ let g:pascal_fpc = 1
 
 
 
+"----------------------------------------------------------------------
+" buffer hint
+"----------------------------------------------------------------------
+let g:bufferhint_CustomHighlight = 1
+hi! default link KeyHint Statement
+hi! default link AtHint Identifier
+
+

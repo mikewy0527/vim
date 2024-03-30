@@ -142,7 +142,7 @@ call quickui#menu#install("&C/C++", [
 			\ ])
 
 call quickui#menu#install('&Tools', [
-			\ ['List &Buffer', 'call quickui#tools#list_buffer("FileSwitch tabe")', ],
+			\ ["List &Buffer\t+", 'call quickui#tools#list_buffer("FileSwitch tabe")', ],
 			\ ['&Mode Switch', 'ModeSelect', ],
 			\ ['&EScript Run', 'call module#action#escript_select()', ],
 			\ ['--',''],

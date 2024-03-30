@@ -193,13 +193,6 @@ if has('terminal')
 endif
 
 
-"----------------------------------------------------------------------
-" space + s : svn
-"----------------------------------------------------------------------
-nnoremap <space>sc :AsyncRun svn co -m "update from vim"<cr>
-nnoremap <space>su :AsyncRun svn up<cr>
-nnoremap <space>st :AsyncRun svn st<cr>
-
 " editing commands
 nnoremap <space>aa ggVG
 
@@ -210,27 +203,6 @@ onoremap az :<c-u>normal! ggVG<cr>
 vnoremap az ogg0oG$
 " onoremap il :<c-u>normal! v$o^oh<cr>
 " vnoremap il $o^oh
-
-
-"----------------------------------------------------------------------
-" space + j : make
-"----------------------------------------------------------------------
-nnoremap <silent><space>jj  :AsyncRun -cwd=<root> make<cr>
-nnoremap <silent><space>jc  :AsyncRun -cwd=<root> make clean<cr>
-nnoremap <silent><space>jk  :AsyncRun -mode=4 -cwd=<root> make run<cr>
-nnoremap <silent><space>jl  :AsyncRun -mode=4 -cwd=<root> make test<cr>
-nnoremap <silent><space>j1  :AsyncRun -mode=4 -cwd=<root> make t1<cr>
-nnoremap <silent><space>j2  :AsyncRun -mode=4 -cwd=<root> make t2<cr>
-nnoremap <silent><space>j3  :AsyncRun -mode=4 -cwd=<root> make t3<cr>
-nnoremap <silent><space>j4  :AsyncRun -mode=4 -cwd=<root> make t4<cr>
-nnoremap <silent><space>j5  :AsyncRun -mode=4 -cwd=<root> make t5<cr>
-nnoremap <silent><space>k1  :AsyncRun -cwd=<root> make t1<cr>
-nnoremap <silent><space>k2  :AsyncRun -cwd=<root> make t2<cr>
-nnoremap <silent><space>k3  :AsyncRun -cwd=<root> make t3<cr>
-nnoremap <silent><space>k4  :AsyncRun -cwd=<root> make t4<cr>
-nnoremap <silent><space>k5  :AsyncRun -cwd=<root> make t5<cr>
-
-nnoremap <silent><space>jm :call Tools_SwitchMakeFile()<cr>
 
 
 "----------------------------------------------------------------------
@@ -286,6 +258,36 @@ inoremap <silent><s-f2> <ESC>:AsyncTask task-s-f2<cr>
 inoremap <silent><s-f3> <ESC>:AsyncTask task-s-f3<cr>
 inoremap <silent><s-f4> <ESC>:AsyncTask task-s-f4<cr>
 
+
+"----------------------------------------------------------------------
+"- quickui buffer switch / bufferhint
+"----------------------------------------------------------------------
+if has('patch-8.2.1') || has('nvim-0.4')
+	nnoremap <silent>+ :call quickui#tools#list_buffer('FileSwitch tabe')<cr>
+else
+	nnoremap + :call bufferhint#Popup()<CR>
+endif
+
+
+"----------------------------------------------------------------------
+" space + j : make
+"----------------------------------------------------------------------
+nnoremap <silent><space>jj  :AsyncRun -cwd=<root> make<cr>
+nnoremap <silent><space>jc  :AsyncRun -cwd=<root> make clean<cr>
+nnoremap <silent><space>jk  :AsyncRun -mode=4 -cwd=<root> make run<cr>
+nnoremap <silent><space>jl  :AsyncRun -mode=4 -cwd=<root> make test<cr>
+nnoremap <silent><space>j1  :AsyncRun -mode=4 -cwd=<root> make t1<cr>
+nnoremap <silent><space>j2  :AsyncRun -mode=4 -cwd=<root> make t2<cr>
+nnoremap <silent><space>j3  :AsyncRun -mode=4 -cwd=<root> make t3<cr>
+nnoremap <silent><space>j4  :AsyncRun -mode=4 -cwd=<root> make t4<cr>
+nnoremap <silent><space>j5  :AsyncRun -mode=4 -cwd=<root> make t5<cr>
+nnoremap <silent><space>k1  :AsyncRun -cwd=<root> make t1<cr>
+nnoremap <silent><space>k2  :AsyncRun -cwd=<root> make t2<cr>
+nnoremap <silent><space>k3  :AsyncRun -cwd=<root> make t3<cr>
+nnoremap <silent><space>k4  :AsyncRun -cwd=<root> make t4<cr>
+nnoremap <silent><space>k5  :AsyncRun -cwd=<root> make t5<cr>
+
+nnoremap <silent><space>jm :call Tools_SwitchMakeFile()<cr>
 
 "----------------------------------------------------------------------
 " set keymap to GrepCode
@@ -530,6 +532,14 @@ if (has('win32') || has('win64')) && (has('nvim') || (!has('gui_running')))
 	vnoremap <c-insert> "*y
 	cnoremap <s-insert> <c-r>*
 endif
+
+
+"----------------------------------------------------------------------
+" space + s : svn
+"----------------------------------------------------------------------
+nnoremap <space>sc :AsyncRun svn co -m "update from vim"<cr>
+nnoremap <space>su :AsyncRun svn up<cr>
+nnoremap <space>st :AsyncRun svn st<cr>
 
 
 "----------------------------------------------------------------------
