@@ -150,6 +150,7 @@ let g:navigator.p = {
 			\ 'r' : ['module#project#open(".lvimrc")', 'edit-local-vimrc'],
 			\ 'g' : ['module#project#open("go.mod")', 'edit-go-mod'],
 			\ 'm' : ['module#project#open("Makefile")', 'edit-makefile'],
+			\ 's' : ['module#action#shell()', 'shell-command'],
 			\ }
 
 

@@ -152,7 +152,7 @@ call quickui#menu#install('&Tools', [
 			\ ['--',''],
 			\ ['&Open URL', 'OpenURL', 'open current URL in browser'],
 			\ ['Read &URL', 'call menu#ReadUrl()', 'load content from url into current buffer'],
-			\ ['&Spell %{&spell? "Disable":"Enable"}', 'set spell!', 'Toggle spell check %{&spell? "off" : "on"}'],
+			\ ['&Shell Command', 'call module#action#shell()', 'Run shell command in project root'],
 			\ ['&Profile Start', 'call MonitorInit()', ''],
 			\ ['Profile S&top', 'call MonitorExit()', ''],
 			\ ["Relati&ve number %{&relativenumber? '[+]':'[-]'}", 'set relativenumber!'],
