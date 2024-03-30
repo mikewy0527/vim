@@ -37,7 +37,7 @@ function! module#action#shell() abort
 		let p = pathshorten(p)
 	endif
 	let prev = get(s:, 'previous_cmd', '')
-	let t = 'Run shell cmd in (' . p . '): '
+	let t = 'Shell cmd in current project (' . p . '): '
 	let t = asclib#ui#input(t, prev, 'pshell')
 	let t = asclib#string#strip(t)
 	if t != ''
