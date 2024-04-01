@@ -281,11 +281,6 @@ if has_key(s:enabled, 'opt')
 		IncScript site/bundle/emmet.vim
 	endif
 
-	if !has('nvim') && v:version >= 901
-		Plug 'girishji/devdocs.vim'
-		IncScript site/bundle/init_devdocs.vim
-	endif
-
 	if executable('tmux')
 		Plug 'benmills/vimux'
 	endif
@@ -359,6 +354,13 @@ endif
 if has_key(s:enabled, 'vim-go')
 	Plug 'fatih/vim-go'
 	IncScript site/bundle/go.vim
+endif
+
+if has_key(s:enabled, 'devdocs')
+	if !has('nvim') && v:version >= 901
+		Plug 'girishji/devdocs.vim'
+		IncScript site/bundle/init_devdocs.vim
+	endif
 endif
 
 
