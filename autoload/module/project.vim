@@ -11,9 +11,9 @@
 "----------------------------------------------------------------------
 " init project and put .root in the current dir
 "----------------------------------------------------------------------
-function! module#project#init() abort
+function! module#project#init(force) abort
 	let root = asclib#path#has_root('%')
-	if root != ''
+	if root != '' && a:force == 0
 		let t = printf('ERROR: project root already exists in %s', root)
 		call asclib#common#errmsg(t)
 	else
