@@ -54,7 +54,10 @@ nnoremap <buffer> <F11> :AsyncTask go-run-file<cr>
 let b:navigator = {}
 
 let b:navigator.l = {
-			\ 'p': ['unsilent echom 123', 'print-test'],
+			\ 'b': [':AsyncTask go-project-build', 'go-project-build'],
+			\ 't': [':AsyncTask go-project-test', 'go-project-test'],
+			\ 'i': [':AsyncTask go-project-install', 'go-project-install'],
+			\ 'r': [':AsyncTask go-project-run', 'go-project-run'],
 			\ }
 
 
