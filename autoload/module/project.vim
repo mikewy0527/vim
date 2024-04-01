@@ -18,8 +18,8 @@ function! module#project#init() abort
 		call asclib#common#errmsg(t)
 	else
 		let r = expand('%:p:h')
-		let t = printf('Create project root in %s ?', r)
-		let t = confirm(t, "&Yes\n&No", 2)
+		let t = printf('Create project root in "%s" ?', r)
+		let t = asclib#ui#confirm(t, "&Yes\n&No", 2)
 		if t == 1
 			let n = printf('%s/.root', r)
 			if has('win32') || has('win64')

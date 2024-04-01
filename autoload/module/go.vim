@@ -45,4 +45,15 @@ function! module#go#format()
 endfunc
 
 
+"----------------------------------------------------------------------
+" 
+"----------------------------------------------------------------------
+function! module#go#mod_init()
+	let p = asyncrun#get_root('%')
+	let d = p
+	if len(p) > (&columns * 2) / 3 || len(p) > 60
+		let d = asclib#path#shorten(p, 60)
+	endif
+endfunc
+
 
