@@ -15,7 +15,7 @@ function! module#action#grep() abort
 	let p = asyncrun#get_root('%')
 	let d = p
 	if len(p) > (&columns * 2) / 3 || len(p) > 60
-		let d = pathshorten(p)
+		let d = asclib#path#shorten(p, 60)
 	endif
 	let t = 'Find word in (' . d . '): '
 	let t = asclib#ui#input(t, expand('<cword>'), 'grep')
@@ -34,7 +34,7 @@ endfunc
 function! module#action#shell() abort
 	let p = asclib#path#current_root()
 	if len(p) > (&columns * 2) / 3 || len(p) > 60
-		let p = pathshorten(p)
+		let p = asclib#path#shorten(p)
 	endif
 	let prev = get(s:, 'previous_cmd', '')
 	let t = 'Shell cmd in current project (' . p . '): '

@@ -53,7 +53,8 @@ nnoremap <buffer> <F11> :AsyncTask go-run-file<cr>
 "----------------------------------------------------------------------
 let b:navigator = {}
 
-let b:navigator.p = {
+let b:navigator.l = {
+			\ 'p': ['unsilent echom 123', 'print-test'],
 			\ }
 
 

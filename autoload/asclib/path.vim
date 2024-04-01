@@ -477,6 +477,15 @@ endfunc
 
 
 "----------------------------------------------------------------------
+" check if in a project root
+"----------------------------------------------------------------------
+function! asclib#path#has_root(path, ...)
+	let markers = (a:0 > 0)? a:1 : 0
+	return asclib#path#get_root(a:path, markers, 1)
+endfunc
+
+
+"----------------------------------------------------------------------
 " exists
 "----------------------------------------------------------------------
 function! asclib#path#exists(path)
@@ -758,5 +767,28 @@ function! asclib#path#cygpath(winpath)
 	return '/cygdrive/' . substitute(tr(abspath, '\', '/'), ':', '', 'g')
 endfunc
 
+
+"----------------------------------------------------------------------
+" shorten path
+"----------------------------------------------------------------------
+function! asclib#path#shorten(path, ...) abort
+	let home = expand('~')
+	let path = a:path
+	let limit = (a:0 > 0)? a:1 : 40
+	if asclib#path#contains(home, path)
+		let size = strlen(home)
+		let path = '~' . strpart(path, size)
+	endif
+	let size = strlen(path)
+	if size > limit
+		let t = pathshorten(path, 2)
+		let size = strlen(t)
+		if size > limit
+			return pathshorten(path)
+		endif
+		return t
+	endif
+	return path
+endfunc
 
 

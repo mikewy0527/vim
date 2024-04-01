@@ -9,6 +9,30 @@
 
 
 "----------------------------------------------------------------------
+" init project and put .root in the current dir
+"----------------------------------------------------------------------
+function! module#project#init() abort
+	let root = asclib#path#has_root('%')
+	if root != ''
+		let t = printf('ERROR: project root already exists in %s', root)
+		call asclib#common#errmsg(t)
+	else
+		let r = expand('%:p:h')
+		let t = printf('Create project root in %s ?', r)
+		let t = confirm(t, "&Yes\n&No", 2)
+		if t == 1
+			let n = printf('%s/.root', r)
+			if has('win32') || has('win64')
+				let n = substitute(n, '/', '\\', 'g')
+			endif
+			call writefile([], n)
+			call asclib#common#echo('', 'File created: ' . n)
+		endif
+	endif
+endfunc
+
+
+"----------------------------------------------------------------------
 " get path
 "----------------------------------------------------------------------
 function! module#project#path(path) abort

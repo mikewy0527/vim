@@ -133,6 +133,7 @@ let g:navigator.p = {
 			\ 'name': '+project',
 			\ ';' : ['CdToProjectRoot', 'cd-to-project-root'],
 			\ '-' : ['module#action#shell()', 'run-shell-command'],
+			\ '.' : ['module#project#init()', 'init-project-root'],
 			\ 'e' : ['module#project#open("CMakeLists.txt")', 'edit-cmake-lists'],
 			\ 't' : [':AsyncTaskEdit', 'edit-task-list'],
 			\ 'd' : ['module#project#open("README.md")', 'edit-readme-md'],
