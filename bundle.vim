@@ -283,7 +283,7 @@ if has_key(s:enabled, 'opt')
 
 	if !has('nvim') && v:version >= 901
 		Plug 'girishji/devdocs.vim'
-		IncScript site/bundle/devdocs.vim
+		IncScript site/bundle/devdocs2.vim
 	endif
 
 	if executable('tmux')
