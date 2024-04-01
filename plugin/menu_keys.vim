@@ -119,10 +119,45 @@ let g:navigator.o = {
 
 
 "----------------------------------------------------------------------
-" linux
+" language
+"----------------------------------------------------------------------
+let g:navigator.l = {
+			\ 'name': '+language',
+			\ }
+
+	
+"----------------------------------------------------------------------
+" project
+"----------------------------------------------------------------------
+let g:navigator.p = {
+			\ 'name': '+project',
+			\ ';' : ['CdToProjectRoot', 'cd-to-project-root'],
+			\ '-' : ['module#action#shell()', 'run-shell-command'],
+			\ 'e' : ['module#project#open("CMakeLists.txt")', 'edit-cmake-lists'],
+			\ 't' : [':AsyncTaskEdit', 'edit-task-list'],
+			\ 'd' : ['module#project#open("README.md")', 'edit-readme-md'],
+			\ 'i' : ['module#project#open(".gitignore")', 'edit-git-ignore'],
+			\ 'c' : ['module#project#open(".clangd")', 'edit-clangd-config'],
+			\ 'l' : ['module#project#try_open(".git/config")', 'edit-git-config'],
+			\ 'r' : ['module#project#open(".lvimrc")', 'edit-local-vimrc'],
+			\ 'g' : ['module#project#open("go.mod")', 'edit-go-mod'],
+			\ 'm' : ['module#project#open("Makefile")', 'edit-makefile'],
+			\ }
+
+
+"----------------------------------------------------------------------
+" LSP
+"----------------------------------------------------------------------
+let g:navigator.L = {
+			\ 'name': '+lsp',
+			\ }
+
+
+"----------------------------------------------------------------------
+" wsl
 "----------------------------------------------------------------------
 if has('win32') || has('win64')
-	let g:navigator.l = {
+	let g:navigator.W = {
 				\ 'name': '+linux-wsl',
 				\ 'b': [':AsyncTask wsl-project-build', 'wsl-project-build'],
 				\ 'i': [':AsyncTask wsl-project-init', 'wsl-project-init'],
@@ -134,25 +169,6 @@ if has('win32') || has('win64')
 elseif 1
 endif
 	
-	
-"----------------------------------------------------------------------
-" project
-"----------------------------------------------------------------------
-let g:navigator.p = {
-			\ 'name': '+project',
-			\ ';' : ['CdToProjectRoot', 'cd-to-project-root'],
-			\ 'e' : ['module#project#open("CMakeLists.txt")', 'edit-cmake-lists'],
-			\ 't' : [':AsyncTaskEdit', 'edit-task-list'],
-			\ 'd' : ['module#project#open("README.md")', 'edit-readme-md'],
-			\ 'i' : ['module#project#open(".gitignore")', 'edit-git-ignore'],
-			\ 'c' : ['module#project#open(".clangd")', 'edit-clangd-config'],
-			\ 'l' : ['module#project#try_open(".git/config")', 'edit-git-config'],
-			\ 'r' : ['module#project#open(".lvimrc")', 'edit-local-vimrc'],
-			\ 'g' : ['module#project#open("go.mod")', 'edit-go-mod'],
-			\ 'm' : ['module#project#open("Makefile")', 'edit-makefile'],
-			\ 's' : ['module#action#shell()', 'shell-command'],
-			\ }
-
 
 "----------------------------------------------------------------------
 " help
