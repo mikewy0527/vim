@@ -359,7 +359,7 @@ endif
 if has_key(s:enabled, 'devdocs')
 	if !has('nvim') && v:version >= 901
 		Plug 'girishji/devdocs.vim'
-		IncScript site/bundle/init_devdocs.vim
+		IncScript site/bundle/devdocs.vim
 	endif
 endif
 
