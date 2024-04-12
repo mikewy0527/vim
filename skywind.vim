@@ -186,9 +186,9 @@ let g:cppman_open_mode = '<auto>'
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make -once=1 -strip=1 @ <args>
 
 command! -bang -bar -nargs=* Gpush execute 'AsyncRun<bang> -cwd=' .
-	  \ fnameescape(FugitiveGitDir()) 'git push' <q-args>
+	  \ fnameescape(FugitiveGitDir()) '-post=echo\ "done" git push' <q-args>
 command! -bang -bar -nargs=* Gfetch execute 'AsyncRun<bang> -cwd=' .
-	  \ fnameescape(FugitiveGitDir()) 'git fetch' <q-args>
+	  \ fnameescape(FugitiveGitDir()) '-post=echo\ "done" git fetch' <q-args>
 
 set timeoutlen=2000
 
