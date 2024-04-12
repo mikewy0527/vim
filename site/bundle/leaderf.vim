@@ -105,6 +105,15 @@ let g:Lf_FilerNormalMap = {'i': 'switch_insert_mode', '<esc>': 'quit',
 
 
 "----------------------------------------------------------------------
+" ctags options
+"----------------------------------------------------------------------
+let g:Lf_CtagsFuncOpts = {
+			\ "dosini": "--iniconf-kinds=s --language-force=iniconf",
+			\ "taskini": "--iniconf-kinds=s --language-force=iniconf",
+			\ }
+
+
+"----------------------------------------------------------------------
 " keymap
 "----------------------------------------------------------------------
 if get(g:, 'lf_disable_normal_map', 0) == 0
