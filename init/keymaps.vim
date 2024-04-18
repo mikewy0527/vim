@@ -204,6 +204,11 @@ vnoremap az ogg0oG$
 " onoremap il :<c-u>normal! v$o^oh<cr>
 " vnoremap il $o^oh
 
+vnoremap ik 0o$h
+onoremap ik :normal vik<cr>
+vnoremap ak 0o$
+onoremap ak :normal vak<cr>
+
 
 "----------------------------------------------------------------------
 " tasks
