@@ -12,7 +12,8 @@
 " https://github.com/lilydjwg/dotvim 
 "----------------------------------------------------------------------
 function! asclib#text#match_at_cursor(pattern) abort
-	return asclib#string#matchat(getline('.'), a:pattern, col('.') - 1)
+	let t = asclib#string#matchat(getline('.'), a:pattern, col('.') - 1)
+	return t[2]
 endfunc
 
 

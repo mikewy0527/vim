@@ -114,12 +114,12 @@ function! asclib#string#matchat(text, pattern, position)
 	while (start >= 0) && (start <= a:position)
 		let endup = matchend(a:text, a:pattern, start)
 		if (start <= a:position) && (endup > a:position)
-			return strpart(a:text, start, endup - start)
+			return [start, endup, strpart(a:text, start, endup - start)]
 		else
 			let start = match(a:text, a:pattern, endup)
 		endif
 	endwhile
-	return ''
+	return [-1, -1, '']
 endfunc
 
 
