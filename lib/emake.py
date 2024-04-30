@@ -615,7 +615,6 @@ class configure(object):
         self.flnk = {}        # link flags
         self.wlnk = {}        # link pass
         self.cond = {}        # condition flags
-        self.vars = {}        # internal variables
         self.param_build = ''
         self.param_compile = ''
         return 0
@@ -1068,11 +1067,6 @@ class configure(object):
         key = (flag, condition)
         if key not in self.cond:
             self.cond[key] = len(self.cond)
-        return 0
-
-    # push variable
-    def push_var (self, name, value):
-        self.vars[name] = value
         return 0
 
     # 搜索gcc
@@ -2172,6 +2166,7 @@ class iparser (object):
         self.flnk = []
         self.wlnk = []
         self.cond = []
+        self.pkg = []
         self.environ = {}
         self.events = {}
         self.mode = 'exe'
@@ -2190,6 +2185,7 @@ class iparser (object):
         self.optdict = {}
         self.impdict = {}
         self.expdict = {}
+        self.pkgdict = {}
         self.linkdict = {}
         self.flagdict = {}
         self.flnkdict = {}
@@ -2287,15 +2283,23 @@ class iparser (object):
         self.conddict[key] = len(self.cond)
         self.cond.append(key)
     
-    # 添加导入配置
+    # new import
     def push_imp (self, name, fname = '', lineno = -1):
         if name in self.impdict:
             return -1
         self.impdict[name] = len(self.imp)
         self.imp.append((name, fname, lineno))
         return 0
+
+    # new package
+    def push_pkg (self, name, fname = '', lineno = -1):
+        if name in self.pkgdict:
+            return -1
+        self.pkgdict[name] = len(self.pkg)
+        self.pkg.append((name, fname, lineno))
+        return 0
     
-    # 添加输出配置
+    # new export
     def push_exp (self, name, fname = '', lineno = -1):
         if name in self.expdict:
             return -1
@@ -2727,6 +2731,13 @@ class iparser (object):
                 if not name:
                     continue
                 self.push_exp(name, fname, lineno)
+            return 0
+        if command in ('pkg', 'package'):
+            for name in body.replace(';', ',').split(','):
+                name = self.pathconf(name)
+                if not name:
+                    continue
+                self.push_pkg(name, fname, lineno)
             return 0
         if command == 'echo':
             print(body)
