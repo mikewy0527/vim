@@ -605,21 +605,22 @@ class configure(object):
         self.profile = None
         self.reset()
     
-    # 配置信息复位
+    # reset all configure
     def reset (self):
-        self.inc = {}         # include路径
-        self.lib = {}         # lib 路径
-        self.flag = {}        # 编译参数
-        self.pdef = {}        # 预定义宏
-        self.link = {}        # 连接库
-        self.flnk = {}        # 连接参数
-        self.wlnk = {}        # 连接传递
-        self.cond = {}        # 条件参数
+        self.inc = {}         # include paths
+        self.lib = {}         # lib paths
+        self.flag = {}        # compile flags
+        self.pdef = {}        # predefined macros
+        self.link = {}        # libraries
+        self.flnk = {}        # link flags
+        self.wlnk = {}        # link pass
+        self.cond = {}        # condition flags
+        self.vars = {}        # internal variables
         self.param_build = ''
         self.param_compile = ''
         return 0
     
-    # 初始化工具环境
+    # initialize environment for command tool
     def _cmdline_init (self, envname, exename):
         if envname not in self.config:
             return -1
@@ -653,7 +654,7 @@ class configure(object):
             EXEC = self.pathshort(EXEC)
         return EXEC
     
-    # 工具加载
+    # environment configuration for cmdline tool
     def _env_config (self, section):
         config = {}
         if section in self.config:
@@ -665,7 +666,7 @@ class configure(object):
             config[n] = self._expand(config, self.environ, n)
         return config
 
-    # 展开配置宏
+    # expand macro
     def _expand (self, section, environ, item, d = 0):
         if not environ: environ = {}
         if not section: section = {}
@@ -698,7 +699,7 @@ class configure(object):
         # print('>', text)
         return text
     
-    # 取得短文件名
+    # calculate short path name
     def pathshort (self, path):
         path = os.path.abspath(path)
         if self.unix:
@@ -723,7 +724,7 @@ class configure(object):
             return ''
         return shortpath
     
-    # 读取ini文件
+    # read ini files
     def _readini (self, inipath):
         if '~' in inipath:
             inipath = os.path.expanduser(inipath)
@@ -752,6 +753,10 @@ class configure(object):
                 if exename not in config['default']:
                     continue
                 self.exename[exename] = config['default'][exename]
+            for exename in ('pkg-config', 'pkgconfig'):
+                if exename not in config['default']:
+                    continue
+                self.exename['pkgconfig'] = config['default'][exename]
             for bp in ('include', 'lib'):
                 if bp not in config['default']:
                     continue
@@ -774,7 +779,7 @@ class configure(object):
             self.haveini = True
         return 0
 
-    # 检查 dirhome
+    # check dirhome
     def check (self):
         if not self.dirhome:
             sys.stderr.write('error: cannot find gcc home in config\n')
@@ -782,7 +787,7 @@ class configure(object):
             sys.exit(1)
         return 0
 
-    # 初始化
+    # init configure
     def init (self):
         if self.inited:
             return 0
@@ -898,7 +903,7 @@ class configure(object):
         self.inited = True
         return 0
 
-    # 读取配置
+    # read configuration
     def _getitem (self, sect, key, default = ''):
         return self.config.get(sect, {}).get(key, default)
     
@@ -1063,6 +1068,11 @@ class configure(object):
         key = (flag, condition)
         if key not in self.cond:
             self.cond[key] = len(self.cond)
+        return 0
+
+    # push variable
+    def push_var (self, name, value):
+        self.vars[name] = value
         return 0
 
     # 搜索gcc
@@ -1278,7 +1288,7 @@ class configure(object):
             if name: path = name
         return path
     
-    # 执行GNU工具集
+    # execute GNU tools
     def execute (self, binname, parameters, printcmd = False, capture = False):
         path = os.path.abspath(os.path.join(self.dirhome, binname))
         if not self.unix:
@@ -1294,14 +1304,17 @@ class configure(object):
             else: text = cmd + '\n'
         sys.stdout.flush()
         sys.stderr.flush()
+        os.shell_return = -1
+        self.shell_return = -1
         output = execute(cmd, shell = False, capture = capture)
+        self.shell_return = os.shell_return
         if sys.version_info[0] >= 3:
             if isinstance(output, bytes):
                 output = posix.decode_string(output)
         text = text + output
         return text
     
-    # 调用 gcc
+    # execute gcc
     def gcc (self, parameters, needlink, printcmd = False, capture = False):
         param = self.param_build
         if not needlink:
@@ -1364,7 +1377,12 @@ class configure(object):
         dllwrap = self.exename.get('dllwrap', 'dllwrap')
         return self.execute(dllwrap, parameters, printcmd, capture)
     
-    # 生成lib库
+    # call pkg-config
+    def pkgconfig (self, parameters, printcmd = False, capture = False):
+        pkgconfig = self.exename.get('pkgconfig', 'pkg-config')
+        return self.execute(pkgconfig, parameters, printcmd, capture)
+
+    # create lib file
     def makelib (self, output, objs = [], printcmd = False, capture = False):
         if 0:
             name = ' '.join([ self.pathrel(n) for n in objs ])
@@ -1377,7 +1395,7 @@ class configure(object):
                     objs.append(link)
         return self.composite(output, objs, printcmd, capture)
     
-    # 生成动态链接：dll 或者 so
+    # create dynamic library: .so or .dll
     def makedll (self, output, objs = [], param = '', printcmd = False, capture = False):
         if (not param) or (self.unix):
             if sys.platform[:6] == 'darwin':
@@ -1393,7 +1411,7 @@ class configure(object):
                 self.pathrel(output), name)
             return self.dllwrap(parameters, printcmd, capture)
     
-    # 生成exe
+    # create executable file
     def makeexe (self, output, objs = [], param = '', printcmd = False, capture = False):
         name = ' '.join([ self.pathrel(n) for n in objs ])
         if self.xlink:
@@ -1401,7 +1419,7 @@ class configure(object):
         parameters = '-o %s %s %s'%(self.pathrel(output), param, name)
         return self.gcc(parameters, True, printcmd, capture)
 
-    # 合并.o .a文件为新的 .a文件 
+    # merge .o and .a files into new .a file
     def composite (self, output, objs = [], printcmd = False, capture = False):
         import os, tempfile, shutil
         cwd = os.getcwd()
@@ -1452,7 +1470,7 @@ class configure(object):
         shutil.rmtree(temp)
         return 0
 
-    # 运行工具
+    # run tool
     def cmdtool (self, sectname, exename, parameters, printcmd = False):
         envsave = [ (n, os.environ[n]) for n in os.environ ]
         hr = self._cmdline_init(sectname, exename)
@@ -1683,7 +1701,7 @@ class configure(object):
     
     # 执行 java命令: cmd 为 java, javac, jar等
     def java_call (self, cmd, args = [], capture = False):
-        if self.__jdk_home == None:
+        if self.__jdk_home is None:
             self.__jdk_home = self.java_home()
         if not self.__jdk_home:
             sys.stderr.write('can not find java in $JAVA_HOME or $PATH\n')
@@ -2542,7 +2560,9 @@ class iparser (object):
         environ['home'] = os.path.dirname(os.path.abspath(fname))
         environ['bin'] = self.config.dirhome
         environ['profile'] = self.profile and self.profile or 'none'
-        for name in ('gcc', 'ar', 'ld', 'as', 'nasm', 'yasm', 'dllwrap'):
+        names = ['gcc', 'ar', 'ld', 'as', 'nasm', 'yasm']
+        names = names + ['dllwrap', 'pkgconfig']
+        for name in names:
             if name in self.config.exename:
                 data = self.config.exename[name]
                 environ[name] = os.path.join(self.config.dirhome, data)
