@@ -35,6 +35,7 @@ def execute(args, shell = False, capture = False):
     import sys, os
     parameters = []
     cmd = None
+    os.shell_return = -1
     if not isinstance(args, list):
         import shlex
         cmd = args
@@ -67,12 +68,12 @@ def execute(args, shell = False, capture = False):
     if sys.platform[:3] == 'win' and len(cmd) > 255:
         shell = False
     if shell and (not capture):
-        os.system(cmd)
+        os.shell_return = os.system(cmd)
         return b''
     elif (not shell) and (not capture):
         import subprocess
         if 'call' in subprocess.__dict__:
-            subprocess.call(args)
+            os.shell_return = subprocess.call(args)
             return b''
     import subprocess
     if 'Popen' in subprocess.__dict__:
@@ -87,6 +88,9 @@ def execute(args, shell = False, capture = False):
     text = stdouterr.read()
     stdouterr.close()
     if p: p.wait()
+    os.shell_return = -1
+    if 'returncode' in p.__dict__:
+        os.shell_return = p.returncode
     if not capture:
         sys.stdout.write(text)
         sys.stdout.flush()
