@@ -1402,8 +1402,6 @@ class __ShellUtils (object):
             shutil.copytree(src, dst, dirs_exist_ok = True)
         return 0
 
-    
-
 
 #----------------------------------------------------------------------
 # instance
