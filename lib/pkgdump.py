@@ -24,7 +24,7 @@ class configure (object):
         self.pkg_config_path = None
         if not dirhome:
             dirhome = os.path.abspath('build')
-        self.dirhome = dirhome
+        self.dirhome = os.path.abspath(dirhome)
         self.package = {}
         self.__collect()
         self.inited = False
@@ -155,10 +155,10 @@ def main(args = None):
     if len(config.package) == 0:
         print('error: no package found in %s' % dirhome)
         return 3
-    config.pkg_config_path = dirhome
+    config.pkg_config_path = config.dirhome
     print('loading packages ...')
     config.init()
-    config.dump(destination)
+    config.dump(os.path.abspath(destination))
     return 0
 
 
