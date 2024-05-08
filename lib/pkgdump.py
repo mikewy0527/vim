@@ -120,15 +120,19 @@ class configure (object):
             dstname = os.path.normpath(os.path.join(destination, subname))
             srcname = pkg.get(subname, None)
             if srcname and os.path.exists(srcname):
-                shutil.copytree(srcname, dstname, dirs_exist_ok = True)
+                # ascmini.utils.xcopytree(srcname, dstname, True)  # 206.367s
+                ascmini.utils.xcopytree(srcname, dstname, False)  # 30.282s
         return 0
 
     def dump (self, destination):
+        ts = time.time()
         if not self.inited:
             self.init()
         for name in self.package:
             print('installing %s ...' % name)
             self.install(name, destination)
+        ts = time.time() - ts
+        print('done in %.3f seconds' % ts)
         return 0
 
 
