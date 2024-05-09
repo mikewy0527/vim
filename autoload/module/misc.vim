@@ -102,4 +102,12 @@ function! module#misc#emake_config() abort
 endfunc
 
 
+"----------------------------------------------------------------------
+" set variable for asynctask
+"----------------------------------------------------------------------
+function! module#misc#task_variable(name, value) abort
+	let g:asynctasks_environ = get(g:, 'asynctasks_environ', {})
+	let g:asynctasks_environ[a:name] = a:value
+endfunc
+
 

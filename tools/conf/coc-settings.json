@@ -40,6 +40,10 @@
 			"rootPatterns": [".git", ".svn", ".hg", ".root", ".project"],
 			"filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
 			"initializationOptions": {
+				"fallbackFlags": [
+					"-Ie:/local/vcpkg/installed/x86-mingw-dynamic/include",
+					"-Wall"
+				]
 			}
 		}
 	},
