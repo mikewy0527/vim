@@ -421,7 +421,7 @@ function! asclib#core#script_write(name, command, pause)
 		let tmpname = fnamemodify(tempname(), ':h') . '/' . (a:name) . '.sh'
 	endif
 	if v:version >= 700
-		call writefile(lines, tmpname)
+		silent! call writefile(lines, tmpname)
 	else
 		exe 'redir ! > '.fnameescape(tmpname)
 		for line in lines
