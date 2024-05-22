@@ -1,4 +1,6 @@
 import sys
+import site
+import os
 
 if sys.version_info[0] >= 3:
     import collections
@@ -20,7 +22,12 @@ try:
 except ImportError:
     pass
 
-del rlcompleter, sys
+if sys.platform[:3] == 'win':
+    site.addsitedir('C:/Share/vim/lib')
+else:
+    site.addsitedir(os.path.expanduser('~/.vim/vim/lib'))
+
+del rlcompleter, sys, os, site
 
 try:
     import rich
@@ -29,5 +36,7 @@ try:
     del rich
 except ImportError:
     pass
+
+
 
 
