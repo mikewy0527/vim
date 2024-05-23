@@ -1031,8 +1031,13 @@ class __WebKit (object):
         return True
 
     def text2html (self, s):
-        import cgi
-        return cgi.escape(s, True).replace('\n', "</br>\n")
+        if sys.version_info[0] < 3:
+            import cgi
+            t = cgi.escape(s, True).replace('\n', "</br>\n")
+        else:
+            import html
+            t = html.escape(s).replace('\n', "</br>\n")
+        return t
 
     def html2text (self, html):
         part = []
