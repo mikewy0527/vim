@@ -1231,6 +1231,7 @@ class __LazyRequests (object):
             r = requests.Response()
             r.status_code = -2
             r.text = 'BaseHTTPError'
+            # pylint: disable-next=redefined-variable-type
             r.error = e
         except requests.exceptions.HTTPError as e:
             r = requests.Response()
@@ -1265,7 +1266,7 @@ class __LazyRequests (object):
         if r is None:
             return -1, None
         if r.content:
-            text = r.content.decode('utf-8')
+            text = r.content.decode('utf-8', errors = 'ignore')
         else:
             text = r.text
         return r.status_code, text
