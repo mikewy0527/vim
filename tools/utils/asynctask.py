@@ -1052,7 +1052,8 @@ class TaskManager (object):
         save = os.getcwd()
         if opts.cwd:
             cwd = self.config.environ_replace(opts.cwd)
-            os.chdir(cwd)
+            if cwd:
+                os.chdir(cwd)
         self.execute(opts)
         if opts.cwd:
             os.chdir(save)
