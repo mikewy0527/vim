@@ -16,5 +16,5 @@ cd ~/.local/var/rogue
 
 [ -f rogue.save ] && rogue rogue.save || rogue
 
-reset
+# reset
 
