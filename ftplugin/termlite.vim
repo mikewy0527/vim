@@ -16,6 +16,7 @@ endif
 " basic 
 "----------------------------------------------------------------------
 tmap <buffer><tab><tab> <c-\><c-n><tab><tab>
+tmap <buffer><tab><space> <c-\><c-n><space><space>
 tnoremap <buffer><c-g><tab> <tab>
 tnoremap <buffer><tab>h <c-\><c-n><c-w>h
 tnoremap <buffer><tab>j <c-\><c-n><c-w>j
@@ -42,6 +43,14 @@ endfor
 
 for c in ['g', 'w', 's', 'z']
 	exec printf('tnoremap <buffer><c-g><c-%s> <c-%s>', c, c)
+endfor
+
+for c in ['h', 'j', 'k', 'l', 'H', 'J', 'K', 'L', 'o', 'w', 'v', 's']
+	exec printf('tnoremap <buffer><c-w><c-%s> <c-\><c-n><c-w><c-%s>', c, c)
+endfor
+
+for c in ['p', '=', ',', '.', '+', '-']
+	exec printf('tnoremap <buffer><c-w><c-%s> <c-\><c-n><c-w><c-%s>', c, c)
 endfor
 
 
