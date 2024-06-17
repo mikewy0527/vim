@@ -15,7 +15,8 @@ endif
 "----------------------------------------------------------------------
 " basic 
 "----------------------------------------------------------------------
-tnoremap <buffer><tab><tab> <tab>
+tmap <buffer><tab><tab> <c-\><c-n><tab><tab>
+tnoremap <buffer><c-g><tab> <tab>
 tnoremap <buffer><tab>h <c-\><c-n><c-w>h
 tnoremap <buffer><tab>j <c-\><c-n><c-w>j
 tnoremap <buffer><tab>k <c-\><c-n><c-w>k
@@ -28,6 +29,20 @@ else
 	tnoremap <buffer><c-w> <c-\><c-n><c-w>
 	" tnoremap <buffer>: <c-\><c-n>:
 endif
+
+
+"----------------------------------------------------------------------
+" 
+"----------------------------------------------------------------------
+for i in range(10)
+	let n = printf('%d', i == 0? 10 : i)
+	exec printf('tnoremap <buffer>\%d <c-\><c-n>%dgt', i, n)
+	exec printf('tnoremap <buffer><m-%d> <c-\><c-n>%dgt', i, n)
+endfor
+
+for c in ['g', 'w', 's', 'z']
+	exec printf('tnoremap <buffer><c-g><c-%s> <c-%s>', c, c)
+endfor
 
 
 "----------------------------------------------------------------------
