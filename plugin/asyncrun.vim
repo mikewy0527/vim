@@ -1202,7 +1202,8 @@ function! s:find_root(name, markers, strict)
 			endif
 		endif
 		if getbufvar(bid, '&buftype') != ''
-			return getcwd()
+			let path = getcwd()
+			return asyncrun#fullname(path)
 		endif
 	elseif a:name == '%'
 		let path = a:name
@@ -1228,7 +1229,7 @@ function! s:find_root(name, markers, strict)
 		return ''
 	endif
 	" Not found: return parent directory of current file / file itself.
-	let fullname = asyncrun#fullname(a:path)
+	let fullname = asyncrun#fullname(path)
 	if isdirectory(fullname)
 		return fullname
 	endif

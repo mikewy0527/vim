@@ -433,7 +433,8 @@ function! s:find_root(name, markers, strict)
 			endif
 		endif
 		if getbufvar(bid, '&buftype') != ''
-			return getcwd()
+			let path = getcwd()
+			return asclib#path#abspath(path)
 		endif
 	elseif a:name == '%'
 		let path = a:name
