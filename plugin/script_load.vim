@@ -110,7 +110,7 @@ endfunc
 "----------------------------------------------------------------------
 " detect current root
 "----------------------------------------------------------------------
-function! s:root_locator()
+function! s:root_locator(path)
 	let root = ''
 	if exists('g:asyncrun_rooter')
 		if type(g:asyncrun_rooter) == type('')
