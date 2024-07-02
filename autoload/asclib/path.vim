@@ -416,8 +416,28 @@ endfunc
 "----------------------------------------------------------------------
 " find project root
 "----------------------------------------------------------------------
-function! s:find_root(path, markers, strict)
-	if a:path == '%'
+function! s:find_root(name, markers, strict)
+	let path = ''
+	if type(a:name) == 0
+		let bid = (a:name < 0)? bufnr('%') : (a:name + 0)
+		let path = bufname(bid)
+		let root = getbufvar(bid, 'asyncrun_root', '')
+		if root != ''
+			return root
+		elseif exists('g:asyncrun_root') && g:asyncrun_root != ''
+			return g:asyncrun_root
+		elseif exists('g:asyncrun_locator')
+			let root = call(g:asyncrun_locator, [bid])
+			if root != ''
+				return root
+			endif
+		endif
+		if getbufvar(bid, '&buftype') != ''
+			let path = getcwd()
+			return asclib#path#abspath(path)
+		endif
+	elseif a:name == '%'
+		let path = a:name
 		if exists('b:asyncrun_root') && b:asyncrun_root != ''
 			return b:asyncrun_root
 		elseif exists('t:asyncrun_root') && t:asyncrun_root != ''
@@ -425,20 +445,22 @@ function! s:find_root(path, markers, strict)
 		elseif exists('g:asyncrun_root') && g:asyncrun_root != ''
 			return g:asyncrun_root
 		elseif exists('g:asyncrun_locator')
-			let root = call(g:asyncrun_locator, [])
+			let root = call(g:asyncrun_locator, [a:name])
 			if root != ''
 				return root
 			endif
 		endif
+	else
+		let path = printf('%s', a:name)
 	endif
-	let root = s:guess_root(a:path, a:markers)
+	let root = s:guess_root(path, a:markers)
 	if root != ''
 		return asclib#path#abspath(root)
 	elseif a:strict != 0
 		return ''
 	endif
 	" Not found: return parent directory of current file / file itself.
-	let fullname = asclib#path#abspath(a:path)
+	let fullname = asclib#path#abspath(path)
 	if isdirectory(fullname)
 		return fullname
 	endif
