@@ -76,13 +76,13 @@ return {
 		enabled = package_enabled('aerial'),
 		config = function() 
 			require("aerial").setup({
-					-- optionally use on_attach to set keymaps when aerial has attached to a buffer
-					on_attach = function(bufnr)
-						-- Jump forwards/backwards with '{' and '}'
-						vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
-						vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
-					end,
-				})
+				-- optionally use on_attach to set keymaps when aerial has attached to a buffer
+				on_attach = function(bufnr)
+					-- Jump forwards/backwards with '{' and '}'
+					vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+					vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+				end,
+			})
 		end,
 	},
 
@@ -91,7 +91,7 @@ return {
 		enabled = package_enabled('outline'),
 		config = function()
 			require("outline").setup({
-				})
+			})
 		end,
 	},
 
@@ -100,7 +100,7 @@ return {
 		enabled = package_enabled('symbols-outline'),
 		config = function() 
 			require('symbols-outline').setup({
-				})
+			})
 		end,
 	},
 
@@ -125,7 +125,7 @@ return {
 		enabled = package_enabled('nvim-tree'),
 		config = function()
 			require("nvim-tree").setup({
-				})
+			})
 		end,
 	},
 
@@ -141,6 +141,30 @@ return {
 		},
 	},
 
+	{
+		"Tyler-Barham/floating-help.nvim",
+		enabled = package_enabled('floating-help'),
+		config = function()
+			require('floating-help').setup({
+				-- Defaults
+				width = 80,   -- Whole numbers are columns/rows
+				height = 0.9, -- Decimals are a percentage of the editor
+				position = 'E',   -- NW,N,NW,W,C,E,SW,S,SE (C==center)
+				border = 'rounded', -- rounded,double,single
+			})
+			-- Only replace cmds, not search; only replace the first instance
+			local function cmd_abbrev(abbrev, expansion)
+				local cmd = 'cabbr ' .. abbrev .. ' <c-r>=(getcmdpos() == 1 && getcmdtype() == ":" ? "' .. expansion .. '" : "' .. abbrev .. '")<CR>'
+				vim.cmd(cmd)
+			end
+
+			-- Redirect `:h` to `:FloatingHelp`
+			cmd_abbrev('h',         'FloatingHelp')
+			cmd_abbrev('help',      'FloatingHelp')
+			cmd_abbrev('helpc',     'FloatingHelpClose')
+			cmd_abbrev('helpclose', 'FloatingHelpClose')
+		end,
+	},
 }
 
 
