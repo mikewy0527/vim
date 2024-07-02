@@ -56,6 +56,10 @@ if has('patch-8.2.4500')
 	" cnoremap <expr> <esc> pumvisible() ? "\<c-e>" : "\<esc>"
 endif
 
+if has('patch-9.1.1') || has('nvim-0.9.0')
+	set splitkeep=screen
+endif
+
 if executable('playwav.exe')
 	let f1 = 'c:/share/vim/tools/sample/sample-6.wav'
 	let f2 = 'c:/share/support/site/res/samples/sample-6.wav'
