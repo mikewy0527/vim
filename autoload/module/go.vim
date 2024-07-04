@@ -32,6 +32,14 @@ endfunc
 
 
 "----------------------------------------------------------------------
+" 
+"----------------------------------------------------------------------
+function! module#go#update_header(textlist)
+	return a:textlist
+endfunc
+
+
+"----------------------------------------------------------------------
 " format  
 "----------------------------------------------------------------------
 function! module#go#format()
@@ -39,6 +47,8 @@ function! module#go#format()
 		let obj = asclib#core#object('b')
 		if get(obj, 'post_format', 0)
 			call asclib#text#format('goimports')
+			call asclib#text#filter(1, 10, ':module#go#update_header')
+			exec 'UpdateLastModified'
 			" call asclib#text#format('gofmt')
 		endif
 	endif
@@ -46,7 +56,7 @@ endfunc
 
 
 "----------------------------------------------------------------------
-" 
+" mod_init
 "----------------------------------------------------------------------
 function! module#go#mod_init()
 	let p = asyncrun#get_root('%')
