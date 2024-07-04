@@ -41,6 +41,10 @@ if get(g:, 'module_go_post_format', 0)
 	let obj.post_format = 1
 endif
 
+if get(g:, 'module_go_update_time', 1)
+	let obj.update_time = 1
+endif
+
 
 "----------------------------------------------------------------------
 " go run file
