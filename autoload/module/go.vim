@@ -47,8 +47,10 @@ function! module#go#format()
 		let obj = asclib#core#object('b')
 		if get(obj, 'post_format', 0)
 			call asclib#text#format('goimports')
-			call asclib#text#filter(1, 10, ':module#go#update_header')
-			exec 'UpdateLastModified'
+			" call asclib#text#filter(1, 10, ':module#go#update_header')
+			if exists(':UpdateLastModified') == 2
+				exec 'UpdateLastModified'
+			endif
 			" call asclib#text#format('gofmt')
 		endif
 	endif

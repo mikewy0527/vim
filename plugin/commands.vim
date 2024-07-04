@@ -79,7 +79,7 @@ function! s:UpdateLastModified()
 	let c = col(".")
 
 	let n = min([10, line('$')]) " check head
-	let timestamp = strftime('%Y/%m/%d %H:%M') " time format
+	let timestamp = strftime('%Y/%m/%d %H:%M:%S') " time format
 	let timestamp = substitute(timestamp, '%', '\%', 'g')
 	let pat = substitute('Last Modified:\s*\zs.*\ze', '%', '\%', 'g')
 	keepjumps silent execute '1,'.n.'s%^.*'.pat.'.*$%'.timestamp.'%e'
