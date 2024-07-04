@@ -56,7 +56,7 @@ if has('patch-8.2.4500')
 	" cnoremap <expr> <esc> pumvisible() ? "\<c-e>" : "\<esc>"
 endif
 
-if has('patch-9.1.1') || has('nvim-0.9.0')
+if has('patch-9.0.648') || has('nvim-0.9.0')
 	set splitkeep=screen
 endif
 
