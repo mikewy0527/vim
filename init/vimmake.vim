@@ -45,9 +45,10 @@ if !exists('g:vimmake_grep_exts')
 	let g:vimmake_grep_exts += ['asm', 's', 'pyw', 'lua', 'go', 'rs', 'pas']
 endif
 
-function! vimmake#grep(text, cwd)
+function! vimmake#grep(text, cwd, ...)
 	let mode = get(g:, 'vimmake_grep_mode', '')
 	let fixed = get(g:, 'vimmake_grep_fixed', 0)
+	let fixed = (a:0 > 0)? (a:1) : fixed
 	let opts = {}
 	let opts.errorformat = '%f:%l:%c:%m,%f:%l:%m'
 	if mode == ''
@@ -88,7 +89,9 @@ function! vimmake#grep(text, cwd)
 			endif
 		endfor
 		let opts.cwd = a:cwd
-		call asyncrun#run('', opts, 'findstr /n /s /C:"'.a:text.'" '.l:inc)
+		let text = substitute(a:text, '"', "''", 'g')
+		let text = fixed? printf('/C:"%s"', text) : printf('"%s"', text)
+		call asyncrun#run('', opts, 'findstr /n /s '.text.' '.l:inc)
 	elseif mode == 'ag'
 		let inc = []
 		for item in g:vimmake_grep_exts
