@@ -60,6 +60,7 @@ let b:navigator = {}
 let b:navigator.l = {
 			\ 'b': [':AsyncTask go-project-build', 'go-project-build'],
 			\ 't': [':AsyncTask go-project-test', 'go-project-test'],
+			\ 'T': [':AsyncTask go-project-test', 'go-project-test-verbose'],
 			\ 'i': [':AsyncTask go-project-install', 'go-project-install'],
 			\ 'r': [':AsyncTask go-project-run', 'go-project-run'],
 			\ }
