@@ -80,6 +80,7 @@ hi link PmenuKindSel PmenuSel
 hi PmenuSbar gui=NONE term=NONE cterm=NONE guifg=#0038a8 guibg=#0070a8 ctermfg=236 ctermbg=25
 hi PmenuSel gui=NONE term=NONE cterm=NONE guifg=#ffffff guibg=#00a800 ctermfg=15 ctermbg=34
 hi PmenuThumb gui=NONE term=NONE cterm=NONE guifg=#0070a8 guibg=#0038a8 ctermfg=25 ctermbg=236
+hi PmenuMatchSel gui=NONE term=NONE cterm=NONE guifg=#ffff57 guibg=#00a800 ctermfg=227 ctermbg=34
 hi link PreCondit PreProc
 hi PreProc gui=NONE term=NONE cterm=NONE guifg=#57ff57 guibg=NONE ctermfg=83 ctermbg=NONE
 hi Question gui=bold term=standout cterm=bold guifg=Green guibg=NONE ctermfg=10 ctermbg=NONE
