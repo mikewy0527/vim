@@ -53,4 +53,9 @@
   socat TCP-LISTEN:<local-port>,reuseaddr,fork SOCKS:<socks-ip>:<remote-ip>:<remote-port>,socksport=<socks-port>
   socat TCP-LISTEN:<local-port>,reuseaddr,fork PROXY:<proxy-ip>:<remote-ip>:<remote-port>,proxyport=<proxy-port>
 
+- Echo Server
+
+  socat TCP4-LISTEN:23,fork,reuseaddr EXEC:/bin/cat
+  socat UDP4-LISTEN:23,fork,reuseaddr EXEC:/bin/cat
+
 
