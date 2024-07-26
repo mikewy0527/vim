@@ -482,7 +482,11 @@ function! asclib#path#get_root(path, ...)
 		endif
 	endif
 	let strict = (a:0 >= 2)? (a:2) : 0
-	let l:hr = s:find_root(a:path, markers, strict)
+	if type(a:path) == 0 && (a:path == 0)
+		let l:hr = s:find_root('%', markers, strict)
+	else
+		let l:hr = s:find_root(a:path, markers, strict)
+	endif
 	if s:windows != 0
 		let l:hr = join(split(l:hr, '/', 1), "\\")
 	endif
