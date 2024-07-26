@@ -85,7 +85,7 @@ endfunction
 function! dist#vim#fs#joinpath(...) abort
 	let t = ''
 	for p in a:000
-		let t = (t == '')? p : s:path_join(t, p)
+		let t = s:path_join(t, p)
 	endfor
 	return t
 endfunction
