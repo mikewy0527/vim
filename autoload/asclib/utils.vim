@@ -516,3 +516,18 @@ endfunc
 
 
 
+"----------------------------------------------------------------------
+" remove path from $PATH
+"----------------------------------------------------------------------
+function! asclib#utils#path_remove(what) abort
+	let sep = (s:windows != 0)? ';' : ','
+	let paths = []
+	for path in split($PATH, sep)
+		if !asclib#path#equal(path, a:what)
+			call add(paths, path)
+		endif
+	endfor
+	let $PATH = join(paths, sep)
+endfunc
+
+
