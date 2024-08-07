@@ -4,22 +4,25 @@ let s:home = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 exec 'so '.fnameescape(s:home).'/init.vim'
 exec 'so '.fnameescape(s:home).'/skywind.vim'
 
-set t_Co=256
-color desert256
+if $KONSOLETHEME =~ '-Light'
+	set background=light
+else
+	set background=dark
+endif
 
-hi! CursorLineNr cterm=none
+set t_Co=256
 if $TERM != 'linux'
 	set termguicolors
 endif
+color solarized8
 
 let g:terminal_skip_key_init = 1
 let g:altmeta_num_shift = get(g:, 'vim_num_shift', 0)
+let g:vim_startup = get(g:, 'vim_startup', 0)
 
 if !exists('g:bundle_group')
 	let g:bundle_group = []
 endif
-
-let g:vim_startup = get(g:, 'vim_startup', 0)
 
 if g:vim_startup != 0 || has('gui_running')
 	call Tools_SwitchLayout()
@@ -40,9 +43,6 @@ if len(g:bundle_group) > 0
 	IncScript bundle.vim
 endif
 
-hi LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
-hi SignColumn ctermbg=0
-
-
-
-
+if index(g:bundle_group, 'lightline') >= 0
+	let g:lightline.colorscheme = 'solarized'
+endif

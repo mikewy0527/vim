@@ -251,7 +251,7 @@ let g:quickui_tags_indent = {
 			\ 'm': '  ',
 			\ }
 
-let g:quickui_color_scheme = 'papercol-light'
+let g:quickui_color_scheme = 'solarized'
 
 let g:navigator_hide_cursor = 0
 let g:navigator_display_path = 1
