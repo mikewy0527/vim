@@ -28,14 +28,15 @@ else
 	hi! SignColumn ctermbg=NONE
 	hi! LineNr guifg=#93a1a1 guisp=NONE guibg=NONE
 	hi! TabLineSel guifg=#fdf6e3 guibg=#657b83 guisp=NONE gui=reverse
+	hi! Terminal ctermbg=NONE
 
 	if str2nr(&t_Co) >= 16
 		hi! Comment ctermfg=Cyan ctermbg=NONE cterm=NONE
 		hi! LineNr term=bold cterm=NONE ctermfg=Cyan ctermbg=NONE
 		hi! Cursor cterm=NONE ctermfg=Black ctermbg=Cyan
 		hi! CursorLineNr cterm=NONE ctermfg=DarkBlue ctermbg=NONE
-		hi! TabLine ctermbg=DarkGrey ctermfg=DarkGrey
-		hi! TabLineFill ctermbg=DarkGrey ctermfg=DarkGrey
+		hi! TabLine ctermbg=DarkGrey ctermfg=DarkCyan
+		hi! TabLineFill ctermbg=DarkGrey ctermfg=DarkCyan
 		hi! TabLineSel ctermbg=LightGrey ctermfg=Black
 		hi! Visual ctermfg=2 ctermbg=15 cterm=reverse
 	endif
