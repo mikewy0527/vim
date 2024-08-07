@@ -22,6 +22,19 @@ endif
 let s:save_cpoptions = &cpoptions
 set cpoptions&vim
 
+if !exists('g:altmeta_use_timestamps')
+	let g:altmeta_use_timestamps = 0
+endif
+
+function! s:set_timestamp(message)
+	if g:altmeta_use_timestamps
+		" This results in a `stat()` system call with a filename
+		" based on the message, allowing timing measurements via
+		" `strace -tt` on Linux.
+		call filereadable('ALTMETA_TIMESTAMP_' . a:message)
+	endif
+endfunc
+
 function! s:set_key(key, keyCode)
 	if get(g:, 'altmeta_skip_meta', 0) == 0
 		execute "set " . a:key . "=" . a:keyCode
@@ -672,7 +685,16 @@ function! AltMeta_Detect()
 	return termType
 endfunc
 
+let g:altmeta_timer = -1
+let g:altmeta_setup_done = 0
+
 function! AltMeta_Setup()
+	call s:set_timestamp('setup() start')
+	if g:altmeta_setup_done
+		return
+	endif
+	let g:altmeta_setup_done = 1
+
 	if !exists('g:altmeta_term_type')
 		let g:altmeta_term_type = AltMeta_Detect()
 	endif
@@ -731,6 +753,43 @@ function! AltMeta_Setup()
 	" echom printf("spared %d/50", s:fn_spare_keys_used)
 endfunc
 
+" Prepare for setup.
+function! AltMeta_PrepareSetup()
+	call s:set_timestamp('prepareSetup')
+	if g:altmeta_setup_done
+		return
+	endif
+	if exists('*timer_start') && g:altmeta_delay > 0
+		function! s:setup_callback(timerId)
+			let g:altmeta_timer = -1
+			call AltMeta_Setup()
+		endfunc
+
+		if g:altmeta_timer != -1
+			call timer_stop(g:altmeta_timer)
+		endif
+		let g:altmeta_timer = timer_start(g:altmeta_delay, function('s:setup_callback'))
+	else
+		" Without Vim's timer feature, we perform setup immediately and
+		" hope that waiting for `TermResponse` has delayed enough.
+		call AltMeta_Setup()
+	endif
+endfunc
+
+" Invoked when `TermResponse` is received.
+function! AltMeta_TermResponse()
+	call s:set_timestamp('TermResponse')
+	call AltMeta_PrepareSetup()
+endfunc
+
+" Invoked when `VimEnter` is received.
+function! AltMeta_VimEnter()
+    call s:set_timestamp('VimEnter')
+    if g:altmeta_timer == -1
+        call AltMeta_PrepareSetup()
+    endif
+endfunc
+
 " With newer Xterm, Vim enters an extended negotiation during startup.  First
 " Vim queries for Xterm's version and receives the response into v:termresponse.
 " When Xterm's patchlevel is 141 or higher, Vim continues querying for Xterm's
@@ -740,20 +799,17 @@ endfunc
 " have completed.
 
 if !exists("g:altmeta_delay")
-	let g:altmeta_delay = 0
+	let g:altmeta_delay = 10
 endif
 
+call s:set_timestamp('final initialization')
 if g:altmeta_delay == 0
 	call AltMeta_Setup()
-elseif exists('*timer_start') && g:altmeta_delay > 0
-	function! s:setup_callback(timerId)
-		call AltMeta_Setup()
-	endfunc
-	call timer_start(g:altmeta_delay, function('s:setup_callback'))
 else
 	augroup Fixkey
 		autocmd!
-		autocmd TermResponse * call AltMeta_Setup()
+		autocmd TermResponse * call AltMeta_TermResponse()
+		autocmd VimEnter * call AltMeta_VimEnter()
 	augroup END
 endif
 
