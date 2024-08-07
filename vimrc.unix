@@ -24,10 +24,6 @@ if !exists('g:bundle_group')
 	let g:bundle_group = []
 endif
 
-if g:vim_startup != 0 || has('gui_running')
-	call Tools_SwitchLayout()
-endif
-
 if get(g:, 'vim_manual', 0) == 0
 	let g:bundle_group += ['simple', 'basic']
 	if g:vim_startup == 1
@@ -37,6 +33,10 @@ if get(g:, 'vim_manual', 0) == 0
 		let g:bundle_group += ['ale']
 	endif
 	let g:bundle_group += ['nerdtree']
+endif
+
+if g:vim_startup != 0 || has('gui_running') || len(g:bundle_group) > 0
+	call Tools_SwitchLayout()
 endif
 
 if len(g:bundle_group) > 0
