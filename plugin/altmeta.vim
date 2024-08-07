@@ -679,6 +679,10 @@ function! AltMeta_Detect()
 
 	elseif $TERM =~# '\v^tmux(-\d*color|-bce|-it|-s)*$'
 		let termType = "tmux"
+
+	elseif $TERM =~# '^foot\(-direct\)\?$'
+		let termType = "xterm"
+
 	else
 		let termType = "unknown"
 	endif
