@@ -9,9 +9,29 @@
 
 
 "----------------------------------------------------------------------
+" guard: take care vim-plug call setfiletype multiple times
+"----------------------------------------------------------------------
+if exists('b:ftplugin_init_dosini')
+	if get(b:, 'did_ftplugin', 0) == 2
+		finish
+	endif
+endif
+
+let b:ftplugin_init_dosini = 1
+
+" prevent vim-plug set ft=? twice
+if exists('b:did_ftplugin')
+	let b:did_ftplugin = 2
+endif
+
+
+"----------------------------------------------------------------------
 " detect platform
 "----------------------------------------------------------------------
 let s:windows = has('win32') || has('win16') || has('win64') || has('win95')
+
+setlocal commentstring=#\ %s
+let b:commentary_format = "# %s"
 
 
 "----------------------------------------------------------------------
