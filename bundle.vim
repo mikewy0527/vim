@@ -409,7 +409,7 @@ endif
 
 " lightline
 if has_key(s:enabled, 'lightline')
-	Plug 'itchyny/lightline.vim'
+	Plug 'mikewy0527/lightline.vim'
 	IncScript site/bundle/lightline.vim
 endif
 
