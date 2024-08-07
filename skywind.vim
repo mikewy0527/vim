@@ -81,7 +81,7 @@ if asclib#platform#has('win')
 		" fix: https://github.com/vim/vim/issues/13956
 		exec 'set t_ut='
 	endif
-elseif asclib#platform#has_wsl()
+elseif asclib#platform#has('wsl')
 	" fixed: vim will enter replace mode in wsl with cmd window
 	exec 'set t_u7='
 endif

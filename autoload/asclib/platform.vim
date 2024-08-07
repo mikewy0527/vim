@@ -128,7 +128,7 @@ endfunc
 function! asclib#platform#has(what)
 	let what = a:what
 	if what == 'wsl'
-		return asclib#platform#has_wsl()
+		return (get(g:, 'platform_wsl', 0) != 0)
 	elseif what == 'python'
 		return asclib#platform#has_python()
 	elseif what == 'gui_running'
@@ -142,48 +142,6 @@ function! asclib#platform#has(what)
 	endif
 	return has(what)
 endfunc
-
-
-"----------------------------------------------------------------------
-" check wsl
-"----------------------------------------------------------------------
-function! asclib#platform#has_wsl()
-	if exists('s:has_wsl')
-		return s:has_wsl
-	elseif s:uname != 'linux'
-		return 0
-	endif
-	let s:has_wsl = 0
-	let f = '/proc/version'
-	if filereadable(f)
-		try
-			let text = readfile(f, '', 3)
-		catch
-			let text = []
-		endtry
-		for t in text
-			if match(t, 'Microsoft') >= 0
-				let s:has_wsl = 1
-				return 1
-			endif
-		endfor
-	endif
-	let cmd = '/mnt/c/Windows/System32/cmd.exe'
-	if !executable(cmd)
-		" can't return here, some windows may locate
-		" in somewhere else.
-	endif
-	if $WSL_DISTRO_NAME != ''
-		let s:has_wsl = 1
-		return 1
-	endif
-	let uname = asclib#platform#system_uname()
-	if match(uname, 'Microsoft') >= 0
-		let s:has_wsl = 1
-	endif
-	return s:has_wsl
-endfunc
-
 
 
 "----------------------------------------------------------------------
