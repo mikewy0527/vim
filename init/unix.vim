@@ -73,9 +73,11 @@ else
 endif
 
 " new blowfish2 
-if has('patch-7.4.500') || v:version >= 800
-	if !has('nvim')
-		set cryptmethod=blowfish2
+if &cryptmethod != 'blowfish2'
+	if has('patch-7.4.500') || v:version >= 800
+		if !has('nvim')
+			set cryptmethod=blowfish2
+		endif
 	endif
 endif
 

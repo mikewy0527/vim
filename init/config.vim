@@ -195,13 +195,9 @@ if has('unix')
 		let &t_TI = ''
 		let &t_TE = ''
 	endif
-	let s:uname = system('uname')
-	let s:xterm = 0
-	if s:uname =~ "FreeBSD"
-		let s:xterm = 1
-	endif
+
 	" restore screen after quitting
-	if s:xterm != 0
+	if has('bsd')
 		if &term =~ "xterm"
 			let &t_ti="\0337\033[r\033[?47h"
 			let &t_te="\033[?47l\0338"
@@ -216,6 +212,3 @@ if has('unix')
 		set restorescreen
 	endif
 endif
-
-
-
