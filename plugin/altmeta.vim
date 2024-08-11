@@ -788,10 +788,10 @@ endfunc
 
 " Invoked when `VimEnter` is received.
 function! AltMeta_VimEnter()
-    call s:set_timestamp('VimEnter')
-    if g:altmeta_timer == -1
-        call AltMeta_PrepareSetup()
-    endif
+	call s:set_timestamp('VimEnter')
+	if g:altmeta_timer == -1
+		call AltMeta_PrepareSetup()
+	endif
 endfunc
 
 " With newer Xterm, Vim enters an extended negotiation during startup.  First
