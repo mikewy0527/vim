@@ -11,8 +11,9 @@
 "----------------------------------------------------------------------
 " locals 
 "----------------------------------------------------------------------
-setlocal expandtab 
-" setlocal ts=2 sts=2 sw=2
+setlocal softtabstop=4
+setlocal shiftwidth=4
+setlocal expandtab
 
 " for emmet
 imap <m-r> <c-z>

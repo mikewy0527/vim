@@ -29,10 +29,11 @@ set ruler
 set nopaste
 set display=lastline
 
-set shiftwidth=4
-set softtabstop=4
+set tabstop=8
+set softtabstop=8
+set shiftwidth=8
 set noexpandtab
-set tabstop=4
+set smarttab
 
 if has('multi_byte')
 	set encoding=utf-8
