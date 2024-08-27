@@ -151,6 +151,11 @@ augroup AscUnixGroup
 	au BufNewFile,BufRead *.fmt setlocal filetype=protogen
 augroup END
 
+augroup CustomListcharsGroup
+	au ModeChanged *:[vV\x16]* set list
+	au ModeChanged [vV\x16]*:* set nolist
+augroup END
+
 
 "----------------------------------------------------------------------
 " language setup (on FileType autocmd)

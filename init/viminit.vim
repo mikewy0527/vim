@@ -209,7 +209,7 @@ endif
 set scrolloff=2
 set showmatch
 set matchtime=3
-set listchars=tab:\|\ ,trail:.,extends:>,precedes:<
+set listchars=eol:$,tab:>-,nbsp:␣,space:.,trail:.,extends:>,precedes:<
 
 " window management
 nnoremap <tab>h <c-w>h
