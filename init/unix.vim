@@ -152,6 +152,7 @@ augroup AscUnixGroup
 augroup END
 
 augroup CustomListcharsGroup
+	au!
 	au ModeChanged *:[vV\x16]* set list
 	au ModeChanged [vV\x16]*:* set nolist
 augroup END

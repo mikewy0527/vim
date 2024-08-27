@@ -21,7 +21,6 @@ set backspace=eol,start,indent
 set autoindent
 set cindent
 set winaltkeys=no
-set nowrap
 set ttimeout
 set ttimeoutlen=50
 set cmdheight=1

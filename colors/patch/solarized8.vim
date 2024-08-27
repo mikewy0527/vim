@@ -36,6 +36,7 @@ if &background == 'dark'
 		hi! DiffChange cterm=NONE ctermfg=235 ctermbg=Green
 		hi! DiffText   cterm=NONE ctermfg=White ctermbg=DarkYellow
 
+		hi! SpecialKey cterm=NONE ctermfg=DarkMagenta ctermbg=NONE
 	elseif str2nr(&t_Co) >= 16
 		hi! Comment ctermfg=Yellow ctermbg=NONE cterm=NONE
 		hi! LineNr cterm=NONE cterm=NONE ctermfg=Yellow ctermbg=NONE

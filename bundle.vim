@@ -579,7 +579,7 @@ if has_key(s:enabled, 'colors')
 	Plug 'arcticicestudio/nord-vim'
 	Plug 'romainl/Apprentice'
 	Plug 'arzg/vim-colors-xcode'
-    Plug 'wuelnerdotexe/vim-enfocado'
+	Plug 'wuelnerdotexe/vim-enfocado'
 	Plug 'kaicataldo/material.vim'
 	Plug 'cocopon/iceberg.vim'
 	Plug 'mcchrish/zenbones.nvim'
