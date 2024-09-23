@@ -50,6 +50,7 @@ if has_key(s:enabled, 'simple')
 	Plug 'tpope/vim-unimpaired'
 	Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
 	Plug 'bootleq/vim-cycle'
+	Plug 'tpope/vim-repeat'
 	Plug 'tpope/vim-surround'
 
 	if !has_key(s:enabled, 'autopair')
@@ -68,22 +69,26 @@ if has_key(s:enabled, 'simple')
 		IncScript site/bundle/easymotion.vim
 	endif
 
-	nnoremap gb= :Tabularize /=<CR>
-	vnoremap gb= :Tabularize /=<CR>
-	nnoremap gb/ :Tabularize /\/\//l4c1<CR>
-	vnoremap gb/ :Tabularize /\/\//l4c1<CR>
-	nnoremap gb* :Tabularize /\/\*/l4c1<cr>
-	vnoremap gb* :Tabularize /\/\*/l4c1<cr>
-	nnoremap gb, :Tabularize /,/r0l1<CR>
-	vnoremap gb, :Tabularize /,/r0l1<CR>
-	nnoremap gbl :Tabularize /\|<cr>
-	vnoremap gbl :Tabularize /\|<cr>
-	nnoremap gbc :Tabularize /#/l4c1<cr>
-	vnoremap gbc :Tabularize /#/l4c1<cr>
-	nnoremap gb<bar> :Tabularize /\|<cr>
-	vnoremap gb<bar> :Tabularize /\|<cr>
-	nnoremap gbr :Tabularize /\|/r0<cr>
-	vnoremap gbr :Tabularize /\|/r0<cr>
+	nnoremap gb<space> :Tabularize /[^\s]\s\+\zs/l1r0<CR>
+	vnoremap gb<space> :Tabularize /[^\s]\s\+\zs/l1r0<CR>
+	nnoremap gb=       :Tabularize /=<CR>
+	vnoremap gb=       :Tabularize /=<CR>
+	nnoremap gb/       :Tabularize /\/\//l4c1<CR>
+	vnoremap gb/       :Tabularize /\/\//l4c1<CR>
+	nnoremap gb*       :Tabularize /\/\*/l4c1<CR>
+	vnoremap gb*       :Tabularize /\/\*/l4c1<CR>
+	nnoremap gbc       :Tabularize /#/l4c1<CR>
+	vnoremap gbc       :Tabularize /#/l4c1<CR>
+	nnoremap gb,       :Tabularize /,/r0l1<CR>
+	vnoremap gb,       :Tabularize /,/r0l1<CR>
+	nnoremap gbm       :Tabularize /:/l0r1<CR>
+	vnoremap gbm       :Tabularize /:/l0r1<CR>
+	nnoremap gbl       :Tabularize /\\/l1r0<CR>
+	vnoremap gbl       :Tabularize /\\/l1r0<CR>
+	nnoremap gb<bar>   :Tabularize /\|<CR>
+	vnoremap gb<bar>   :Tabularize /\|<CR>
+	nnoremap gbr       :Tabularize /\|/r0<CR>
+	vnoremap gbr       :Tabularize /\|/r0<CR>
 
 	nmap gz <Plug>Sneak_s
 	nmap gZ <Plug>Sneak_S
