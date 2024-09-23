@@ -235,6 +235,7 @@ endfunc
 
 function! Tools_SwitchLayout() 
 	set number
+	set relativenumber
 	set showtabline=2
 	set laststatus=2
 	set signcolumn=yes
