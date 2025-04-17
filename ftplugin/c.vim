@@ -31,6 +31,8 @@ let b:commentary_format = "// %s"
 let s:windows = has('win32') || has('win64') || has('win95') || has('win16')
 let b:cursorword = 1
 
+setlocal cinoptions+=L0,#4,:0,l1,g0,t0,(0,u0,U1,w1,Ws,j1,J1
+
 
 "----------------------------------------------------------------------
 " splint
